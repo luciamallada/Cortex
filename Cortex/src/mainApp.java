@@ -25,11 +25,10 @@ public class mainApp {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		
-		String extension = ".txt";
 		String linea, tipoPaso;
-		boolean seguir = true;
+		boolean seguir = true, escribir = false;
 //-------------------------------------Ficheros-------------------------------------------------		
-	    FileReader ficheroPCL = new FileReader("C:\\Cortex\\" + programa + extension);
+	    FileReader ficheroPCL = new FileReader("C:\\Cortex\\PCL.txt");
 	    BufferedReader lectorPCL = new BufferedReader(ficheroPCL);
 	    
 	    FileWriter ficheroCortex = new FileWriter("C:\\Cortex\\Migrados\\" + programa.substring(0,6) + ".txt");
@@ -38,14 +37,31 @@ public class mainApp {
 	     
 //------------------------------------PROGRAMA--------------------------------------------------
 	    	    
+	    
+	    while ((linea = lectorPCL.readLine()) != null && seguir) {
+	    	
+	    	if(linea.startsWith(":/ ADD NAME=" + programa.substring(0,6)) || escribir) {
+	    		escribir = true;
+	    		fichero.add(linea);
+	    		if(linea.startsWith(":/ ADD NAME=") && !linea.startsWith(":/ ADD NAME=" + programa.substring(0,6))) {
+		    		escribir = false;
+		    		seguir = false;
+		    	}
+	    	}
+	    }
+	    lectorPCL.close();
+	    seguir = true;
+	    
+	    
+	    
 //------------- Escribimos la cabecera
 	    escribeJJOB(writerCortex);
 
-//------------- Pasamos todo el fichero a un arraylist	
-	    while((linea = lectorPCL.readLine())!=null) {
-	    	fichero.add(linea);	 
-	    }
-	    lectorPCL.close();
+////------------- Pasamos todo el fichero a un arraylist	
+//	    while((linea = lectorPCL.readLine())!=null) {
+//	    	fichero.add(linea);	 
+//	    }
+//	    
 // ------------ Aislamos el paso
 	    while (seguir) {
 		    tipoPaso = aislamientoDePaso();
