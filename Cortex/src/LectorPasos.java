@@ -33,7 +33,6 @@ public class LectorPasos {
 // -------------- Buscamos los posibles archivos
 					index = 0;
 					index = pasos.get(i).indexOf("MODE=") + 5;
-//					System.out.println(pasos.get(i).charAt(index));
 					if (pasos.get(i).charAt(index) == 'I') {
 						archivosEntrada++;
 						valor = leerArchivoEntrada(pasos.get(i));
@@ -131,7 +130,6 @@ public class LectorPasos {
 			}
 			valor = linea.substring(index + 1, fin);
 		}
-		System.out.println(valor);
 		
 		return valor;
 	}
@@ -148,7 +146,6 @@ public class LectorPasos {
 			}
 		}
 		clave = linea.substring(inicio + 1, index);
-		System.out.println(clave);
 		
 		return clave;
 	}
