@@ -2,21 +2,34 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.SimpleFormatter;
 
 public class WriterPasos {
 	
 	MetodosAux metodosAux = new MetodosAux();
+	int pasoS = -1;
 
-	public void writeDB2(Map<String, String> datos, String letraPaso, int paso, BufferedWriter writerCortex) throws IOException {
+	public void writeDB2(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
 		//----------------Fichero de plantilla DB2--------------------------
 	    FileReader ficheroDB2 = new FileReader("C:\\Cortex\\Plantillas\\JDB2.txt");
 	    BufferedReader lectorDB2 = new BufferedReader(ficheroDB2);	
 	    //----------------Variables------------------------------------------
 	    String linea;
-	    paso++;
-	    String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
+//	    if(pasoAPaso == 1) {
+//	    	paso = paso * 2 + 1;
+//	    }else {
+//	    	paso++;
+//	    }
+	    pasoS += 2;
+//	    String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    int contadorLinea = 0;
 	    
 	    
@@ -24,7 +37,9 @@ public class WriterPasos {
 	    
 	    //--------------- Miramos si hay archivos para borrar antes de ejecutar:
 	    for (int i = 1; datos.containsKey("Borrar" + String.valueOf(i)); i++) {
-	    	writeJBORRAF(numeroPaso, i, letraPaso, writerCortex);
+	    	if(!datos.get("Borrar" + String.valueOf(i)).equals("No")) {
+	    		writeJBORRAF(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
+	    	}
 	    }
 	    
 	    //---------------- Escribimos la plantilla JDB2
@@ -46,7 +61,6 @@ public class WriterPasos {
 	    		if (metodosAux.checkLiteralesPARDB2(datos.get("PARDB2"))) {
 	    			writerCortex.write("****** LITERALES EN LOS PARAMETROS DEL PROGRAMA *****");
 	    	    	writerCortex.newLine();
-	    	    	System.out.println("Escribimos: " + linea);
 	    		}
 			default:
 				break;
@@ -59,11 +73,11 @@ public class WriterPasos {
 	    
 //--------------- Miramos si hay ficheros de entrada:
 	    for (int i = 1; datos.containsKey("Entrada" + String.valueOf(i)); i++) {
-	    	writeJFICHENT(datos, numeroPaso, i, letraPaso, writerCortex);
+	    	writeJFICHENT(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
 	    }
 //--------------- Miramos si hay ficheros de Salida:
 	    for (int i = 1; datos.containsKey("Salida" + String.valueOf(i)); i++) {
-	    	writeJFICHSAL(datos, numeroPaso, i, letraPaso, writerCortex);
+	    	writeJFICHSAL(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
 	    }
 //--------------- Miramos si hay Comentarios:
 	    writeComments(datos, writerCortex);
@@ -77,17 +91,19 @@ public class WriterPasos {
 	}
 
 	public void writeJFICHSAL(Map<String, String> datos, String numeroPaso, int i, String letraPaso,
-			BufferedWriter writerCortex) throws IOException {
+			BufferedWriter writerCortex, int pasoE) throws IOException {
 		// TODO Auto-generated method stub
 		//----------------Fichero de plantilla JFICHENT--------------------------
 	    FileReader ficheroJFICHSAL = new FileReader("C:\\Cortex\\Plantillas\\JFICHSAL.txt");
 	    BufferedReader lectorJFICHSAL = new BufferedReader(ficheroJFICHSAL);	
 	    //----------------Variables------------------------------------------
+	    Map<String, String> infoFich = new HashMap<String, String>();
 	    String linea, nombre;
 	    int contadorLinea = 0;
 	    
 	    //----------------Método---------------------------------------------
 	    nombre = datos.get("Salida" + String.valueOf(i));
+	    infoFich = metodosAux.infoFichero(pasoE, letraPaso, nombre);
 	    for(int j = nombre.length(); j < 8; j++) {
 			nombre += " ";
 		}
@@ -96,24 +112,66 @@ public class WriterPasos {
 	    	switch (contadorLinea) {
 	    	case 3:
 	    		linea = linea.replace("DDNAME--", nombre);
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
+	    		break;
+	    	case 5:
+	    		if(infoFich.containsKey("MGMTCLAS")) {
+	    			linea = linea.replace("EXLIXXXX", infoFich.get("MGMTCLAS"));
+	    		}else {
+	    			linea = linea.replace("// ", "//*");
+	    		}
+	    		break;
+	    	case 6:
+	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
 	    		break;
 	    	case 9:
 	    		linea = linea.replace("DDNAME--", nombre);
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.XP", infoFich.get("DSN"));
+	    		break;
+	    	case 11:
+	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
 	    		break;
 	    	case 14:
 	    		linea = linea.replace("DDNAME--", nombre);
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
+	    		break;
+	    	case 16:
+	    		if(infoFich.containsKey("MGMTCLAS")) {
+	    			linea = linea.replace("EXLIXXXX", infoFich.get("MGMTCLAS"));
+	    		}else {
+	    			linea = linea.replace("// ", "//*");
+	    		}
+	    		break;
+	    	case 17:
+	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
 	    		break;
 	    	default:
 				break;
 	    	}
-	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
-	    	writerCortex.newLine();
+	    	
+	    	if(infoFich.get("DISP").equals("NEW") && contadorLinea > 6) {
+	    		//No escribimos el resto de ficheros (mod, temp)
+	    		linea = "";
+	    	}
+	    	if(infoFich.get("DISP").equals("MOD") && contadorLinea < 12) {
+	    		//No escribimos el resto de ficheros (new, temp)
+	    		linea = "";
+	    	}
+	    	if(infoFich.get("DISP").equals("TEMP") && (contadorLinea < 7 || contadorLinea > 11)) {
+	    		//No escribimos el resto de ficheros (new, mod)
+	    		linea = "";
+	    	}   
+	    		    	
+	    	if (!linea.equals("")) {
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea);
+		    	writerCortex.newLine();
+	    	}
 	    }
 	    lectorJFICHSAL.close();	 
 	}
 
-	public void writeJFICHENT(Map<String, String> datos, String numeroPaso, int i, String letraPaso, BufferedWriter writerCortex) throws IOException {
+	public void writeJFICHENT(Map<String, String> datos, String numeroPaso, int i, String letraPaso, BufferedWriter writerCortex, int pasoE) throws IOException {
 		// TODO Auto-generated method stub
 		//----------------Fichero de plantilla JFICHENT--------------------------
 	    FileReader ficheroJFICHENT = new FileReader("C:\\Cortex\\Plantillas\\JFICHENT.txt");
@@ -123,15 +181,24 @@ public class WriterPasos {
 	    int contadorLinea = 0;
 	    
 	    //----------------Método---------------------------------------------
+	    
+	    Map<String, String> infoFich = new HashMap<String, String>();
+	    nombre = datos.get("Entrada" + String.valueOf(i));
+		for(int j = nombre.length(); j < 8; j++) {
+			nombre += " ";
+		}
+	    infoFich = metodosAux.infoFichero(pasoE, letraPaso, nombre);
+	    
 	    while((linea = lectorJFICHENT.readLine()) != null) {
 	    	contadorLinea ++;
+	    	if(i > 1 && contadorLinea == 1) {
+	    		//No queremos que vuelva a escribir la primera línea de la plantilla
+	    		continue;
+	    	}
 	    	switch (contadorLinea) {
 	    	case 2:
-	    		nombre = datos.get("Entrada" + String.valueOf(i));
-	    		for(i = nombre.length(); i < 8; i++) {
-	    			nombre += " ";
-	    		}
 	    		linea = linea.replace("DDNAME--", nombre);
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", "Z." + infoFich.get("DSN"));
 	    		break;
 	    	default:
 				break;
@@ -143,16 +210,20 @@ public class WriterPasos {
 	    lectorJFICHENT.close();	 
 	}
 
-	public void writeJBORRAF(String numeroPaso, int i, String letraPaso, BufferedWriter writerCortex) throws IOException {
+	public void writeJBORRAF(Map<String, String> datos, String numeroPaso, int i, String letraPaso, BufferedWriter writerCortex, int pasoE) throws IOException {
 		// TODO Auto-generated method stub
 		//----------------Fichero de plantilla JBORRAF--------------------------
 	    FileReader ficheroJBORRAF = new FileReader("C:\\Cortex\\Plantillas\\JBORRAF.txt");
 	    BufferedReader lectorJBORRAF = new BufferedReader(ficheroJBORRAF);	
 	    //----------------Variables------------------------------------------
-	    String linea;
+	    String linea, nombre;
 	    int contadorLinea = 0;
 	    
 	    //----------------Método---------------------------------------------
+	    Map<String, String> infoFich = new HashMap<String, String>();
+	    nombre = datos.get("Borrar" + String.valueOf(i));
+	    infoFich = metodosAux.infoFichero(pasoE, letraPaso, nombre);
+	    
 	    while((linea = lectorJBORRAF.readLine()) != null) {
 	    	contadorLinea ++;
 	    	if(i > 1 && contadorLinea == 1) {
@@ -161,7 +232,12 @@ public class WriterPasos {
 	    	}
 	    	switch (contadorLinea) {
 	    	case 2:
-	    		linea = linea.replace("//---D-", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
+	    		if(i < 10) {
+	    			linea = linea.replace("//---D-", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
+	    		}else {
+	    			linea = linea.replace("//---D- ", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
+	    		}
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
 	    		break;
 	    	default:
 				break;
@@ -180,8 +256,14 @@ public class WriterPasos {
 		    BufferedReader lectorMAILTXT = new BufferedReader(ficheroMAILTXT);	
 		    //----------------Variables------------------------------------------
 		    String linea;
-		    paso++;
-		    String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
+//		    if(pasoAPaso == 1) {
+//		    	paso = paso * 2 + 1;
+//		    }else {
+//		    	paso++;
+//		    }
+		    pasoS += 2;
+//		    String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
+		    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 		    int contadorLinea = 0;
 		    
 		    
@@ -253,8 +335,14 @@ public class WriterPasos {
 	    BufferedReader lectorJSORT = new BufferedReader(ficheroJSORT);	
 	    //----------------Variables------------------------------------------
 	    String linea;
-	    paso++;
-	    String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
+//	    if(pasoAPaso == 1) {
+//	    	paso = paso * 2 + 1;
+//	    }else {
+//	    	paso++;
+//	    }
+	    pasoS += 2;
+//	    String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    int contadorLinea = 0;
 	    int i = 1;
 	    

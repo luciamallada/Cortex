@@ -6,27 +6,47 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "BAN06BPCL";
+	public static String programa = "AGE01BPCL";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
+	private final static Logger LOGGER = Logger.getLogger("mainApp");
 	public static Map<String, String> datos = new HashMap<String, String>();
 	static String letraPaso = programa.substring(5,6);
-	static int paso = -2;
+	static int pasoE = 0;
+	static int pasoS = 1;
 	static ArrayList<String> fichero = new ArrayList<String>();
 	static ArrayList<String> pasos = new ArrayList<String>();
 	static int lineNumber = 0;
+	static int auxTot = 0;
+	static int auxDecimal = 0;
+	static int auxUnidad = 0;
 	static LectorPasos lectorPasos = new LectorPasos();
 	static WriterPasos writerPasos = new WriterPasos();
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
+		Handler consoleHandler = new ConsoleHandler();
+		Handler fileHandler = new FileHandler("C:\\Cortex\\incidencias.log", false);
+		SimpleFormatter simpleFormatter = new SimpleFormatter();
+		fileHandler.setFormatter(simpleFormatter);
+		LOGGER.addHandler(consoleHandler);
+        LOGGER.addHandler(fileHandler);
+        consoleHandler.setLevel(Level.ALL);
+        fileHandler.setLevel(Level.ALL);
 		
 		String linea, tipoPaso;
 		boolean seguir = true, escribir = false;
+
 //-------------------------------------Ficheros-------------------------------------------------		
 	    FileReader ficheroPCL = new FileReader("C:\\Cortex\\PCL.txt");
 	    BufferedReader lectorPCL = new BufferedReader(ficheroPCL);
@@ -36,8 +56,8 @@ public class mainApp {
 //----------------------------------------------------------------------------------------------	    
 	     
 //------------------------------------PROGRAMA--------------------------------------------------
-	    	    
-	    
+	    LOGGER.log(Level.INFO, "Comienza el proceso");	    
+	    //Aisla el JCL a tratar.
 	    while ((linea = lectorPCL.readLine()) != null && seguir) {
 	    	
 	    	if(linea.startsWith(":/ ADD NAME=" + programa.substring(0,6)) || escribir) {
@@ -52,20 +72,12 @@ public class mainApp {
 	    lectorPCL.close();
 	    seguir = true;
 	    
-	    
-	    
 //------------- Escribimos la cabecera
 	    escribeJJOB(writerCortex);
-
-////------------- Pasamos todo el fichero a un arraylist	
-//	    while((linea = lectorPCL.readLine())!=null) {
-//	    	fichero.add(linea);	 
-//	    }
-//	    
+  
 // ------------ Aislamos el paso
 	    while (seguir) {
 		    tipoPaso = aislamientoDePaso();
-		    //Verificación aislamiento
 		    //Verificación aislamiento
 		    System.out.println("------- El paso es:  -------------------");
 		    for (int i = 0; i < pasos.size(); i++) {
@@ -84,15 +96,15 @@ public class mainApp {
 				break;
 			case "DB2":
 				datos = lectorPasos.leerPaso(pasos);
-				writerPasos.writeDB2(datos, letraPaso, paso, writerCortex);
+				writerPasos.writeDB2(datos, letraPaso, pasoE, writerCortex);
 				break;	
 			case "NAME=MAILTXT":
 				datos = lectorPasos.leerPaso(pasos);
-				writerPasos.writeMAILTXT(datos, letraPaso, paso, writerCortex);
+				writerPasos.writeMAILTXT(datos, letraPaso, pasoE, writerCortex);
 				break;
 			case "SORT":
 				datos = lectorPasos.leerPaso(pasos);
-				writerPasos.writeSORT(datos, letraPaso, paso, writerCortex);
+				writerPasos.writeSORT(datos, letraPaso, pasoE, writerCortex);
 				break;
 			default:
 				writerCortex.write("**************************************************");
@@ -101,12 +113,14 @@ public class mainApp {
 				writerCortex.newLine();
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
+				LOGGER.log(Level.INFO, "Paso: " + pasoE + " Plantilla: " + tipoPaso);
 				break;
 			}
 		    System.out.println("------- Datos sacados del Paso:  -------");
 		    datos.forEach((k,v) -> System.out.println(k + "-" + v));
 		    System.out.println("----------------------------------------");
-		    paso += 2;
+//		    pasoE += pasoAPaso;
+		    datos.clear();
 			if (lineNumber + 1 == fichero.size()) {
 				seguir = false;
 			}
@@ -120,16 +134,27 @@ public class mainApp {
 		String tipoPaso = "";
 		
 		for(int i = lineNumber; i < fichero.size(); i++) {
-	    	String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
-			String numeroPasoSiguiente = (paso + 2 < 10) ? "0" + String.valueOf(paso+2) : String.valueOf(paso+2);
+//	    	String numeroPaso = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+//			String numeroPasoSiguiente = (pasoE + pasoAPaso < 10) ? "0" + String.valueOf(pasoE+pasoAPaso) : String.valueOf(pasoE+pasoAPaso);
 	    	//Buscamos que la linea empiece por I+paso
-	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPaso))) {
-	    		inicio = i;
+//	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPaso))) {
+//	    		inicio = i;
+//	    	}
+	    	if(fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + "-9][" + auxUnidad + "-9] (.*)")) {
+	    		if (inicio == 0) {
+	    			inicio= i;
+	    			pasoE = Integer.parseInt(fichero.get(i).substring(1,3));
+		    		auxDecimal = pasoE / 10;
+		    		auxUnidad  = pasoE - auxDecimal * 10 + 1;
+	    		}else {
+	    			fin = i;
+	    			i = fichero.size() + 1;
+	    		}
 	    	}
-	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPasoSiguiente))) {
-	    		fin = i;
-	    		i = fichero.size() + 1;
-	    	}
+//	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPasoSiguiente))) {
+//	    		fin = i;
+//	    		i = fichero.size() + 1;
+//	    	}
 	    	if(i == 0) {
 	    		inicio = 0;
 	    		tipoPaso = "Inicio";
@@ -204,5 +229,6 @@ public class mainApp {
 	    	writerCortex.newLine();
 	    }
 	    lectorJJOB.close();
+	    LOGGER.log(Level.INFO, "Añadir las variables");
 	}
 }

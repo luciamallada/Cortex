@@ -84,7 +84,7 @@ public class LectorPasos {
 		}
 		claveB = "Borrar" + String.valueOf(archivosSalida);
 		if (linea.contains("(YES,DELETE")) {
-			valorB = "Si";
+			valorB = valor;
 		}else {
 			valorB = "No";
 		}
@@ -105,7 +105,7 @@ public class LectorPasos {
 		return valor;
 	}
 
-	private String leerValor(String linea, int index) {
+	public String leerValor(String linea, int index) {
 		// TODO Auto-generated method stub
 		String valor = "";
 		int fin = 0;
@@ -134,7 +134,7 @@ public class LectorPasos {
 		return valor;
 	}
 
-	private String leerClave(String linea, int index) {
+	public String leerClave(String linea, int index) {
 		// TODO Auto-generated method stub
 		String clave = "";
 		int inicio = 0;
