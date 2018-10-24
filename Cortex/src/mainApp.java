@@ -6,20 +6,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
+
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AGE01BPCL";
+	public static String programa = "AGE01GPCL";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
-	private final static Logger LOGGER = Logger.getLogger("mainApp");
+	//public final static Logger LOGGER = Logger.getLogger("mainApp");
 	public static Map<String, String> datos = new HashMap<String, String>();
 	static String letraPaso = programa.substring(5,6);
 	static int pasoE = 0;
@@ -32,18 +28,18 @@ public class mainApp {
 	static int auxUnidad = 0;
 	static LectorPasos lectorPasos = new LectorPasos();
 	static WriterPasos writerPasos = new WriterPasos();
+	static Avisos  avisos = new Avisos();
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		Handler consoleHandler = new ConsoleHandler();
-		Handler fileHandler = new FileHandler("C:\\Cortex\\incidencias.log", false);
-		SimpleFormatter simpleFormatter = new SimpleFormatter();
-		fileHandler.setFormatter(simpleFormatter);
-		LOGGER.addHandler(consoleHandler);
-        LOGGER.addHandler(fileHandler);
-        consoleHandler.setLevel(Level.ALL);
-        fileHandler.setLevel(Level.ALL);
-		
+//		Handler consoleHandler = new ConsoleHandler();
+//		Handler fileHandler = new FileHandler("C:\\Cortex\\incidencias.log", false);
+//		SimpleFormatter simpleFormatter = new SimpleFormatter();
+//		fileHandler.setFormatter(simpleFormatter);
+//		LOGGER.addHandler(consoleHandler);
+//        LOGGER.addHandler(fileHandler);
+//        consoleHandler.setLevel(Level.ALL);
+//        fileHandler.setLevel(Level.ALL);
 		String linea, tipoPaso;
 		boolean seguir = true, escribir = false;
 
@@ -56,7 +52,8 @@ public class mainApp {
 //----------------------------------------------------------------------------------------------	    
 	     
 //------------------------------------PROGRAMA--------------------------------------------------
-	    LOGGER.log(Level.INFO, "Comienza el proceso");	    
+	    Avisos.LOGGER.log(Level.INFO, "Comienza el proceso - PROGRAMA: " + programa.substring(0,6));	 
+
 	    //Aisla el JCL a tratar.
 	    while ((linea = lectorPCL.readLine()) != null && seguir) {
 	    	
@@ -113,7 +110,7 @@ public class mainApp {
 				writerCortex.newLine();
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
-				LOGGER.log(Level.INFO, "Paso: " + pasoE + " Plantilla: " + tipoPaso);
+				Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Añadir Plantilla: " + tipoPaso);
 				break;
 			}
 		    System.out.println("------- Datos sacados del Paso:  -------");
@@ -140,7 +137,12 @@ public class mainApp {
 //	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPaso))) {
 //	    		inicio = i;
 //	    	}
-	    	if(fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + "-9][" + auxUnidad + "-9] (.*)")) {
+//	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPasoSiguiente))) {
+//    		fin = i;
+//    		i = fichero.size() + 1;
+//    	}
+	    	if(fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + "-9][" + auxUnidad + "-9] (.*)")
+	    			|| fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + 1 + "-9][0-9] (.*)")) {
 	    		if (inicio == 0) {
 	    			inicio= i;
 	    			pasoE = Integer.parseInt(fichero.get(i).substring(1,3));
@@ -151,10 +153,6 @@ public class mainApp {
 	    			i = fichero.size() + 1;
 	    		}
 	    	}
-//	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPasoSiguiente))) {
-//	    		fin = i;
-//	    		i = fichero.size() + 1;
-//	    	}
 	    	if(i == 0) {
 	    		inicio = 0;
 	    		tipoPaso = "Inicio";
@@ -193,10 +191,9 @@ public class mainApp {
 		}else {
 			if (fichero.get(inicio).contains(" SORT ")) {
 				tipoPaso = "SORT";
-			}else {
-				if (fichero.get(inicio).contains("PGM=SOF07013")) {
+			}
+			if (fichero.get(inicio).contains("PGM=SOF07013")) {
 					tipoPaso = "JBORRARF";
-				}
 			}
 		}
 		
@@ -229,6 +226,6 @@ public class mainApp {
 	    	writerCortex.newLine();
 	    }
 	    lectorJJOB.close();
-	    LOGGER.log(Level.INFO, "Añadir las variables");
+	    Avisos.LOGGER.log(Level.INFO, "Añadir las variables de cabecera");
 	}
 }

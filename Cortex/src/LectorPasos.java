@@ -9,7 +9,7 @@ public class LectorPasos {
 		Map<String, String> datos = new HashMap<String, String>();
 		String clave, valor;
 		int index = 0;
-		int archivosEntrada = 0, archivosSalida = 0, comentarios = 0;
+		int archivosEntrada = 0, archivosSalida = 0, comentarios = 0, reportes = 0;
 		
 		for(int i = 0; i < pasos.size(); i++) {
 			index = 0;
@@ -63,7 +63,25 @@ public class LectorPasos {
 					valor = pasos.get(i);
 					datos.put(clave, valor);
 				}
-// --------------- Buscar reportes				
+// --------------- Buscar reportes	
+				if (pasos.get(i).contains(" REPORT ")) {
+					if(datos.containsKey("SYSOUT") && (datos.get("SYSOUT").equals("S") || datos.get("SYSOUT").equals("*"))) {
+						continue;
+					}else {
+						reportes++;
+						clave = "Reporte" + String.valueOf(reportes);
+						valor = pasos.get(i).substring(0,9);
+						datos.put(clave, valor);
+					}	
+				}
+// --------------- Buscar IF - ENDIF
+				if(pasos.get(i).matches("(.*)IF [" + mainApp.letraPaso + "][0-9]{2}(.*)")) {
+					clave = "IF";
+					index = pasos.get(i).indexOf("IF " + mainApp.letraPaso);
+					valor = pasos.get(i).substring(index);
+//					System.out.println(clave + " - " + valor);
+					datos.put(clave, valor);
+				}
 			}	
 		}
 

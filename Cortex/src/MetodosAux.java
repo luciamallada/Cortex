@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
 
 public class MetodosAux {
+	static Avisos  avisos = new Avisos();
 
 	public boolean checkLiteralesPARDB2(String param) {
 		// TODO Auto-generated method stub
@@ -22,13 +24,10 @@ public class MetodosAux {
 		return false;
 	}
 
-	public Map<String, String> infoFichero(int pasoE, String letraPaso, String nombre) throws IOException {
-		// TODO Auto-generated method stub
+	public ArrayList<String> buscaInfoProc(int pasoE, String letraPaso, String nombre) throws IOException{
 		boolean seguir = true, buscar = false;	
-		LectorPasos lectorPasos =  new LectorPasos();
 		String linea;
 		ArrayList<String> infoFichero = new ArrayList<String>();
-		Map<String, String> infoFich = new HashMap<String, String>();
 		//----------------Fichero de plantilla JPROC--------------------------
 	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC.txt");
 	    BufferedReader lectorPROC = new BufferedReader(ficheroPROC);
@@ -56,6 +55,15 @@ public class MetodosAux {
 	    }
 	    lectorPROC.close();	
 	    
+	    return infoFichero;
+	}
+	public Map<String, String> infoFichero(int pasoE, String letraPaso, String nombre) throws IOException {
+		// TODO Auto-generated method stub
+		ArrayList<String> infoFichero = new ArrayList<String>();
+		LectorPasos lectorPasos =  new LectorPasos();
+		Map<String, String> infoFich = new HashMap<String, String>();
+		
+		infoFichero = buscaInfoProc(pasoE, letraPaso, nombre);
 	    
 	    String clave, valor;
     	int primario = 0, secundario = 0, tamaño;
@@ -110,12 +118,13 @@ public class MetodosAux {
 		infoFich.put(clave, valor);
 		
 		if(!infoFich.containsKey("DSN")) {
-			//FICHEROS DUMMY
+			clave = "DUMMY";
+			valor = infoFichero.get(0);
+			infoFich.put(clave, valor);
 		}
 		else {
 			if(infoFich.get("DSN").endsWith("XP")) {
-		
-			infoFich.replace("DISP", "TEMP");
+				infoFich.replace("DISP", "TEMP");
 			}
 		}
 		System.out.println("------- Datos sacados del Fichero:  -------");
@@ -123,6 +132,28 @@ public class MetodosAux {
 	    System.out.println("----------------------------------------");
 		
 		return infoFich;
+	}
+
+	public Map<String, String> infoReportes(String nombre, int pasoE, String letraPaso) throws IOException {
+		// TODO Auto-generated method stub
+		ArrayList<String> infoFichero = new ArrayList<String>();
+		Map<String, String> infoRep = new HashMap<String, String>();
+		String clave, valor;
+		
+		infoFichero = buscaInfoProc(pasoE, letraPaso, nombre);
+		
+		if (infoFichero.size() == 1) {
+			clave = "ReportKey";
+			valor = infoFichero.get(0);
+			
+		}else {
+			clave = "ReportKey";
+			valor = "* Error al leer línea de Reporte - Nombre reporte: " + nombre; 
+			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Error al leer el reporte - Nombre reporte: " + nombre);
+		}
+			
+		infoRep.put(clave, valor);
+		return infoRep;
 	}
 
 }

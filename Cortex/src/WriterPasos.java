@@ -4,16 +4,15 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.FileHandler;
-import java.util.logging.Handler;
 import java.util.logging.Level;
-import java.util.logging.SimpleFormatter;
+
 
 public class WriterPasos {
-	
+	static Avisos  avisos = new Avisos();
 	MetodosAux metodosAux = new MetodosAux();
 	int pasoS = -1;
+	
+	
 
 	public void writeDB2(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
@@ -61,6 +60,8 @@ public class WriterPasos {
 	    		if (metodosAux.checkLiteralesPARDB2(datos.get("PARDB2"))) {
 	    			writerCortex.write("****** LITERALES EN LOS PARAMETROS DEL PROGRAMA *****");
 	    	    	writerCortex.newLine();
+	    	    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Literales en el programa: "
+	    	    			+ datos.get("PARDB2"));
 	    		}
 			default:
 				break;
@@ -79,8 +80,23 @@ public class WriterPasos {
 	    for (int i = 1; datos.containsKey("Salida" + String.valueOf(i)); i++) {
 	    	writeJFICHSAL(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
 	    }
+//--------------- Miramos si hay reportes para informar:
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 //--------------- Miramos si hay Comentarios:
 	    writeComments(datos, writerCortex);
+	}
+
+	private void writeReports(Map<String, String> datos, BufferedWriter writerCortex, int pasoE, String letraPaso) throws IOException {
+		// TODO Auto-generated method stub
+		Map<String, String> infoRep = new HashMap<String, String>();
+		for (int i = 1; datos.containsKey("Reporte" + String.valueOf(i)); i++) {
+			infoRep = metodosAux.infoReportes(datos.get("Reporte" + String.valueOf(i)), pasoE, letraPaso);
+			writerCortex.write("//*--REPORT-----------------------------------------------------------");
+	    	writerCortex.newLine();
+			writerCortex.write(infoRep.get("ReportKey"));
+	    	writerCortex.newLine();
+			infoRep.clear();
+		}
 	}
 
 	public void writeComments(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
@@ -107,67 +123,75 @@ public class WriterPasos {
 	    for(int j = nombre.length(); j < 8; j++) {
 			nombre += " ";
 		}
-	    while((linea = lectorJFICHSAL.readLine()) != null) {
-	    	contadorLinea ++;
-	    	switch (contadorLinea) {
-	    	case 3:
-	    		linea = linea.replace("DDNAME--", nombre);
-	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
-	    		break;
-	    	case 5:
-	    		if(infoFich.containsKey("MGMTCLAS")) {
-	    			linea = linea.replace("EXLIXXXX", infoFich.get("MGMTCLAS"));
-	    		}else {
-	    			linea = linea.replace("// ", "//*");
-	    		}
-	    		break;
-	    	case 6:
-	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
-	    		break;
-	    	case 9:
-	    		linea = linea.replace("DDNAME--", nombre);
-	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.XP", infoFich.get("DSN"));
-	    		break;
-	    	case 11:
-	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
-	    		break;
-	    	case 14:
-	    		linea = linea.replace("DDNAME--", nombre);
-	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
-	    		break;
-	    	case 16:
-	    		if(infoFich.containsKey("MGMTCLAS")) {
-	    			linea = linea.replace("EXLIXXXX", infoFich.get("MGMTCLAS"));
-	    		}else {
-	    			linea = linea.replace("// ", "//*");
-	    		}
-	    		break;
-	    	case 17:
-	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
-	    		break;
-	    	default:
-				break;
-	    	}
-	    	
-	    	if(infoFich.get("DISP").equals("NEW") && contadorLinea > 6) {
-	    		//No escribimos el resto de ficheros (mod, temp)
-	    		linea = "";
-	    	}
-	    	if(infoFich.get("DISP").equals("MOD") && contadorLinea < 12) {
-	    		//No escribimos el resto de ficheros (new, temp)
-	    		linea = "";
-	    	}
-	    	if(infoFich.get("DISP").equals("TEMP") && (contadorLinea < 7 || contadorLinea > 11)) {
-	    		//No escribimos el resto de ficheros (new, mod)
-	    		linea = "";
-	    	}   
+	    if (!infoFich.containsKey("DUMMY")) {
+		    while((linea = lectorJFICHSAL.readLine()) != null) {
+		    	contadorLinea ++;
+		    	switch (contadorLinea) {
+		    	case 3:
+		    		linea = linea.replace("DDNAME--", nombre);
+		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
+		    		break;
+		    	case 5:
+		    		if(infoFich.containsKey("MGMTCLAS")) {
+		    			linea = linea.replace("EXLIXXXX", infoFich.get("MGMTCLAS"));
+		    		}else {
+		    			linea = linea.replace("// ", "//*");
+		    		}
+		    		break;
+		    	case 6:
+		    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		break;
+		    	case 9:
+		    		linea = linea.replace("DDNAME--", nombre);
+		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.XP", infoFich.get("DSN"));
+		    		break;
+		    	case 11:
+		    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		break;
+		    	case 14:
+		    		linea = linea.replace("DDNAME--", nombre);
+		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
+		    		break;
+		    	case 16:
+		    		if(infoFich.containsKey("MGMTCLAS")) {
+		    			linea = linea.replace("EXLIXXXX", infoFich.get("MGMTCLAS"));
+		    		}else {
+		    			linea = linea.replace("// ", "//*");
+		    		}
+		    		break;
+		    	case 17:
+		    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		break;
+		    	default:
+					break;
+		    	}
+		    	
+		    	if(infoFich.get("DISP").equals("NEW") && contadorLinea > 6) {
+		    		//No escribimos el resto de ficheros (mod, temp)
+		    		linea = "";
+		    	}
+		    	if(infoFich.get("DISP").equals("MOD") && contadorLinea < 12) {
+		    		//No escribimos el resto de ficheros (new, temp)
+		    		linea = "";
+		    	}
+		    	if(infoFich.get("DISP").equals("TEMP") && (contadorLinea < 7 || contadorLinea > 11)) {
+		    		//No escribimos el resto de ficheros (new, mod)
+		    		linea = "";
+		    	}   
 	    		    	
-	    	if (!linea.equals("")) {
-		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
-		    	writerCortex.newLine();
-	    	}
+		    	if (!linea.equals("")) {
+			    	System.out.println("Escribimos: " + linea);
+			    	writerCortex.write(linea);
+			    	writerCortex.newLine();
+		    	}
+		    }
+	    }else {
+	    	writerCortex.write("//*--DUMMY-----------------------------------------------------------");
+	    	writerCortex.newLine();
+			writerCortex.write(infoFich.get("DUMMY"));
+	    	writerCortex.newLine();	
 	    }
+	    infoFich.clear();
 	    lectorJFICHSAL.close();	 
 	}
 
