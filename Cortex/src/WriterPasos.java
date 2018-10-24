@@ -396,4 +396,86 @@ public class WriterPasos {
 	    lectorJSORT.close();
 	    writeComments(datos, writerCortex);
 	}
+
+	public void writeJFTPSEND(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JJMAILTXT--------------------------
+	    FileReader ficheroJFTPSEND = new FileReader("C:\\Cortex\\Plantillas\\JFTPSEND.txt");
+	    BufferedReader lectorJFTPSEND = new BufferedReader(ficheroJFTPSEND);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    int contadorLinea = 0, spaces = 0;
+	    
+	    //----------------Método---------------------------------------------
+	    while((linea = lectorJFTPSEND.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 3:
+	    		//Calculamos cuantos espacios hay que añadir detrás para que no se muevan los comentarios de posición
+	    		StringBuffer des = new StringBuffer("DES=" + datos.get("DES") + ",");
+	    		spaces = 40 - des.length();
+	    		for (int j = 0; j < spaces; j++) {
+	    			des.append(" ");
+	    		}
+	    		linea = linea.replace("DES=destino,                            ", des);
+				break;
+	    	case 4:
+	    	    StringBuffer host = new StringBuffer("HOST=" + metodosAux.infoFTP(pasoE, letraPaso, datos.get("FHOST")) + ",");
+	    	    spaces = 40 - host.length();  		
+	    		for (int j = 0; j < spaces; j++) {
+	    			host.append(" ");
+	    		}
+	    		linea = linea.replace("HOST=,                                  ", host);
+	    		break;
+	    	case 5:
+	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FDEST"));
+	    		if(datos.containsKey("MSG") || datos.containsKey("DIR")) {
+	    			fit.append(",");
+	    		}
+	    		spaces = 40 - fit.length();  		
+	    		for (int j = 0; j < spaces; j++) {
+	    			fit.append(" ");
+	    		}
+	    		linea = linea.replace("FIT=nomfichred                          ", fit);
+	    		break;
+	    	case 6:
+	    		if(datos.containsKey("DIR")) {
+	    			linea = linea.replace("//*", "// "); 
+	    			StringBuffer dir = new StringBuffer("DIR=" + datos.get("DIR"));
+		    		if(datos.containsKey("MSG")) {
+		    			dir.append(",");
+		    		}
+		    		spaces = 40 - dir.length();  		
+		    		for (int j = 0; j < spaces; j++) {
+		    			dir.append(" ");
+		    		}
+		    		linea = linea.replace("DIR=XXX                                 ", dir);
+	    		}
+	    		break;
+	    	case 7:
+	    		if(datos.containsKey("MSG")) {
+	    			linea = linea.replace("//*", "// "); 
+	    			StringBuffer msg = new StringBuffer("MSG='" + datos.get("MSG") + "'");
+		    		spaces = 40 - msg.length();  		
+		    		for (int j = 0; j < spaces; j++) {
+		    			msg.append(" ");
+		    		}
+		    		linea = linea.replace("MSG='UE----,UE----'                     ", msg);
+	    		}
+	    		break;
+			default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJFTPSEND.close();		
+	    writeComments(datos, writerCortex);
+	}
 }

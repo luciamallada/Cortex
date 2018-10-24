@@ -65,7 +65,7 @@ public class LectorPasos {
 				}
 // --------------- Buscar reportes	
 				if (pasos.get(i).contains(" REPORT ")) {
-					if(datos.containsKey("SYSOUT") && (datos.get("SYSOUT").equals("S") || datos.get("SYSOUT").equals("*"))) {
+					if(pasos.get(i).trim().endsWith("SYSOUT=S") || pasos.get(i).trim().endsWith("SYSOUT=*")) {
 						continue;
 					}else {
 						reportes++;
@@ -138,7 +138,7 @@ public class LectorPasos {
 			valor = linea.substring(index + 2, fin).replace(',', '-');
 		}else{
 			for(int i = index; i < linea.length(); i++) {
-				if (linea.charAt(i) == ',' || linea.charAt(i) == ' ') {
+				if (linea.charAt(i) == ',' || linea.charAt(i) == ' ' || linea.charAt(i) == ')') {
 					fin = i;
 					i = linea.length() + 1;
 				}

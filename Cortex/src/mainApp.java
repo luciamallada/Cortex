@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AGE01GPCL";
+	public static String programa = "COM07LPCL";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -102,6 +102,10 @@ public class mainApp {
 			case "SORT":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeSORT(datos, letraPaso, pasoE, writerCortex);
+				break;
+			case "NAME=FTPSEND":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJFTPSEND(datos, letraPaso, pasoE, writerCortex);
 				break;
 			default:
 				writerCortex.write("**************************************************");

@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.logging.Level;
 
 public class MetodosAux {
 	static Avisos  avisos = new Avisos();
+	LectorPasos lectorPasos =  new LectorPasos();
 
 	public boolean checkLiteralesPARDB2(String param) {
 		// TODO Auto-generated method stub
@@ -60,7 +62,6 @@ public class MetodosAux {
 	public Map<String, String> infoFichero(int pasoE, String letraPaso, String nombre) throws IOException {
 		// TODO Auto-generated method stub
 		ArrayList<String> infoFichero = new ArrayList<String>();
-		LectorPasos lectorPasos =  new LectorPasos();
 		Map<String, String> infoFich = new HashMap<String, String>();
 		
 		infoFichero = buscaInfoProc(pasoE, letraPaso, nombre);
@@ -154,6 +155,48 @@ public class MetodosAux {
 			
 		infoRep.put(clave, valor);
 		return infoRep;
+	}
+
+	public String infoFTP(int pasoE, String letraPaso, String fhost) throws IOException {
+		// TODO Auto-generated method stub
+		boolean seguir = true, buscar = false;	
+		String linea, clave, valor = "";
+		ArrayList<String> infoFichero = new ArrayList<String>();
+		int index = 0;
+		//----------------Fichero de plantilla JPROC--------------------------
+	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC.txt");
+	    BufferedReader lectorPROC = new BufferedReader(ficheroPROC);
+		//-----------------------------------------------------------------------
+	    
+	    String numeroPaso;    
+	    numeroPaso = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    
+	    while((linea = lectorPROC.readLine()) != null && seguir) {
+	    	if(linea.startsWith("//" + letraPaso + numeroPaso)) {
+	    		buscar = true;
+	    	}
+	    	if(buscar) {
+//	    		if(linea.startsWith("//" + nombre)) {
+//	    			infoFichero.add(linea);
+//	    			linea = lectorPROC.readLine();
+//	    			while (linea.startsWith("//  ")) {
+//						infoFichero.add(linea);
+//						linea = lectorPROC.readLine();
+//					}
+//	    			buscar = false;
+//	    			seguir = false;
+//	    		}
+	    		if(linea.contains(fhost + ".")){
+	    			index = linea.indexOf('=', index);
+	    			clave = lectorPasos.leerClave(linea, index);
+					valor = lectorPasos.leerValor(linea, index);
+					buscar = false;
+					seguir = false;
+	    		}
+	    	}	    	
+	    }
+	    lectorPROC.close();
+		return valor;
 	}
 
 }
