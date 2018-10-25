@@ -21,13 +21,7 @@ public class WriterPasos {
 	    BufferedReader lectorDB2 = new BufferedReader(ficheroDB2);	
 	    //----------------Variables------------------------------------------
 	    String linea;
-//	    if(pasoAPaso == 1) {
-//	    	paso = paso * 2 + 1;
-//	    }else {
-//	    	paso++;
-//	    }
 	    pasoS += 2;
-//	    String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    int contadorLinea = 0;
 	    
@@ -129,6 +123,7 @@ public class WriterPasos {
 		    	switch (contadorLinea) {
 		    	case 3:
 		    		linea = linea.replace("DDNAME--", nombre);
+		    		//REVISAR Z.
 		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
 		    		break;
 		    	case 5:
@@ -212,24 +207,30 @@ public class WriterPasos {
 			nombre += " ";
 		}
 	    infoFich = metodosAux.infoFichero(pasoE, letraPaso, nombre);
-	    
-	    while((linea = lectorJFICHENT.readLine()) != null) {
-	    	contadorLinea ++;
-	    	if(i > 1 && contadorLinea == 1) {
-	    		//No queremos que vuelva a escribir la primera línea de la plantilla
-	    		continue;
-	    	}
-	    	switch (contadorLinea) {
-	    	case 2:
-	    		linea = linea.replace("DDNAME--", nombre);
-	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", "Z." + infoFich.get("DSN"));
-	    		break;
-	    	default:
-				break;
-	    	}
-	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    if (!infoFich.containsKey("DUMMY")) {
+		    while((linea = lectorJFICHENT.readLine()) != null) {
+		    	contadorLinea ++;
+		    	if(i > 1 && contadorLinea == 1) {
+		    		//No queremos que vuelva a escribir la primera línea de la plantilla
+		    		continue;
+		    	}
+		    	switch (contadorLinea) {
+		    	case 2:
+		    		linea = linea.replace("DDNAME--", nombre);
+		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", "Z." + infoFich.get("DSN"));
+		    		break;
+		    	default:
+					break;
+		    	}
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea);
+		    	writerCortex.newLine();
+		    }
+	    }else {
+	    	writerCortex.write("//*--DUMMY-----------------------------------------------------------");
 	    	writerCortex.newLine();
+			writerCortex.write(infoFich.get("DUMMY"));
+	    	writerCortex.newLine();	
 	    }
 	    lectorJFICHENT.close();	 
 	}
@@ -355,23 +356,19 @@ public class WriterPasos {
 	public void writeSORT(Map<String, String> datos, String letraPaso, int paso, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
 		//----------------Fichero de plantilla DB2--------------------------
-	    FileReader ficheroJSORT = new FileReader("C:\\Users\\0014879\\Desktop\\Cortex\\Plantillas\\JSORT.txt");
+	    FileReader ficheroJSORT = new FileReader("C:\\Cortex\\Plantillas\\JSORT.txt");
 	    BufferedReader lectorJSORT = new BufferedReader(ficheroJSORT);	
 	    //----------------Variables------------------------------------------
 	    String linea;
-//	    if(pasoAPaso == 1) {
-//	    	paso = paso * 2 + 1;
-//	    }else {
-//	    	paso++;
-//	    }
 	    pasoS += 2;
-//	    String numeroPaso = (paso < 10) ? "0" + String.valueOf(paso) : String.valueOf(paso) ;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    int contadorLinea = 0;
 	    int i = 1;
+	    Map<String, String> infoFich = new HashMap<String, String>();
 	    
 	    //----------------Método---------------------------------------------
 	    
+	    infoFich = metodosAux.infoSort(paso, letraPaso);
 	    //---------------- Escribimos la plantilla JSORT
 	    while((linea = lectorJSORT.readLine()) != null) {
 	    	contadorLinea ++;
@@ -379,9 +376,25 @@ public class WriterPasos {
 	    	case 2:
 	    		linea = linea.replace("//---D1", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
 	    		i++;
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
 				break;
 	    	case 4:
 	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		break;
+	    	case 5:
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("SORTIN"));
+	    		break;
+	    	case 6:
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
+	    		break;
+	    	case 8:
+	    		if(infoFich.containsKey("MGMTCLAS")) {
+	    			linea = linea.replace("//*", "// ");
+	    			linea = linea.replace("EXLIXXXX", infoFich.get("MGMTCLAS"));
+	    		}
+	    		break;
+	    	case 9:
+	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
 	    		break;
 	    	case 11:
 	    		linea = linea.replace("FIELDS=(X,XX,XX,X)", datos.get("SORT"));
@@ -399,7 +412,7 @@ public class WriterPasos {
 
 	public void writeJFTPSEND(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-		//----------------Fichero de plantilla JJMAILTXT--------------------------
+		//----------------Fichero de plantilla JFTPSEND--------------------------
 	    FileReader ficheroJFTPSEND = new FileReader("C:\\Cortex\\Plantillas\\JFTPSEND.txt");
 	    BufferedReader lectorJFTPSEND = new BufferedReader(ficheroJFTPSEND);	
 	    //----------------Variables------------------------------------------
@@ -425,7 +438,7 @@ public class WriterPasos {
 	    		linea = linea.replace("DES=destino,                            ", des);
 				break;
 	    	case 4:
-	    	    StringBuffer host = new StringBuffer("HOST=" + metodosAux.infoFTP(pasoE, letraPaso, datos.get("FHOST")) + ",");
+	    	    StringBuffer host = new StringBuffer("HOST=Z." + metodosAux.infoFTP(pasoE, letraPaso, datos.get("FHOST")) + ",");
 	    	    spaces = 40 - host.length();  		
 	    		for (int j = 0; j < spaces; j++) {
 	    			host.append(" ");
@@ -433,6 +446,19 @@ public class WriterPasos {
 	    		linea = linea.replace("HOST=,                                  ", host);
 	    		break;
 	    	case 5:
+	    		if(datos.get("FDEST").contains("_")) {
+	    			String aux = "'" + datos.get("FDEST") + "'";
+	    			datos.replace("FDEST", aux);
+	    		}
+	    		if(datos.get("FDEST").contains("_&")) {
+	    			String aux = datos.get("FDEST");
+	    			aux = aux.replaceAll("_&", "-&");
+	    			datos.replace("FDEST", aux);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+	    			System.out.println("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FDEST"));
 	    		if(datos.containsKey("MSG") || datos.containsKey("DIR")) {
 	    			fit.append(",");
@@ -446,7 +472,7 @@ public class WriterPasos {
 	    	case 6:
 	    		if(datos.containsKey("DIR")) {
 	    			linea = linea.replace("//*", "// "); 
-	    			StringBuffer dir = new StringBuffer("DIR=" + datos.get("DIR"));
+	    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
 		    		if(datos.containsKey("MSG")) {
 		    			dir.append(",");
 		    		}
@@ -478,4 +504,103 @@ public class WriterPasos {
 	    lectorJFTPSEND.close();		
 	    writeComments(datos, writerCortex);
 	}
+	
+	public void writeJFTPREB(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+				//----------------Fichero de plantilla JFTPREB--------------------------
+			    FileReader ficheroJFTPREB = new FileReader("C:\\Cortex\\Plantillas\\JFTPREB.txt");
+			    BufferedReader lectorJFTPREB = new BufferedReader(ficheroJFTPREB);	
+			    //----------------Variables------------------------------------------
+			    String linea;
+			    pasoS += 2;
+			    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+			    int contadorLinea = 0, spaces = 0;
+			    Map<String, String> infoFtpReb = new HashMap<String, String>();
+			    //----------------Método---------------------------------------------
+			    
+			    infoFtpReb = metodosAux.infoFtpReb(pasoE, letraPaso);
+			    //----------------Método---------------------------------------------
+			    while((linea = lectorJFTPREB.readLine()) != null) {
+			    	contadorLinea ++;
+			    	switch (contadorLinea) {
+			    	case 2:
+			    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+			    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFtpReb.get("DSN"));
+						break;
+			    	case 3:
+			    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+			    		break;
+			    	case 4:
+			    		//Calculamos cuantos espacios hay que añadir detrás para que no se muevan los comentarios de posición
+			    		StringBuffer orig = new StringBuffer("ORIG=" + datos.get("ORIG") + ",");
+			    		spaces = 39 - orig.length();
+			    		for (int j = 0; j < spaces; j++) {
+			    			orig.append(" ");
+			    		}
+			    		linea = linea.replace("ORIG=SERVIDOR_ORIGEN,                  ", orig);
+						break;
+			    	case 5:
+			    		if(datos.get("FORIG").contains("_")) {
+			    			String aux = "'" + datos.get("FORIG") + "'";
+			    			datos.replace("FORIG", aux);
+			    		}
+			    		if(datos.get("FORIG").contains("_&")) {
+			    			String aux = datos.get("FORIG");
+			    			aux = aux.replaceAll("_&", "-&");
+			    			datos.replace("FORIG", aux);
+							Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+			    			System.out.println("*****REVISAR FICHERO CON _&*****");
+			    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+			    	    	writerCortex.newLine();
+			    		}
+			    		if(datos.get("FORIG").contains("*")) {
+			    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+					    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+					    	writerCortex.newLine();
+							Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
+			    		}
+			    	    StringBuffer forig = new StringBuffer("FIT=" + datos.get("FORIG").replace("*", "****"));
+			    	    if(datos.containsKey("DIR")) {
+			    	    	forig.append(",");
+			    	    }
+			    	    spaces = 39 - forig.length();  		
+			    		for (int j = 0; j < spaces; j++) {
+			    			forig.append(" ");
+			    		}
+			    		linea = linea.replace("FIT=NOMFICHRED.TXT                     ", forig);
+			    		break;
+			    	case 6:
+			    		if(datos.containsKey("DIR")) {
+			    			linea = linea.replace("//*", "// "); 
+			    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
+			    			spaces = 38 - dir.length();  		
+				    		for (int j = 0; j < spaces; j++) {
+				    			dir.append(" ");
+				    		}
+				    		linea = linea.replace("DIR=XXX                               ", dir);
+			    		}
+			    		break;
+			    	case 7:
+			    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFtpReb.get("DSN"));
+			    		break;
+			    	case 9:
+			    		if(infoFtpReb.containsKey("MGMTCLAS")) {
+			    			linea = linea.replace("//*", "// ");
+			    			linea = linea.replace("EXLIXXXX", infoFtpReb.get("MGMTCLAS"));
+			    		}
+			    		break;
+			    	case 10:
+			    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFtpReb.get("Definicion"));
+			    	case 11:
+			    		linea = linea.replace("LONGREG", infoFtpReb.get("LRECL"));
+					default:
+						break;
+					}
+			    	System.out.println("Escribimos: " + linea);
+			    	writerCortex.write(linea);
+			    	writerCortex.newLine();
+			    }
+			    lectorJFTPREB.close();		
+			    writeComments(datos, writerCortex);
+			}
 }

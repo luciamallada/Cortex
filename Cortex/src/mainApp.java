@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "COM07LPCL";
+	public static String programa = "AGE01RPCL";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -107,6 +107,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFTPSEND(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "NAME=FTPREB":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJFTPREB(datos, letraPaso, pasoE, writerCortex);
+				break;
 			default:
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
@@ -198,6 +202,9 @@ public class mainApp {
 			}
 			if (fichero.get(inicio).contains("PGM=SOF07013")) {
 					tipoPaso = "JBORRARF";
+			}
+			if (fichero.get(inicio).contains("PGM=IDCAMS")) {
+				tipoPaso = "IDCAMS";
 			}
 		}
 		

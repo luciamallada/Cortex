@@ -1,5 +1,4 @@
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -95,6 +94,7 @@ public class MetodosAux {
 		    	}
 		    	tamaño = Integer.valueOf(infoFichero.get(j).substring(ini + 1, fin));
 		    	primario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;
+		    	primario = primario < 5 ? 10 : primario;
 		    	
 		    	ini = fin;
 		    	for(int i = ini; i < infoFichero.get(j).length(); i++) {
@@ -105,7 +105,7 @@ public class MetodosAux {
 		    	}
 		    	tamaño = Integer.valueOf(infoFichero.get(j).substring(ini + 1, fin));
 		    	secundario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;; 
-		    	
+		    	secundario = secundario < 3 ? 3 : secundario;
 		    }else {
 		    	if(infoFichero.get(j).contains("SPACE") && infoFich.get("SPACE").equals("CYL")) {
 		    		primario = 15;
@@ -161,7 +161,6 @@ public class MetodosAux {
 		// TODO Auto-generated method stub
 		boolean seguir = true, buscar = false;	
 		String linea, clave, valor = "";
-		ArrayList<String> infoFichero = new ArrayList<String>();
 		int index = 0;
 		//----------------Fichero de plantilla JPROC--------------------------
 	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC.txt");
@@ -176,16 +175,6 @@ public class MetodosAux {
 	    		buscar = true;
 	    	}
 	    	if(buscar) {
-//	    		if(linea.startsWith("//" + nombre)) {
-//	    			infoFichero.add(linea);
-//	    			linea = lectorPROC.readLine();
-//	    			while (linea.startsWith("//  ")) {
-//						infoFichero.add(linea);
-//						linea = lectorPROC.readLine();
-//					}
-//	    			buscar = false;
-//	    			seguir = false;
-//	    		}
 	    		if(linea.contains(fhost + ".")){
 	    			index = linea.indexOf('=', index);
 	    			clave = lectorPasos.leerClave(linea, index);
@@ -197,6 +186,31 @@ public class MetodosAux {
 	    }
 	    lectorPROC.close();
 		return valor;
+	}
+
+	public Map<String, String> infoSort(int paso, String letraPaso) throws IOException {
+		// TODO Auto-generated method stub
+	    Map<String, String> infoFichIn = new HashMap<String, String>();
+	    Map<String, String> infoFich   = new HashMap<String, String>();
+	    String clave, valor;
+	    
+	    
+	    infoFichIn = infoFichero(paso, letraPaso, "SORTIN");
+	    infoFich   = infoFichero(paso, letraPaso, "SORTOUT");    
+	    clave = "SORTIN";
+	    valor = infoFichIn.get("DSN");
+	    infoFich.put(clave, valor);
+	    
+		return infoFich;
+	}
+	
+	public Map<String, String> infoFtpReb(int pasoE, String letraPaso) throws IOException {
+		// TODO Auto-generated method stub
+		Map<String, String> infoFich   = new HashMap<String, String>();
+		
+		infoFich = infoFichero(pasoE, letraPaso, "SORTI1");
+
+		return infoFich;
 	}
 
 }
