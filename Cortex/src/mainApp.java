@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AGE01RPCL";
+	public static String programa = "VID11BPCL";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -111,6 +111,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFTPREB(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "NAME=FTPDEL":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeFTPDEL(datos, letraPaso, pasoE, writerCortex);
+				break;
 			default:
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
@@ -119,6 +123,7 @@ public class mainApp {
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
 				Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Añadir Plantilla: " + tipoPaso);
+				WriterPasos.pasoS += 2;
 				break;
 			}
 		    System.out.println("------- Datos sacados del Paso:  -------");
@@ -151,7 +156,7 @@ public class mainApp {
 //    	}
 	    	if(fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + "-9][" + auxUnidad + "-9] (.*)")
 	    			|| fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + 1 + "-9][0-9] (.*)")) {
-	    		if (inicio == 0) {
+	    		if (inicio == 0 && !tipoPaso.equals("Inicio")) {
 	    			inicio= i;
 	    			pasoE = Integer.parseInt(fichero.get(i).substring(1,3));
 		    		auxDecimal = pasoE / 10;

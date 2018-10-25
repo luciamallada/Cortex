@@ -175,7 +175,7 @@ public class MetodosAux {
 	    		buscar = true;
 	    	}
 	    	if(buscar) {
-	    		if(linea.contains(fhost + ".")){
+	    		if(linea.contains(fhost + ".") && linea.contains("DSN=")){
 	    			index = linea.indexOf('=', index);
 	    			clave = lectorPasos.leerClave(linea, index);
 					valor = lectorPasos.leerValor(linea, index);

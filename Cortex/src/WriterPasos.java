@@ -10,7 +10,7 @@ import java.util.logging.Level;
 public class WriterPasos {
 	static Avisos  avisos = new Avisos();
 	MetodosAux metodosAux = new MetodosAux();
-	int pasoS = -1;
+	public static int pasoS = -1;
 	
 	
 
@@ -603,4 +603,77 @@ public class WriterPasos {
 			    lectorJFTPREB.close();		
 			    writeComments(datos, writerCortex);
 			}
+	
+	public void writeFTPDEL(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+			//----------------Fichero de plantilla JFTDEL--------------------------
+		    FileReader ficheroJFTPDEL = new FileReader("C:\\Cortex\\Plantillas\\JFTPDEL.txt");
+		    BufferedReader lectorJFTPDEL = new BufferedReader(ficheroJFTPDEL);	
+		    //----------------Variables------------------------------------------
+		    String linea;
+		    pasoS += 2;
+		    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+		    int contadorLinea = 0, spaces = 0;
+		    //----------------Método---------------------------------------------
+		    
+		    while((linea = lectorJFTPDEL.readLine()) != null) {
+		    	contadorLinea ++;
+		    	switch (contadorLinea) {
+		    	case 2:
+	    			linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    			break;
+		    	case 3:	
+		    		StringBuffer orig = new StringBuffer("ORIG=" + datos.get("ORIG") + ",");
+		    		spaces = 40 - orig.length();
+		    		for (int j = 0; j < spaces; j++) {
+		    			orig.append(" ");
+		    		}
+		    		linea = linea.replace("ORIG=SERVIDOR_ORIGEN,                   ", orig);
+					break;
+		    	case 4:
+		    		if(datos.get("FITXER").contains("_")) {
+		    			String aux = "'" + datos.get("FITXER") + "'";
+		    			datos.replace("FITXER", aux);
+		    		}
+		    		if(datos.get("FITXER").contains("_&")) {
+		    			String aux = datos.get("FITXER");
+		    			aux = aux.replaceAll("_&", "-&");
+		    			datos.replace("FITXER", aux);
+						Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+		    			System.out.println("*****REVISAR FICHERO CON _&*****");
+		    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+		    	    	writerCortex.newLine();
+		    		}
+		    	    StringBuffer forig = new StringBuffer("FIT=" + datos.get("FITXER"));
+		    	    if(datos.containsKey("DIR")) {
+		    	    	forig.append(",");
+		    	    }
+		    	    spaces = 40 - forig.length();  		
+		    		for (int j = 0; j < spaces; j++) {
+		    			forig.append(" ");
+		    		}
+		    		linea = linea.replace("FIT=nomfichred                          ", forig);
+		    		break;
+		    	case 5:
+		    		if(datos.containsKey("DIR")) {
+		    			linea = linea.replace("//*", "// "); 
+		    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
+		    			spaces = 40 - dir.length();  		
+			    		for (int j = 0; j < spaces; j++) {
+			    			dir.append(" ");
+			    		}
+			    		linea = linea.replace("DIR=XXX                                 ", dir);
+		    		}
+		    		break;
+				default:
+					break;
+				}
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea);
+		    	writerCortex.newLine();
+		    }
+		    lectorJFTPDEL.close();		
+		    writeComments(datos, writerCortex);	
+	}
+
 }
