@@ -397,14 +397,27 @@ public class WriterPasos {
 	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
 	    		break;
 	    	case 11:
-	    		linea = linea.replace("FIELDS=(X,XX,XX,X)", datos.get("SORT"));
+	    		for (int j = 1; datos.containsKey("SORT" + j); j++) {
+	    			if (datos.get("SORT" + j).startsWith("SORT")) {
+	    				linea = linea.replace("SORT FIELDS=(X,XX,XX,X)", datos.get("SORT" + j));
+	    			}else {
+	    				linea = "   " + datos.get("SORT" + j); 
+	    			}
+	    			System.out.println("Escribimos: " + linea);
+	    	    	writerCortex.write(linea);
+	    	    	writerCortex.newLine();
+	    	    	linea = "";
+	    		}
+	    		
 	    		break;
 			default:
 				break;
 			}
-	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
-	    	writerCortex.newLine();
+	    	if (!linea.equals("")) {
+	    		System.out.println("Escribimos: " + linea);
+	    		writerCortex.write(linea);
+	    		writerCortex.newLine();
+	    	}
 	    }
 	    lectorJSORT.close();
 	    writeComments(datos, writerCortex);
@@ -485,13 +498,25 @@ public class WriterPasos {
 	    		break;
 	    	case 7:
 	    		if(datos.containsKey("MSG")) {
-	    			linea = linea.replace("//*", "// "); 
-	    			StringBuffer msg = new StringBuffer("MSG='" + datos.get("MSG") + "'");
-		    		spaces = 40 - msg.length();  		
-		    		for (int j = 0; j < spaces; j++) {
-		    			msg.append(" ");
-		    		}
-		    		linea = linea.replace("MSG='UE----,UE----'                     ", msg);
+	    			linea = linea.replace("//*", "// ");
+	    			if(!datos.containsKey("MSG2")) { 
+		    			StringBuffer msg = new StringBuffer("MSG='" + datos.get("MSG").replace("-", ",") + "'");
+			    		spaces = 40 - msg.length();  		
+			    		for (int j = 0; j < spaces; j++) {
+			    			msg.append(" ");
+			    		}
+			    		linea = linea.replace("MSG='UE----,UE----'                     ", msg);
+	    			}else {
+	    				StringBuffer msg = new StringBuffer("MSG='" + datos.get("MSG").replace("-", ",")
+	    						+ datos.get("MSG2").trim().replace("-", ",") + "'");
+	    				if (msg.length() > 68) {
+	    					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Variable MSG excede de la longitud permitida - " + msg);
+	    	    			System.out.println("*****REVISAR LONGITUD MSG*****");
+	    	    	    	writerCortex.write("*****REVISAR LONGITUD MSG*****");
+	    	    	    	writerCortex.newLine();
+	    				}
+	    				linea = linea.replace("MSG='UE----,UE----'                     <== aviso usuario (opc.)", msg);
+	    			}
 	    		}
 	    		break;
 			default:

@@ -34,7 +34,7 @@ public class LectorPasos {
 // -------------- Buscamos los posibles archivos
 					index = 0;
 					index = pasos.get(i).indexOf("MODE=") + 5;
-					if (pasos.get(i).charAt(index) == 'I') {
+					if (pasos.get(i).charAt(index) == 'I' || pasos.get(i).charAt(index) == 'U') {
 						archivosEntrada++;
 						valor = leerArchivoEntrada(pasos.get(i));
 						clave = "Entrada" + String.valueOf(archivosEntrada);
@@ -167,6 +167,34 @@ public class LectorPasos {
 		clave = linea.substring(inicio + 1, index);
 		
 		return clave;
+	}
+	public Map<String, String> leerPasoSort(ArrayList<String> pasos) {
+		Map<String, String> datos = new HashMap<String, String>();
+		String valor, clave;
+		int i = 0;
+		
+		for(int j = 0; j < pasos.size(); j++) {
+			if(pasos.get(j).startsWith("SYSIN")) {
+				for(int k = j + 1; !pasos.get(k).contains("DATAEND"); k++) {
+					
+				//	vacios y end!!!!
+					if (pasos.get(k).endsWith("X")) {
+						i++;
+						clave = "SORT" + String.valueOf(i);
+						valor = pasos.get(k).substring(0, pasos.get(k).length()-1);
+						datos.put(clave, valor);
+					}else {
+						i++;
+						clave = "SORT" + String.valueOf(i);
+						valor = pasos.get(k);
+						datos.put(clave, valor);
+					}	
+				}
+				j = pasos.size() + 1;
+			}
+		}
+		
+		return datos;
 	}
 
 }
