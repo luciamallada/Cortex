@@ -707,6 +707,7 @@ public class WriterPasos {
 		    lectorJFTPDEL.close();		
 		    writeComments(datos, writerCortex);	
 	}
+
 	public void writeJMAILMSG(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
 				//----------------Fichero de plantilla JMAILMSG--------------------------
@@ -857,4 +858,123 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	}
+
+	public void writeJMAILANX(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JMAILANX--------------------------
+	    FileReader ficheroJMAILANX = new FileReader("C:\\Cortex\\Plantillas\\JMAILANX.txt");
+	    BufferedReader lectorJMAILANX = new BufferedReader(ficheroJMAILANX);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    int contadorLinea = 0, spaces = 0;	    
+	    
+	    //----------------Método---------------------------------------------
+	    while((linea = lectorJMAILANX.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 3:
+	    		StringBuffer dsname = new StringBuffer("DSNAME=Z." + metodosAux.infoDSN(pasoE, letraPaso, "ENTRA1") + ", ");
+	    		linea = linea.replace("DSNAME=,               ", dsname);
+	    		break;
+	    	case 4:
+	    		String aux = linea.replace("------.TXT      ", datos.get("SORTIDA") +" ");
+	    		if (aux.length() > 72) {
+	    			linea = linea.replace("FITTXT=------.TXT      <= debe ser idÃ©ntico al informado en IDEANEX", "FITTXT=" + datos.get("SORTIDA"));
+				}else {
+		    		linea = linea.replace("------.TXT      ", datos.get("SORTIDA")+" ");
+				}
+	    		break;
+	    	case 6:
+	    		linea = (datos.get("ASUNTO") == null) ? linea.trim() : linea.trim() + datos.get("ASUNTO");
+	    		break;
+	    	case 7:
+	    		linea = (datos.get("ADREMI") == null) ? linea.trim() : linea.trim() + datos.get("ADREMI");
+	    		break;
+	    	case 8:
+	    		linea = (datos.get("ADRDES") == null) ? linea.trim() : linea.trim() + datos.get("ADRDES");
+	    		break;
+	    	case 9:
+	    		linea = (datos.get("ADRDE1") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE1");
+	    		break;
+	    	case 10:
+	    		linea = (datos.get("ADRDE2") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE2");
+	    		break;
+	    	case 11:
+	    		linea = (datos.get("ADRDE3") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE3");
+	    		break;
+	    	case 12:
+	    		linea = (datos.get("TIPMAIL") == null) ? linea.trim() : linea.replace("???", datos.get("TIPMAIL"));
+	    		break;
+	    	case 14:
+	    		linea = (datos.get("UIDPETI") == null) ? linea.trim() : linea.trim() + datos.get("UIDPETI");
+	    		break;
+	    	case 15:
+	    		linea = (datos.get("SORTIDA") == null) ? linea.trim() : linea.replace("------.TXT", datos.get("SORTIDA"));
+	    		break;
+	    	case 16:
+	    		linea = (datos.get("DATENVI") == null) ? linea.trim() : linea.trim() + datos.get("DATENVI");
+	    		break;
+	    	case 17:
+	    		linea = (datos.get("HORENVI") == null) ? linea.trim() : linea.trim() + datos.get("HORENVI");
+	    		break;
+	    	case 18:
+	    		linea = (datos.get("DADA721") == null) ? linea.trim() : linea.trim() + datos.get("DADA721");
+	    		break;
+	    	case 19:
+	    		linea = (datos.get("DADA722") == null) ? linea.trim() : linea.trim() + datos.get("DADA722");
+	    		break;
+	    	case 20:
+	    		linea = (datos.get("DADA723") == null) ? linea.trim() : linea.trim() + datos.get("DADA723");
+	    		break;
+	    	case 21:
+	    		linea = (datos.get("DADA724") == null) ? linea.trim() : linea.trim() + datos.get("DADA724");
+	    		break;
+	    	case 22:
+	    		linea = (datos.get("DADA725") == null) ? linea.trim() : linea.trim() + datos.get("DADA725");
+	    		break;
+	    	default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJMAILANX.close();		
+	    writeComments(datos, writerCortex);
+	}
+	
+	public void writeJFIVACIO(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JFTPREB--------------------------
+	    FileReader ficheroJFIVACIO = new FileReader("C:\\Cortex\\Plantillas\\JFIVACIO.txt");
+	    BufferedReader lectorJFIVACIO = new BufferedReader(ficheroJFIVACIO);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    int contadorLinea = 0, spaces = 0;
+	    //----------------Método---------------------------------------------
+	    			    
+	    //----------------Método---------------------------------------------
+	    while((linea = lectorJFIVACIO.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:			    		
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);			    		
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", metodosAux.infoDSN(pasoE, letraPaso, "ENTRADA"));
+				break;			    	
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJFIVACIO.close();		
+	    writeComments(datos, writerCortex);
+	}
+
 }

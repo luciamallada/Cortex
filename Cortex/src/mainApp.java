@@ -11,7 +11,8 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AGE01FPCL";
+	public static String programa = "AUT23F";
+	public static boolean leerPROC = true;
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -114,6 +115,13 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFTPSAPP(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "NAME=MAIL":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJMAILANX(datos, letraPaso, pasoE, writerCortex);
+				break;
+			case "NAME=VERBUIT":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJFIVACIO(datos, letraPaso, pasoE, writerCortex);
 			default:
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
@@ -179,10 +187,17 @@ public class mainApp {
 		index = fichero.get(inicio).indexOf("PATTERN");
 		if (index != -1) {
 			for(int i = index; i < fichero.get(inicio).trim().length(); i++) {
-				if(fichero.get(inicio).charAt(i) == ',' || i + 1 == fichero.get(inicio).trim().length()) {
+				if(fichero.get(inicio).charAt(i) == ',') {
 					tipoPaso = fichero.get(inicio).substring(index + 8, i);
 					i = 80;
-				}				
+				}
+				if(i + 1 == fichero.get(inicio).trim().length()) {
+					tipoPaso = fichero.get(inicio).substring(index + 8, i + 1);
+					i = 80;
+				}
+			}
+			if(fichero.get(inicio).contains("PGM=SOF07200")) {
+				tipoPaso = "PGM=SOF07200";
 			}
 		}else {
 			if (fichero.get(inicio).contains(" SORT ")) {
