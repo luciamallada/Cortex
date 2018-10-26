@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class Avisos {
-	public final static Logger LOGGER = Logger.getLogger("Avisos");
+	public final static Logger LOGGER = Logger.getLogger("Avisos"); 
 
 	public Avisos() {
 		System.setProperty("java.util.logging.SimpleFormatter.format","%4$s: %5$s [%1$tc]%n");

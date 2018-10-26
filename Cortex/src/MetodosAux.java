@@ -30,7 +30,7 @@ public class MetodosAux {
 		String linea;
 		ArrayList<String> infoFichero = new ArrayList<String>();
 		//----------------Fichero de plantilla JPROC--------------------------
-	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC.txt");
+	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
 	    BufferedReader lectorPROC = new BufferedReader(ficheroPROC);
 		//-----------------------------------------------------------------------
 	    
@@ -163,7 +163,7 @@ public class MetodosAux {
 		String linea, clave, valor = "";
 		int index = 0;
 		//----------------Fichero de plantilla JPROC--------------------------
-	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC.txt");
+	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
 	    BufferedReader lectorPROC = new BufferedReader(ficheroPROC);
 		//-----------------------------------------------------------------------
 	    
@@ -219,7 +219,7 @@ public class MetodosAux {
 		String linea, clave, valor = "";
 		int index = 0;
 		//----------------Fichero de plantilla JPROC--------------------------
-	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC.txt");
+	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
 	    BufferedReader lectorPROC = new BufferedReader(ficheroPROC);
 		//-----------------------------------------------------------------------
 	    

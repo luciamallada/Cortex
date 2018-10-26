@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "PEN09FPCL";
+	public static String programa = "AGE01FPCL";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -109,6 +109,10 @@ public class mainApp {
 			case "NAME=MAILESP":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJMAILMSG(datos, letraPaso, pasoE, writerCortex);
+				break;
+			case "NAME=FTPSAPP":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJFTPSAPP(datos, letraPaso, pasoE, writerCortex);
 				break;
 			default:
 				writerCortex.write("**************************************************");
