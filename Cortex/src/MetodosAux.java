@@ -212,5 +212,36 @@ public class MetodosAux {
 
 		return infoFich;
 	}
+	
+	public String infoDSN(int pasoE, String letraPaso, String name) throws IOException {
+		// TODO Auto-generated method stub
+		boolean seguir = true, buscar = false;	
+		String linea, clave, valor = "";
+		int index = 0;
+		//----------------Fichero de plantilla JPROC--------------------------
+	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC.txt");
+	    BufferedReader lectorPROC = new BufferedReader(ficheroPROC);
+		//-----------------------------------------------------------------------
+	    
+	    String numeroPaso;    
+	    numeroPaso = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    
+	    while((linea = lectorPROC.readLine()) != null && seguir) {
+	    	if(linea.startsWith("//" + letraPaso + numeroPaso)) {
+	    		buscar = true;
+	    	}
+	    	if(buscar) {
+	    		if(linea.startsWith("//" + name + "  ")){
+	    			index = linea.indexOf('=', index);
+	    			clave = lectorPasos.leerClave(linea, index);
+					valor = lectorPasos.leerValor(linea, index);
+					buscar = false;
+					seguir = false;
+	    		}
+	    	}	    	
+	    }
+	    lectorPROC.close();
+		return valor;
+	}
 
 }

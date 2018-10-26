@@ -106,6 +106,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeFTPDEL(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "NAME=MAILESP":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJMAILMSG(datos, letraPaso, pasoE, writerCortex);
+				break;
 			default:
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
