@@ -59,10 +59,35 @@ public class LectorPasos {
 				}
 // --------------- Buscamos comentarios
 				if(pasos.get(i).startsWith("*")) {
-					comentarios++;
-					clave = "Comentario" + String.valueOf(comentarios);
-					valor = pasos.get(i);
-					datos.put(clave, valor);
+					int j = i + 1, totalComents = 0;
+					boolean fich = (pasos.size() > j);
+					while (fich && pasos.get(j).startsWith("*")) {
+						j++;
+					}
+					totalComents = j - i;
+					if (fich && pasos.get(j).contains("FILE")) {
+						index = 0;
+						index = pasos.get(j).indexOf("MODE=") + 5;
+						if (pasos.get(j).charAt(index) == 'I' || pasos.get(j).charAt(index) == 'U') {
+							for (int k = 0; k < totalComents; k++) {
+								clave = "ComFichE" + String.valueOf(archivosEntrada + 1) + String.valueOf(k + 1);
+								valor = pasos.get(i + k);
+								datos.put(clave, valor);
+							}
+						}else {
+							for (int k = 1; k <= totalComents; k++) {
+								clave = "ComFichS" + String.valueOf(archivosEntrada + 1) + String.valueOf(k);
+								valor = pasos.get(i + k);
+								datos.put(clave, valor);
+							}
+						}
+					i = j-1;
+					}else {
+						comentarios++;
+						clave = "Comentario" + String.valueOf(comentarios);
+						valor = pasos.get(i);
+						datos.put(clave, valor);
+					}
 				}
 // --------------- Buscar reportes	
 				if (pasos.get(i).contains(" REPORT ")) {
@@ -214,6 +239,52 @@ public class LectorPasos {
 		
 		return datos;
 		
-	}         
+	} 
+	
+	public Map<String, String> leerPasoJFusionGenquad(ArrayList<String> pasos) {
+		Map<String, String> datos = new HashMap<String, String>();
+		String valor, clave, linea;
+		int index = 0;
+		
+		int i = 0;
+		if (pasos.get(1).startsWith(" ")) {
+			linea = pasos.get(0).trim() + pasos.get(1).trim();
+		}else {
+			linea = pasos.get(0);
+		}
+		
+		index = linea.indexOf("APL=");
+		clave = "APL";
+		for (int k = index; k < linea.length(); k++) {
+			if (linea.charAt(k) == ',') {
+				valor = linea.substring(index + 4, k);
+				k = linea.length() + 1;
+				datos.put(clave, valor);
+			}
+		}
+		index = linea.indexOf("QUADRE=");
+		clave = "QUADRE";
+		for (int k = index; k < linea.length(); k++) {
+			if (linea.charAt(k) == ',' || linea.charAt(k) == '\'' ) {
+				valor = linea.substring(index + 7, k);
+				k = linea.length() + 1;
+				datos.put(clave, valor);
+			}
+		}
+		
+		for(int j = 0; j < pasos.size(); j++) {
+			if(pasos.get(j).startsWith("FICHA    DATA")) {
+				for(int k = j + 1; !pasos.get(k).contains("DATAEND"); k++) {
+						i++;
+						clave = "FICHA" + String.valueOf(i);
+						valor = pasos.get(k);
+						datos.put(clave, valor);	
+				}
+				j = pasos.size() + 1;
+			}
+		}
+		
+		return datos;
+	}
 
 }

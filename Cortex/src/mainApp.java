@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AUT23F";
+	public static String programa = "AUT60A";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -126,7 +126,28 @@ public class mainApp {
 				datos = lectorPasos.leerPasoJOPCREC(pasos);
 				writerPasos.writeJOPCREC(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "PGM=SOF07200":
+				tipoPaso = pasoAdicional();
+				if (tipoPaso.equals("JFUSION")) {
+					datos = lectorPasos.leerPasoJFusionGenquad(pasos);
+					writerPasos.writeJFUSION(datos, letraPaso, pasoE, writerCortex);
+				}else {
+					writerCortex.write("**************************************************");
+					writerCortex.newLine();
+					writerCortex.write("*******AÑADIR PLANTILLA: JGENQUAD        *********");
+					writerCortex.newLine();
+					writerCortex.write("**************************************************");
+					writerCortex.newLine();
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Añadir Plantilla: " + tipoPaso);
+					WriterPasos.pasoS += 2;
+				}
+				break;
+			case "ignore":
+				break;
 			default:
+				if(tipoPaso.equals("NAME=SOF30QM")) {
+					tipoPaso = "Plantilla QMF - Avisar Aplicación";
+				}
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
 				writerCortex.write("*******AÑADIR PLANTILLA: " + tipoPaso + "*********");
@@ -155,16 +176,6 @@ public class mainApp {
 		String tipoPaso = "";
 		
 		for(int i = lineNumber; i < fichero.size(); i++) {
-//	    	String numeroPaso = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
-//			String numeroPasoSiguiente = (pasoE + pasoAPaso < 10) ? "0" + String.valueOf(pasoE+pasoAPaso) : String.valueOf(pasoE+pasoAPaso);
-	    	//Buscamos que la linea empiece por I+paso
-//	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPaso))) {
-//	    		inicio = i;
-//	    	}
-//	    	if(fichero.get(i).startsWith(letraPaso + String.valueOf(numeroPasoSiguiente))) {
-//    		fin = i;
-//    		i = fichero.size() + 1;
-//    	}
 	    	if(fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + "-9][" + auxUnidad + "-9] (.*)")
 	    			|| fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + 1 + "-9][0-9] (.*)")) {
 	    		if (inicio == 0 && !tipoPaso.equals("Inicio")) {
@@ -208,7 +219,13 @@ public class mainApp {
 				tipoPaso = "SORT";
 			}
 			if (fichero.get(inicio).contains("PGM=SOF07013")) {
+				String numeroPaso = (WriterPasos.pasoS - 2 < 10) ? "0" + String.valueOf(WriterPasos.pasoS - 2) : String.valueOf(WriterPasos.pasoS - 2) ;
+				if (WriterPasos.histPasos.get(numeroPaso).equals("JFUSION")) {
+					tipoPaso = "ignore";
+				}else {
 					tipoPaso = "JBORRARF";
+				}
+				
 			}
 			if (fichero.get(inicio).contains("PGM=IDCAMS")) {
 				tipoPaso = "IDCAMS";
@@ -223,7 +240,7 @@ public class mainApp {
 			if (linea.length() >= 71) {
 				linea = linea.substring(0, 71);
 			}
-			if(!tipoPaso.equals("SORT")) {
+			if(!(tipoPaso.equals("SORT") || tipoPaso.equals("PGM=SOF07200"))) {
 				for (int j = i + 1; j < fichero.size() && fichero.get(j).startsWith(" "); j++) {
 					if(fichero.get(j).endsWith("X")) {
 						linea = linea + fichero.get(j).substring(0, fichero.get(j).length()-1).trim();
@@ -243,6 +260,39 @@ public class mainApp {
 		return tipoPaso;
 	}
 	
+	private static String pasoAdicional() {
+		// TODO Auto-generated method stub
+	int inicio = 0, fin = 0, index = 0;
+	String tipoPaso = "";
+	
+	for(int i = lineNumber; i < fichero.size(); i++) {
+    	if(fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + "-9][" + auxUnidad + "-9] (.*)")
+    			|| fichero.get(i).matches("[" + letraPaso + "][" + auxDecimal + 1 + "-9][0-9] (.*)")) {
+    		if (inicio == 0 && !tipoPaso.equals("Inicio")) {
+    			inicio= i;
+    			pasoE = Integer.parseInt(fichero.get(i).substring(1,3));
+	    		auxDecimal = pasoE / 10;
+	    		auxUnidad  = pasoE - auxDecimal * 10 + 1;
+    		}else {
+    			fin = i;
+    			i = fichero.size() + 1;
+    		}
+    	}
+    	if(i + 1 == fichero.size()) {
+    		fin = i;
+    		i = fichero.size() + 1;
+    	}
+    }
+	
+	if(fichero.get(inicio).contains("SOFCHEC3")) {
+		lineNumber = fin;
+		tipoPaso = "JFUSION";
+	}else {
+		tipoPaso = "JGENQUAD";
+	}
+	return tipoPaso;
+}
+	
 	private static void escribeJJOB(BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
 		//----------------Fichero de plantilla JJOB--------------------------
@@ -259,7 +309,6 @@ public class mainApp {
 	    	case 1:
 				linea = linea.replace("AAAAAA", programa.substring(0,6));
 				break;
-
 			default:
 				break;
 			}

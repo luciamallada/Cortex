@@ -244,5 +244,37 @@ public class MetodosAux {
 	    lectorPROC.close();
 		return valor;
 	}
+	
+	public void infoJFUSION(Map<String, String> datos, int pasoE, String letraPaso) throws IOException {
+		// TODO Auto-generated method stub
+		Map<String, String> infoFich   = new HashMap<String, String>();
+		String[] ficheros;
+		int contadorFicheros = 0;
+		String clave = "", valor = "";
+		
+		pasoE -= 2;
+		for(int i = 1; datos.containsKey("FICHA" + String.valueOf(i)); i++) {
+			ficheros = datos.get("FICHA" + String.valueOf(i)).split(",");
+			ficheros[0] = ficheros[0].replace("ENTRADA=", "");
+			
+			if(ficheros[0].contains("SORTIDA=")) {
+				infoFich = infoFichero(pasoE, letraPaso, ficheros[0].replace("SORTIDA=", ""));
+				datos.put("MGMTCLAS", infoFich.get("MGMTCLAS"));
+				datos.put("Definicion", infoFich.get("Definicion"));
+				datos.put("DSN", infoFich.get("DSN"));
+				datos.put("SALIDA", ficheros[0].replace("SORTIDA=", ""));
+				
+			}else {
+				for (int j = 0; j < ficheros.length; j++) {
+					contadorFicheros++;
+					clave = "DSN" + contadorFicheros;
+					valor = infoDSN(pasoE, letraPaso, ficheros[j]);
+					datos.put(clave, valor);
+					datos.put("FICH" + contadorFicheros, ficheros[j]);
+				}
+			}	
+		}
+		
+	}
 
 }
