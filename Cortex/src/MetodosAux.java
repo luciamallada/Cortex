@@ -160,6 +160,7 @@ public class MetodosAux {
 	public String infoFTP(int pasoE, String letraPaso, String fhost) throws IOException {
 		// TODO Auto-generated method stub
 		boolean seguir = true, buscar = false;	
+		@SuppressWarnings("unused")
 		String linea, clave, valor = "";
 		int index = 0;
 		//----------------Fichero de plantilla JPROC--------------------------
@@ -194,7 +195,6 @@ public class MetodosAux {
 	    Map<String, String> infoFich   = new HashMap<String, String>();
 	    String clave, valor;
 	    
-	    
 	    infoFichIn = infoFichero(paso, letraPaso, "SORTIN");
 	    infoFich   = infoFichero(paso, letraPaso, "SORTOUT");    
 	    clave = "SORTIN";
@@ -216,6 +216,7 @@ public class MetodosAux {
 	public String infoDSN(int pasoE, String letraPaso, String name) throws IOException {
 		// TODO Auto-generated method stub
 		boolean seguir = true, buscar = false;	
+		@SuppressWarnings("unused")
 		String linea, clave, valor = "";
 		int index = 0;
 		//----------------Fichero de plantilla JPROC--------------------------

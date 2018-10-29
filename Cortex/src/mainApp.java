@@ -12,7 +12,6 @@ import java.util.logging.Level;
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
 	public static String programa = "AUT23F";
-	public static boolean leerPROC = true;
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -122,6 +121,11 @@ public class mainApp {
 			case "NAME=VERBUIT":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFIVACIO(datos, letraPaso, pasoE, writerCortex);
+				break;
+			case "JOPCREC":
+				datos = lectorPasos.leerPasoJOPCREC(pasos);
+				writerPasos.writeJOPCREC(datos, letraPaso, pasoE, writerCortex);
+				break;
 			default:
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
@@ -208,6 +212,9 @@ public class mainApp {
 			}
 			if (fichero.get(inicio).contains("PGM=IDCAMS")) {
 				tipoPaso = "IDCAMS";
+			}
+			if (fichero.get(inicio).contains("PGM=EQQEVPGM")) {
+				tipoPaso = "JOPCREC";
 			}
 		}
 		

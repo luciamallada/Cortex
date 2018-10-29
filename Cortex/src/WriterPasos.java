@@ -362,7 +362,7 @@ public class WriterPasos {
 
 	public void writeSORT(Map<String, String> datos, String letraPaso, int paso, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-		//----------------Fichero de plantilla DB2--------------------------
+		//----------------Fichero de plantilla SORT--------------------------
 	    FileReader ficheroJSORT = new FileReader("C:\\Cortex\\Plantillas\\JSORT.txt");
 	    BufferedReader lectorJSORT = new BufferedReader(ficheroJSORT);	
 	    //----------------Variables------------------------------------------
@@ -857,6 +857,7 @@ public class WriterPasos {
 	    	writerCortex.write(linea);
 	    	writerCortex.newLine();
 	    }
+	    lectorJFTPSAPP.close();
 	}
 
 	public void writeJMAILANX(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -868,7 +869,7 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    int contadorLinea = 0, spaces = 0;	    
+	    int contadorLinea = 0;	    
 	    
 	    //----------------Método---------------------------------------------
 	    while((linea = lectorJMAILANX.readLine()) != null) {
@@ -950,14 +951,14 @@ public class WriterPasos {
 	
 	public void writeJFIVACIO(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-		//----------------Fichero de plantilla JFTPREB--------------------------
+		//----------------Fichero de plantilla JFIVACIO--------------------------
 	    FileReader ficheroJFIVACIO = new FileReader("C:\\Cortex\\Plantillas\\JFIVACIO.txt");
 	    BufferedReader lectorJFIVACIO = new BufferedReader(ficheroJFIVACIO);	
 	    //----------------Variables------------------------------------------
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    int contadorLinea = 0, spaces = 0;
+	    int contadorLinea = 0;
 	    //----------------Método---------------------------------------------
 	    			    
 	    //----------------Método---------------------------------------------
@@ -976,5 +977,38 @@ public class WriterPasos {
 	    lectorJFIVACIO.close();		
 	    writeComments(datos, writerCortex);
 	}
+
+	public void writeJOPCREC(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JMAILANX--------------------------
+	    FileReader ficheroJOPCREC = new FileReader("C:\\Cortex\\Plantillas\\JOPCREC.txt");
+	    BufferedReader lectorJOPCREC = new BufferedReader(ficheroJOPCREC);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    int contadorLinea = 0;	    
+	    
+	    //----------------Método---------------------------------------------
+	    while((linea = lectorJOPCREC.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 4:
+	    		linea = linea.replace("'APL.XXXXXXXX.NOMMEM'", "'Z." + datos.get("SRSTAT") + "'");
+	    		break;
+	    	default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJOPCREC.close();		
+	    writeComments(datos, writerCortex);
+	}
+
 
 }

@@ -168,6 +168,7 @@ public class LectorPasos {
 		
 		return clave;
 	}
+	
 	public Map<String, String> leerPasoSort(ArrayList<String> pasos) {
 		Map<String, String> datos = new HashMap<String, String>();
 		String valor, clave;
@@ -196,5 +197,23 @@ public class LectorPasos {
 		
 		return datos;
 	}
+
+	public Map<String, String> leerPasoJOPCREC(ArrayList<String> pasos) {
+		Map<String, String> datos = new HashMap<String, String>();
+		String valor, clave;
+		int index = 0;
+		for(int j = 0; j < pasos.size(); j++) {
+			if(pasos.get(j).startsWith("SRSTAT")) {
+				clave = "SRSTAT";
+				index = pasos.get(j).indexOf("'", index);
+				valor = pasos.get(j).substring(index+1, pasos.get(j).indexOf("' SUB"));
+				datos.put(clave, valor);
+				j = pasos.size() + 1;
+			}
+		}
+		
+		return datos;
+		
+	}         
 
 }
