@@ -60,12 +60,11 @@ public class LectorPasos {
 // --------------- Buscamos comentarios
 				if(pasos.get(i).startsWith("*")) {
 					int j = i + 1, totalComents = 0;
-					boolean fich = (pasos.size() > j);
-					while (fich && pasos.get(j).startsWith("*")) {
+					while (pasos.size() > j && pasos.get(j).startsWith("*")) {
 						j++;
 					}
 					totalComents = j - i;
-					if (fich && pasos.get(j).contains("FILE")) {
+					if (pasos.size() > j && pasos.get(j).contains("FILE")) {
 						index = 0;
 						index = pasos.get(j).indexOf("MODE=") + 5;
 						if (pasos.get(j).charAt(index) == 'I' || pasos.get(j).charAt(index) == 'U') {

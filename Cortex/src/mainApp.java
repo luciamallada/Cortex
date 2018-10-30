@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AUT60A";
+	public static String programa = "AUT23F";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -132,14 +132,8 @@ public class mainApp {
 					datos = lectorPasos.leerPasoJFusionGenquad(pasos);
 					writerPasos.writeJFUSION(datos, letraPaso, pasoE, writerCortex);
 				}else {
-					writerCortex.write("**************************************************");
-					writerCortex.newLine();
-					writerCortex.write("*******AÑADIR PLANTILLA: JGENQUAD        *********");
-					writerCortex.newLine();
-					writerCortex.write("**************************************************");
-					writerCortex.newLine();
-					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Añadir Plantilla: " + tipoPaso);
-					WriterPasos.pasoS += 2;
+					datos = lectorPasos.leerPasoJFusionGenquad(pasos);
+					writerPasos.writeJGENCUAD(datos, letraPaso, pasoE, writerCortex);
 				}
 				break;
 			case "ignore":
@@ -215,12 +209,12 @@ public class mainApp {
 				tipoPaso = "PGM=SOF07200";
 			}
 		}else {
-			if (fichero.get(inicio).contains(" SORT ")) {
+			if (fichero.get(inicio).contains(" SORT")) {
 				tipoPaso = "SORT";
 			}
 			if (fichero.get(inicio).contains("PGM=SOF07013")) {
 				String numeroPaso = (WriterPasos.pasoS - 2 < 10) ? "0" + String.valueOf(WriterPasos.pasoS - 2) : String.valueOf(WriterPasos.pasoS - 2) ;
-				if (WriterPasos.histPasos.get(numeroPaso).equals("JFUSION")) {
+				if (WriterPasos.histPasos.containsKey(numeroPaso) && WriterPasos.histPasos.get(numeroPaso).equals("JFUSION")) {
 					tipoPaso = "ignore";
 				}else {
 					tipoPaso = "JBORRARF";

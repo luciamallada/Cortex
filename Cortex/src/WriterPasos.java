@@ -999,7 +999,7 @@ public class WriterPasos {
 
 	public void writeJOPCREC(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-		//----------------Fichero de plantilla JMAILANX--------------------------
+		//----------------Fichero de plantilla JOPCREC--------------------------
 	    FileReader ficheroJOPCREC = new FileReader("C:\\Cortex\\Plantillas\\JOPCREC.txt");
 	    BufferedReader lectorJOPCREC = new BufferedReader(ficheroJOPCREC);	
 	    //----------------Variables------------------------------------------
@@ -1032,7 +1032,7 @@ public class WriterPasos {
 	
 	public void writeJFUSION(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-		//----------------Fichero de plantilla JMAILMSG--------------------------
+		//----------------Fichero de plantilla JFUSION--------------------------
 	    FileReader ficheroJFUSION = new FileReader("C:\\Cortex\\Plantillas\\JFUSION.txt");
 	    BufferedReader lectorJFUSION = new BufferedReader(ficheroJFUSION);	
 	    //----------------Variables------------------------------------------
@@ -1141,6 +1141,115 @@ public class WriterPasos {
 	    	}
 	    }
 	    lectorJFUSION.close();		
+	    writeComments(datos, writerCortex);
+	}
+	
+	public void writeJGENCUAD(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JGENCUAD--------------------------
+	    FileReader ficheroJGENCUAD = new FileReader("C:\\Cortex\\Plantillas\\JGENCUAD.txt");
+	    BufferedReader lectorJGENCUAD = new BufferedReader(ficheroJGENCUAD);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    histPasos.put(numeroPaso, "JGENCUAD");
+	    int contadorLinea = 0;
+	    //----------------Método---------------------------------------------    
+	    
+	    metodosAux.infoJFUSION(datos, pasoE, letraPaso);
+	    
+	    
+	    while((linea = lectorJGENCUAD.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 3:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", datos.get("DSN"));
+				break;
+	    	case 5:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		break;
+	    	case 7:
+	    		linea = linea.replace("&APLIC", datos.get("APL"));
+	    		break;
+	    	case 8:
+	    		linea = linea.replace("&NOMQDRE", datos.get("QUADRE"));
+	    		break;
+	    	case 9:
+	    		for(int i = 1; datos.containsKey("DSN" + i); i++) {
+	    			String lineaEditada = linea;
+	    			lineaEditada = lineaEditada.replace("TSGENQ1.DD----1", "TSGENQ1." + datos.get("FICH" + i)); 
+	    			lineaEditada = lineaEditada.replace("APL.XXXXXXXX.NOMMEM.&GENE1", "Z." + datos.get("DSN" + i));
+	    			
+	    			System.out.println("Escribimos: " + lineaEditada);
+	    	    	writerCortex.write(lineaEditada);
+	    	    	writerCortex.newLine();
+	    		}
+	    		linea = "";
+	    		break;
+	    	case 11:
+	    		linea = "";
+	    		for(int i = 1; datos.containsKey("FICHA" + i); i++){
+	    			linea = datos.get("FICHA" + i);
+	    			
+	    			System.out.println("Escribimos: " + linea);
+	    	    	writerCortex.write(linea);
+	    	    	writerCortex.newLine();	
+	    		}
+	    		linea = "";
+	    		break;
+	    	case 12:
+	    		linea = "";
+	    		break;
+	    	case 13:
+	    		StringBuffer nameFich = new StringBuffer(datos.get("SALIDA"));
+	    		for (int i = nameFich.length(); i < 9; i++) {
+	    			nameFich.append(" ");
+	    		}
+	    		linea = linea.replace("//DDSAL--  ", "//" + nameFich);
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", datos.get("DSN"));
+	    		break;
+	    	case 15:
+	    		if (datos.containsKey("MGMTCLAS")) {
+	    			linea = linea.replace("//*", "// ");
+	    			linea = linea.replace("EXLIXXXX", datos.get("MGMTCLAS"));
+	    		}
+	    		break;
+	    	case 16:
+	    		linea = linea.replace("(LONGREG,(KKK,KK))", datos.get("Definicion"));
+	    		break;
+	    	case 18:
+	    		linea = linea.replace("//---IF-", "//" + letraPaso + numeroPaso + "IF1");
+	    		break;
+	    	case 20:
+	    		pasoS += 2;
+	    		numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    		for(int i = 1; datos.containsKey("DSN" + i); i++) {
+	    			String lineaEditada = linea;
+	    			lineaEditada = lineaEditada.replace("//---D-", "//" + letraPaso + numeroPaso + "D" + i);
+	    			lineaEditada = lineaEditada.replace("APL.XXXXXXXX.NOMMEM.&GENE1", "Z." + datos.get("DSN" + i));
+	    			
+	    			System.out.println("Escribimos: " + lineaEditada);
+	    	    	writerCortex.write(lineaEditada);
+	    	    	writerCortex.newLine();
+	    		}
+	    		linea = "";
+	    		break;
+	    	case 21:
+	    		numeroPaso = (pasoS - 2 < 10) ? "0" + String.valueOf(pasoS - 2) : String.valueOf(pasoS - 2) ;
+	    		linea = linea.replace("//E---IF-", "//E" + letraPaso + numeroPaso + "IF1");
+	    		break;
+			default:
+				break;
+			}
+	    	if(!linea.equals("")) {
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea);
+		    	writerCortex.newLine();
+	    	}
+	    }
+	    lectorJGENCUAD.close();		
 	    writeComments(datos, writerCortex);
 	}
 

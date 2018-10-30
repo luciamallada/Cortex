@@ -42,7 +42,7 @@ public class MetodosAux {
 	    		buscar = true;
 	    	}
 	    	if(buscar) {
-	    		if(linea.startsWith("//" + nombre)) {
+	    		if(linea.startsWith("//" + nombre + " ")) {
 	    			infoFichero.add(linea);
 	    			linea = lectorPROC.readLine();
 	    			while (linea.startsWith("//  ")) {
@@ -259,7 +259,9 @@ public class MetodosAux {
 			
 			if(ficheros[0].contains("SORTIDA=")) {
 				infoFich = infoFichero(pasoE, letraPaso, ficheros[0].replace("SORTIDA=", ""));
-				datos.put("MGMTCLAS", infoFich.get("MGMTCLAS"));
+				if (infoFich.containsKey("MGMTCLAS")){
+					datos.put("MGMTCLAS", infoFich.get("MGMTCLAS"));
+				}
 				datos.put("Definicion", infoFich.get("Definicion"));
 				datos.put("DSN", infoFich.get("DSN"));
 				datos.put("SALIDA", ficheros[0].replace("SORTIDA=", ""));
