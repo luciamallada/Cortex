@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AGE01K";
+	public static String programa = "SIN05S";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -215,6 +215,9 @@ public class mainApp {
 			}
 			if(fichero.get(inicio).contains("PGM=SOF07200")) {
 				tipoPaso = "PGM=SOF07200";
+			}
+			if(fichero.get(inicio).contains("PGM=SOFCHEC3")) {
+				tipoPaso = "JSOFCHEC";
 			}
 		}else {
 			if (fichero.get(inicio).contains(" SORT")) {
