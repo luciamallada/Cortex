@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -296,11 +297,11 @@ public class WriterPasos {
 		    FileReader ficheroMAILTXT = new FileReader("C:\\Cortex\\Plantillas\\JMAILTXT.txt");
 		    BufferedReader lectorMAILTXT = new BufferedReader(ficheroMAILTXT);	
 		    //----------------Variables------------------------------------------
-		    String linea;
+		    String linea, fi = "";
 		    pasoS += 2;
 		    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-		    histPasos.put(numeroPaso, "MAILTXT");
 		    int contadorLinea = 0;
+		    ArrayList<String> salida = new ArrayList<String>();
 		    
 		    
 		    //----------------Método---------------------------------------------
@@ -345,21 +346,56 @@ public class WriterPasos {
 		    		linea = (datos.get("HORENVI") == null) ? linea.trim() : linea.trim() + datos.get("HORENVI");
 		    		break;
 		    	case 16:
-		    		linea = (datos.get("DADA721") == null) ? linea.trim() : linea.trim() + datos.get("DADA721");
-		    		break;
+				if (datos.get("DADA721") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA721", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+	    			break;
 		    	case 17:
-		    		linea = (datos.get("DADA722") == null) ? linea.trim() : linea.trim() + datos.get("DADA722");
-		    		break;
+				if (datos.get("DADA722") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA722", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+	    			break;
 		    	case 18:
-		    		linea = (datos.get("DADA723") == null) ? linea.trim() : linea.trim() + datos.get("DADA723");
-		    		break;
+				if (datos.get("DADA723") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA723", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+	    			break;
 		    	case 19:
-		    		linea = (datos.get("DADA724") == null) ? linea.trim() : linea.trim() + datos.get("DADA724");
-		    		break;
+				if (datos.get("DADA724") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA724", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+	    			break;
 		    	case 20:
 		    		//Revisar nombre variable
-		    		linea = (datos.get("DADA725") == null) ? linea.trim() : linea.trim() + datos.get("DADA725");
-		    		break;
+				if (datos.get("DADA725") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA725", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+	    		break;
 				default:
 					break;
 				}
@@ -884,10 +920,12 @@ public class WriterPasos {
 	    BufferedReader lectorJMAILANX = new BufferedReader(ficheroJMAILANX);	
 	    //----------------Variables------------------------------------------
 	    String linea;
+		String fi = "";
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "MAILANX");
-	    int contadorLinea = 0;	    
+	    int contadorLinea = 0;
+	    
+	    ArrayList<String> salida = new ArrayList<String>();
 	    
 	    //----------------Método---------------------------------------------
 	    while((linea = lectorJMAILANX.readLine()) != null) {
@@ -942,20 +980,55 @@ public class WriterPasos {
 	    		linea = (datos.get("HORENVI") == null) ? linea.trim() : linea.trim() + datos.get("HORENVI");
 	    		break;
 	    	case 18:
-	    		linea = (datos.get("DADA721") == null) ? linea.trim() : linea.trim() + datos.get("DADA721");
+				if (datos.get("DADA721") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA721", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
 	    		break;
 	    	case 19:
-	    		linea = (datos.get("DADA722") == null) ? linea.trim() : linea.trim() + datos.get("DADA722");
+				if (datos.get("DADA722") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA722", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
 	    		break;
 	    	case 20:
-	    		linea = (datos.get("DADA723") == null) ? linea.trim() : linea.trim() + datos.get("DADA723");
-	    		break;
+				if (datos.get("DADA723") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA723", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+				break;
 	    	case 21:
-	    		linea = (datos.get("DADA724") == null) ? linea.trim() : linea.trim() + datos.get("DADA724");
-	    		break;
+				if (datos.get("DADA724") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA724", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+				break;
 	    	case 22:
-	    		linea = (datos.get("DADA725") == null) ? linea.trim() : linea.trim() + datos.get("DADA725");
-	    		break;
+				if (datos.get("DADA725") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA725", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+				break;
 	    	default:
 				break;
 			}

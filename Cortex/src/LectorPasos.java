@@ -20,7 +20,7 @@ public class LectorPasos {
 						index = pasos.get(i).indexOf('=', index);
 						if (index != -1 && pasos.get(i).charAt(index + 1) != '(') {
 							clave = leerClave(pasos.get(i), index);
-							valor = leerValor(pasos.get(i), index);
+							valor = leerValor(pasos.get(i), index, clave);
 							if (!clave.equals("") && !valor.equals("")) {
 								datos.put(clave, valor);
 							}
@@ -159,8 +159,40 @@ public class LectorPasos {
 					i = linea.length() + 1;
 				}
 			}
-			//evitar, solo se hará replace al insertar la variable correspondiente
 			valor = linea.substring(index + 2, fin).replace(',', '-');
+		}else{
+			for(int i = index; i < linea.length(); i++) {
+				if (linea.charAt(i) == ',' || linea.charAt(i) == ' ' || linea.charAt(i) == ')') {
+					fin = i;
+					i = linea.length() + 1;
+				}
+				if (fin == 0) {
+					fin = linea.length();
+				}
+			}
+			valor = linea.substring(index + 1, fin);
+		}
+		
+		return valor;
+	}
+	
+	private String leerValor(String linea, int index, String clave) {
+		// TODO Auto-generated method stub
+		String valor = "";
+		int fin = 0;
+		if(linea.charAt(index + 1) == '\''){
+			for(int i = index + 2; i < linea.length(); i++) {
+				if (linea.charAt(i) == '\'') {
+					fin = i;					
+					i = linea.length() + 1;
+				}
+			}
+			if (!clave.contains("DADA")) {
+				linea = linea.substring(index + 2, fin).replace(',', '-');
+			}else {
+				linea = linea.substring(index + 2, fin);
+			}
+			valor = linea;
 		}else{
 			for(int i = index; i < linea.length(); i++) {
 				if (linea.charAt(i) == ',' || linea.charAt(i) == ' ' || linea.charAt(i) == ')') {

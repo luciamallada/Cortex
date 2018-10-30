@@ -256,7 +256,7 @@ public class mainApp {
 	
 	private static String pasoAdicional() {
 		// TODO Auto-generated method stub
-	int inicio = 0, fin = 0, index = 0;
+	int inicio = 0, fin = 0;
 	String tipoPaso = "";
 	
 	for(int i = lineNumber; i < fichero.size(); i++) {

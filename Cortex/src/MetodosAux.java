@@ -278,5 +278,30 @@ public class MetodosAux {
 		}
 		
 	}
+	
+	public static ArrayList<String> ComprobarTamañoLinea(String cabecera, String linea, String fi, Map<String, String> datos) {
+		// TODO Auto-generated method stub
+		ArrayList<String> salida = new ArrayList<String>();
+		if((linea.trim() + fi + datos.get(cabecera)).length() < 72) {
+			if(datos.get(cabecera) == null) {
+				salida.add(0 ,linea.trim() + fi.trim());
+			}else {
+				salida.add(0 ,linea.trim() + fi.trim() + datos.get(cabecera));
+			}
+			salida.add(1, "");			 
+		}
+		else{
+			fi = linea.trim()+ fi.trim() + datos.get(cabecera);
+			for(int i = 72; i > 0; i--) {
+				if(fi.lastIndexOf(" ", i) != -1) {
+					salida.add(0, fi.substring(0, fi.lastIndexOf(" ", i)));
+					salida.add(1, fi.substring(fi.lastIndexOf(" ", i)) + " ");
+					i = -1;
+				}
+			}			
+		}		
+		return salida;
+		
+	}
 
 }
