@@ -318,4 +318,21 @@ public class LectorPasos {
 		return datos;
 	}
 
+	public Map<String, String> leerPasoJPAUSA(ArrayList<String> pasos) {
+		Map<String, String> datos = new HashMap<String, String>();
+		String valor, clave;
+		int index = 0;
+		for(int j = 0; j < pasos.size(); j++) {
+			if(pasos.get(j).contains("PARM=")) {
+				clave = "PARM";
+				index = pasos.get(j).indexOf("('", index);
+				valor = pasos.get(j).substring(index+2, pasos.get(j).lastIndexOf("')"));
+				datos.put(clave, valor);
+				j = pasos.size() + 1;
+			}
+		}
+		
+		return datos;
+		
+	}   
 }

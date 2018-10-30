@@ -1425,4 +1425,35 @@ public class WriterPasos {
 	    lectorJPAPYRUS.close();		
 	    writeComments(datos, writerCortex);
 	}
+
+	public void writeJPAUSA(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JPAUSA--------------------------
+	    FileReader ficheroJPAUSA = new FileReader("C:\\Cortex\\Plantillas\\JPAUSA.txt");
+	    BufferedReader lectorJPAUSA = new BufferedReader(ficheroJPAUSA);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    histPasos.put(numeroPaso, "JPAUSA");
+	    int contadorLinea = 0;
+	    //----------------Método---------------------------------------------    
+	    while((linea = lectorJPAUSA.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---P", "//" + letraPaso + numeroPaso);
+	    		linea = linea.replace("TTT", datos.get("PARM"));
+				break;
+	    	default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJPAUSA.close();		
+	    writeComments(datos, writerCortex);
+	}
+
 }

@@ -140,6 +140,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJPAPYRUS(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "JPAUSA":
+				datos = lectorPasos.leerPasoJPAUSA(pasos);
+				writerPasos.writeJPAUSA(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "ignore":
 				break;
 			default:
