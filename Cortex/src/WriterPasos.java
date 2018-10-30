@@ -1344,4 +1344,85 @@ public class WriterPasos {
 	    writeComments(datos, writerCortex);
 	}
 
+	public void writeJPAPYRUS(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JPAPYRUS--------------------------
+	    FileReader ficheroJPAPYRUS = new FileReader("C:\\Cortex\\Plantillas\\JPAPYRUS.txt");
+	    BufferedReader lectorJPAPYRUS = new BufferedReader(ficheroJPAPYRUS);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    histPasos.put(numeroPaso, "JPAPYRUS");
+	    int contadorLinea = 0;	    
+	    
+	    //----------------Método---------------------------------------------
+	    while((linea = lectorJPAPYRUS.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 3:
+	    		linea = linea.replace("DFA=XXXXXXXX", "DFA=" + datos.get("DFA"));
+	    		break;
+	    	case 4:
+	    		linea = linea.replace("DESTI=XXXXXX", "DESTI=" + datos.get("DESTI"));
+	    		break;
+	    	case 5:
+	    		linea = linea.replace("FORMU=XXXX", "FORMU=" + datos.get("FORMU"));
+	    		break;
+	    	case 6:
+	    		StringBuffer entre = new StringBuffer(datos.get("ENTRE"));
+	    		if (datos.containsKey("POSTPRO") || datos.containsKey("DISTRIB") || datos.containsKey("B")) {
+	    			entre.append(",");
+	    		}
+	    		for (int k = entre.length(); k < 12; k++) {
+	    			entre.append(" ");
+	    		}
+	    		linea = linea.replace("ENTREGAR=XXXXXXXXXX  ", "ENTREGAR=" + entre);
+	    	case 7:
+	    		if (datos.containsKey("POSTPRO")) {
+	    			linea = linea.replace("//*", "// ");
+	    			StringBuffer postpro = new StringBuffer(datos.get("POSTPRO"));
+	    			if (datos.containsKey("DISTRIB") || datos.containsKey("B")) {
+		    			postpro.append(",");
+		    		}
+	    			for (int k = postpro.length(); k < 13; k++) {
+		    			postpro.append(" ");
+		    		}
+	    			linea = linea.replace("POSTPRO=X,           ", "POSTPRO=" + postpro);	
+	    		}
+	    		break;
+	    	case 8:
+	    		if (datos.containsKey("DISTRIB")) {
+	    			linea = linea.replace("//*", "// ");
+	    			StringBuffer distrib = new StringBuffer(datos.get("DISTRIB"));
+	    			if (datos.containsKey("B")) {
+		    			distrib.append(",");
+		    		}
+	    			for (int k = distrib.length(); k < 13; k++) {
+		    			distrib.append(" ");
+		    		}
+	    			linea = linea.replace("DISTRIB=X,           ", "DISTRIB=" + distrib);	
+	    		}
+	    		break;
+	    	case 9:
+	    		if (datos.containsKey("B")) {
+	    			linea = linea.replace("B=X", "B=" + datos.get("B"));	
+	    		}
+	    		break;
+	    	case 10:
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", "Z." + metodosAux.infoDSN(pasoE, letraPaso, "ENTRADA"));
+	    		break;
+	    	default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJPAPYRUS.close();		
+	    writeComments(datos, writerCortex);
+	}
 }

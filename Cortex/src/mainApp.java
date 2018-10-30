@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "COC02A";
+	public static String programa = "AGE01K";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -136,6 +136,10 @@ public class mainApp {
 					writerPasos.writeJGENCUAD(datos, letraPaso, pasoE, writerCortex);
 				}
 				break;
+			case "NAME=PAPYRUS":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJPAPYRUS(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "ignore":
 				break;
 			default:
@@ -226,6 +230,9 @@ public class mainApp {
 			}
 			if (fichero.get(inicio).contains("PGM=EQQEVPGM")) {
 				tipoPaso = "JOPCREC";
+			}
+			if (fichero.get(inicio).contains("PGM=SOF07070")) {
+				tipoPaso = "JPAUSA";
 			}
 		}
 		
