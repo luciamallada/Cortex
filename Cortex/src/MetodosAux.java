@@ -84,28 +84,33 @@ public class MetodosAux {
 				}
 			}
 		    if(infoFichero.get(j).contains("SPACE") && !infoFich.get("SPACE").equals("CYL") && !infoFich.get("SPACE").equals("TRK")) {
-		    	int ini = 1, fin = 2;
-		    	ini = infoFichero.get(j).lastIndexOf("(");
-		    	for(int i = ini; i < infoFichero.get(j).length(); i++) {
-		    		if(infoFichero.get(j).charAt(i) == ',') {
-		    			fin = i;
-		    			i = 1000;
-		    		}
+		    	if (infoFich.containsKey("LRECL")) {
+		    		int ini = 1, fin = 2;
+			    	ini = infoFichero.get(j).lastIndexOf("(");
+			    	for(int i = ini; i < infoFichero.get(j).length(); i++) {
+			    		if(infoFichero.get(j).charAt(i) == ',') {
+			    			fin = i;
+			    			i = 1000;
+			    		}
+			    	}
+			    	tamaño = Integer.valueOf(infoFichero.get(j).substring(ini + 1, fin));
+			    	primario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;
+			    	primario = primario < 5 ? 10 : primario;
+			    	
+			    	ini = fin;
+			    	for(int i = ini; i < infoFichero.get(j).length(); i++) {
+			    		if(infoFichero.get(j).charAt(i) == ')') {
+			    			fin = i;
+			    			i = 1000;
+			    		}
+			    	}
+			    	tamaño = Integer.valueOf(infoFichero.get(j).substring(ini + 1, fin));
+			    	secundario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;; 
+			    	secundario = secundario < 3 ? 3 : secundario;
+		    	}else {
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " //Fichero no contiene LRCL: " + nombre);
+					infoFich.put("LRECL","LRECL");
 		    	}
-		    	tamaño = Integer.valueOf(infoFichero.get(j).substring(ini + 1, fin));
-		    	primario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;
-		    	primario = primario < 5 ? 10 : primario;
-		    	
-		    	ini = fin;
-		    	for(int i = ini; i < infoFichero.get(j).length(); i++) {
-		    		if(infoFichero.get(j).charAt(i) == ')') {
-		    			fin = i;
-		    			i = 1000;
-		    		}
-		    	}
-		    	tamaño = Integer.valueOf(infoFichero.get(j).substring(ini + 1, fin));
-		    	secundario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;; 
-		    	secundario = secundario < 3 ? 3 : secundario;
 		    }else {
 		    	if(infoFichero.get(j).contains("SPACE") && infoFich.get("SPACE").equals("CYL")) {
 		    		primario = 15;

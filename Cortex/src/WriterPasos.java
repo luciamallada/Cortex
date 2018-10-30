@@ -149,14 +149,26 @@ public class WriterPasos {
 		    		}
 		    		break;
 		    	case 6:
-		    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		if (infoFich.get("DISP").equals("NEW") && infoFich.get("LRECL").equals("LRECL")) {
+		    			System.out.println("******* LRECL NO INFORMADO EN PROC - IR AL PROGRAMA*********");
+		    			writerCortex.write("******* LRECL NO INFORMADO EN PROC - IR AL PROGRAMA*********");
+						writerCortex.newLine();
+		    		}else {
+			    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		}
 		    		break;
 		    	case 9:
 		    		linea = linea.replace("DDNAME--", nombre);
 		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.XP", infoFich.get("DSN"));
 		    		break;
 		    	case 11:
-		    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		if (infoFich.get("DISP").equals("TEMP") && infoFich.get("LRECL").equals("LRECL")) {
+		    			System.out.println("******* LRECL NO INFORMADO EN PROC - IR AL PROGRAMA*********");
+		    			writerCortex.write("******* LRECL NO INFORMADO EN PROC - IR AL PROGRAMA*********");
+						writerCortex.newLine();
+		    		}else {
+			    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		}
 		    		break;
 		    	case 14:
 		    		linea = linea.replace("DDNAME--", nombre);
@@ -170,7 +182,13 @@ public class WriterPasos {
 		    		}
 		    		break;
 		    	case 17:
-		    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		if (infoFich.get("DISP").equals("MOD") && infoFich.get("LRECL").equals("LRECL")) {
+		    			System.out.println("******* LRECL NO INFORMADO EN PROC - IR AL PROGRAMA*********");
+		    			writerCortex.write("******* LRECL NO INFORMADO EN PROC - IR AL PROGRAMA*********");
+						writerCortex.newLine();
+		    		}else {
+			    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+		    		}
 		    		break;
 		    	default:
 					break;
@@ -1325,6 +1343,5 @@ public class WriterPasos {
 	    lectorJGENCUAD.close();		
 	    writeComments(datos, writerCortex);
 	}
-
 
 }
