@@ -12,7 +12,7 @@ public class WriterPasos {
 	static Avisos  avisos = new Avisos();
 	MetodosAux metodosAux = new MetodosAux();
 	public static int pasoS = -1;
-	public static Map<String, String> histPasos = new HashMap<String, String>();
+	public static Map<String, String[]> histPasos = new HashMap<String, String[]>();
 	
 	
 
@@ -25,12 +25,14 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "DB2");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"DB2", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    
 	    
 	    //----------------Método---------------------------------------------
-	    histPasos.put(numeroPaso, "DB2");
+
 	    //--------------- Miramos si hay archivos para borrar antes de ejecutar:
 	    for (int i = 1; datos.containsKey("Borrar" + String.valueOf(i)); i++) {
 	    	if(!datos.get("Borrar" + String.valueOf(i)).equals("No")) {
@@ -81,6 +83,29 @@ public class WriterPasos {
 	    writeReports(datos, writerCortex, pasoE, letraPaso);
 //--------------- Miramos si hay Comentarios:
 	    writeComments(datos, writerCortex);
+//--------------- Miramos si hay IF o ENDIF:
+	    writeIF(datos, writerCortex);
+	}
+
+	private void writeIF(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		if (datos.containsKey("ENDIF")) {
+			System.out.println("Escribimos: " + datos.get("ENDIF"));
+	    	writerCortex.write(datos.get("ENDIF"));
+	    	writerCortex.newLine();
+		}
+		if (datos.containsKey("IF")) {
+			String valorIF = datos.get("IF");
+			int index = valorIF.indexOf("IF " + mainApp.letraPaso);
+			String pasoCortex = valorIF.substring(index + 4, index + 6);
+			String[] infoPaso = WriterPasos.histPasos.get(pasoCortex);
+			valorIF = valorIF.replace(" " + mainApp.letraPaso + pasoCortex + ".", " " + mainApp.letraPaso + infoPaso[1] + "." + infoPaso[0] + ".");
+
+			System.out.println("Escribimos: " + valorIF);
+	    	writerCortex.write(valorIF);
+	    	writerCortex.newLine();
+		}
+		
 	}
 
 	private void writeReports(Map<String, String> datos, BufferedWriter writerCortex, int pasoE, String letraPaso) throws IOException {
@@ -309,7 +334,7 @@ public class WriterPasos {
 	    lectorJBORRAF.close();	 
 	}
 
-	public void writeMAILTXT(Map<String, String> datos, String letraPaso, int paso, BufferedWriter writerCortex) throws IOException {
+	public void writeMAILTXT(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
 			//----------------Fichero de plantilla JJMAILTXT--------------------------
 		    FileReader ficheroMAILTXT = new FileReader("C:\\Cortex\\Plantillas\\JMAILTXT.txt");
@@ -318,6 +343,9 @@ public class WriterPasos {
 		    String linea, fi = "";
 		    pasoS += 2;
 		    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+		    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+		    String[] valor = {"MAIL00", numeroPaso};
+		    histPasos.put(numeroPasoE, valor);
 		    int contadorLinea = 0;
 		    ArrayList<String> salida = new ArrayList<String>();
 		    
@@ -422,10 +450,11 @@ public class WriterPasos {
 		    	writerCortex.newLine();
 		    }
 		    lectorMAILTXT.close();		
+		    writeIF(datos, writerCortex);
 		    writeComments(datos, writerCortex);
 	}
 
-	public void writeSORT(Map<String, String> datos, String letraPaso, int paso, BufferedWriter writerCortex) throws IOException {
+	public void writeSORT(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
 		//----------------Fichero de plantilla SORT--------------------------
 	    FileReader ficheroJSORT = new FileReader("C:\\Cortex\\Plantillas\\JSORT.txt");
@@ -434,14 +463,16 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "SORT");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"TSSORT", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    int i = 1;
 	    Map<String, String> infoFich = new HashMap<String, String>();
 	    
 	    //----------------Método---------------------------------------------
 	    
-	    infoFich = metodosAux.infoSort(paso, letraPaso);
+	    infoFich = metodosAux.infoSort(pasoE, letraPaso);
 	    //---------------- Escribimos la plantilla JSORT
 	    while((linea = lectorJSORT.readLine()) != null) {
 	    	contadorLinea ++;
@@ -493,6 +524,7 @@ public class WriterPasos {
 	    	}
 	    }
 	    lectorJSORT.close();
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 
@@ -505,7 +537,9 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "FTPSEND");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"TSF01", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0, spaces = 0;
 	    
 	    //----------------Método---------------------------------------------
@@ -601,6 +635,7 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPSEND.close();		
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 	
@@ -613,7 +648,9 @@ public class WriterPasos {
 			    String linea;
 			    pasoS += 2;
 			    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-			    histPasos.put(numeroPaso, "FTPREB");
+			    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+			    String[] valor = {"F01", numeroPaso};
+			    histPasos.put(numeroPasoE, valor);
 			    int contadorLinea = 0, spaces = 0;
 			    Map<String, String> infoFtpReb = new HashMap<String, String>();
 			    //----------------Método---------------------------------------------
@@ -700,7 +737,8 @@ public class WriterPasos {
 			    	writerCortex.write(linea);
 			    	writerCortex.newLine();
 			    }
-			    lectorJFTPREB.close();		
+			    lectorJFTPREB.close();
+			    writeIF(datos, writerCortex);
 			    writeComments(datos, writerCortex);
 			}
 	
@@ -713,7 +751,9 @@ public class WriterPasos {
 		    String linea;
 		    pasoS += 2;
 		    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-		    histPasos.put(numeroPaso, "FTEPDEL");
+		    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+		    String[] valor = {"F01", numeroPaso};
+		    histPasos.put(numeroPasoE, valor);
 		    int contadorLinea = 0, spaces = 0;
 		    //----------------Método---------------------------------------------
 		    
@@ -773,7 +813,8 @@ public class WriterPasos {
 		    	writerCortex.write(linea);
 		    	writerCortex.newLine();
 		    }
-		    lectorJFTPDEL.close();		
+		    lectorJFTPDEL.close();
+		    writeIF(datos, writerCortex);
 		    writeComments(datos, writerCortex);	
 	}
 
@@ -786,7 +827,9 @@ public class WriterPasos {
 			    String linea;
 			    pasoS += 2;
 			    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-			    histPasos.put(numeroPaso, "JMAILMSG");
+			    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+			    String[] valor = {"TSMAIL04", numeroPaso};
+			    histPasos.put(numeroPasoE, valor);
 			    int contadorLinea = 0, spaces = 0;
 			    //----------------Método---------------------------------------------    
 			    
@@ -821,7 +864,8 @@ public class WriterPasos {
 			    	writerCortex.write(linea);
 			    	writerCortex.newLine();
 			    }
-			    lectorJMAILMSG.close();		
+			    lectorJMAILMSG.close();	
+			    writeIF(datos, writerCortex);
 			    writeComments(datos, writerCortex);
 			}
 
@@ -834,7 +878,9 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "FTPSAPP");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"TSF02", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0, spaces = 0;
 	    
 	    while((linea = lectorJFTPSAPP.readLine()) != null) {
@@ -929,6 +975,8 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPSAPP.close();
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);
 	}
 
 	public void writeJMAILANX(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -941,6 +989,9 @@ public class WriterPasos {
 		String fi = "";
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"MAIL06", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    
 	    ArrayList<String> salida = new ArrayList<String>();
@@ -959,7 +1010,8 @@ public class WriterPasos {
 	    	case 4:
 	    		String aux = linea.replace("------.TXT      ", datos.get("SORTIDA") +" ");
 	    		if (aux.length() > 72) {
-	    			linea = linea.replace("FITTXT=------.TXT      <= debe ser idÃ©ntico al informado en IDEANEX", "FITTXT=" + datos.get("SORTIDA"));
+	    			linea = linea.substring(0, 26);
+	    			linea = linea.replace("FITTXT=------.TXT", "FITTXT=" + datos.get("SORTIDA"));
 				}else {
 		    		linea = linea.replace("------.TXT      ", datos.get("SORTIDA")+" ");
 				}
@@ -1055,6 +1107,7 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJMAILANX.close();		
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 	
@@ -1067,7 +1120,9 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "FIVACIO");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"A00TS", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    //----------------Método---------------------------------------------
 	    			    
@@ -1085,6 +1140,7 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFIVACIO.close();		
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 
@@ -1097,7 +1153,9 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "OPCREC");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"OPCREC", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;	    
 	    
 	    //----------------Método---------------------------------------------
@@ -1117,7 +1175,8 @@ public class WriterPasos {
 	    	writerCortex.write(linea);
 	    	writerCortex.newLine();
 	    }
-	    lectorJOPCREC.close();		
+	    lectorJOPCREC.close();	
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 	
@@ -1130,7 +1189,9 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "JFUSION");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"JFUSION", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    //----------------Método---------------------------------------------    
 	    
@@ -1231,7 +1292,8 @@ public class WriterPasos {
 		    	writerCortex.newLine();
 	    	}
 	    }
-	    lectorJFUSION.close();		
+	    lectorJFUSION.close();
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 	
@@ -1244,7 +1306,9 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "JGENCUAD");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"JGENCUAD", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    //----------------Método---------------------------------------------    
 	    
@@ -1341,6 +1405,7 @@ public class WriterPasos {
 	    	}
 	    }
 	    lectorJGENCUAD.close();		
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 
@@ -1353,7 +1418,9 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "JPAPYRUS");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"PAP06", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;	    
 	    
 	    //----------------Método---------------------------------------------
@@ -1422,7 +1489,8 @@ public class WriterPasos {
 	    	writerCortex.write(linea);
 	    	writerCortex.newLine();
 	    }
-	    lectorJPAPYRUS.close();		
+	    lectorJPAPYRUS.close();
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 
@@ -1435,7 +1503,9 @@ public class WriterPasos {
 	    String linea;
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-	    histPasos.put(numeroPaso, "JPAUSA");
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"JPAUSA", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    //----------------Método---------------------------------------------    
 	    while((linea = lectorJPAUSA.readLine()) != null) {
@@ -1453,6 +1523,7 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJPAUSA.close();		
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
 	}
 

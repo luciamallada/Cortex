@@ -162,7 +162,7 @@ public class LectorPasos {
 					}else {
 						reportes++;
 						clave = "Reporte" + String.valueOf(reportes);
-						valor = pasos.get(i).substring(0,9);
+						valor = pasos.get(i).substring(0,8);
 						datos.put(clave, valor);
 					}	
 				}
@@ -170,8 +170,12 @@ public class LectorPasos {
 				if(pasos.get(i).matches("(.*)IF [" + mainApp.letraPaso + "][0-9]{2}(.*)")) {
 					clave = "IF";
 					index = pasos.get(i).indexOf("IF " + mainApp.letraPaso);
-					valor = pasos.get(i).substring(index);
-		//			System.out.println(clave + " - " + valor);
+					valor = "//         " + pasos.get(i).substring(index);
+					datos.put(clave, valor);
+				}
+				if(pasos.get(i).contains("ENDIF")){
+					clave = "ENDIF";
+					valor = "//         ENDIF";
 					datos.put(clave, valor);
 				}
 			}
@@ -254,10 +258,10 @@ public class LectorPasos {
 					i = linea.length() + 1;
 				}
 			}
-			if (!clave.contains("DADA")) {
-				linea = linea.substring(index + 2, fin).replace(',', '-');
+			if (clave.contains("DADA") || clave.contains("ADR")) {
+				linea = linea.substring(index + 2, fin);	
 			}else {
-				linea = linea.substring(index + 2, fin);
+				linea = linea.substring(index + 2, fin).replace(',', '-');
 			}
 			valor = linea;
 		}else{

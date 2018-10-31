@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "SIN05S";
+	public static String programa = "AUT01C";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------

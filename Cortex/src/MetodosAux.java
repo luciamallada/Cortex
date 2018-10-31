@@ -58,6 +58,7 @@ public class MetodosAux {
 	    
 	    return infoFichero;
 	}
+	
 	public Map<String, String> infoFichero(int pasoE, String letraPaso, String nombre) throws IOException {
 		// TODO Auto-generated method stub
 		ArrayList<String> infoFichero = new ArrayList<String>();
@@ -291,12 +292,12 @@ public class MetodosAux {
 			if(datos.get(cabecera) == null) {
 				salida.add(0 ,linea.trim() + fi.trim());
 			}else {
-				salida.add(0 ,linea.trim() + fi.trim() + datos.get(cabecera));
+				salida.add(0 ,linea.trim() + fi.trim() + " " + datos.get(cabecera));
 			}
 			salida.add(1, "");			 
 		}
 		else{
-			fi = linea.trim()+ fi.trim() + datos.get(cabecera);
+			fi = linea.trim()+ fi.trim() + " " + datos.get(cabecera);
 			for(int i = 72; i > 0; i--) {
 				if(fi.lastIndexOf(" ", i) != -1) {
 					salida.add(0, fi.substring(0, fi.lastIndexOf(" ", i)));
