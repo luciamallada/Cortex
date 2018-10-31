@@ -353,7 +353,6 @@ public class WriterPasos {
 		    //----------------Método---------------------------------------------
 		    while((linea = lectorMAILTXT.readLine()) != null) {
 		    	contadorLinea ++;
-	//	    	ASDASD
 		    	switch (contadorLinea) {
 		    	case 2:
 		    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
@@ -365,17 +364,45 @@ public class WriterPasos {
 		    		linea = (datos.get("ADREMI") == null) ? linea.trim() : linea.trim() + datos.get("ADREMI");
 		    		break;
 		    	case 6:
-		    		linea = (datos.get("ADRDES") == null) ? linea.trim() : linea.trim() + datos.get("ADRDES");
-		    		break;
+		    		if (datos.get("ADRDES") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("ADRDES", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
+	    			break;
 		    	case 7:
-		    		linea = (datos.get("ADRDE1") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE1");
-		    		break;
+		    		if (datos.get("ADRDE1") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("ADRDE1", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
+	    			break;
 		    	case 8:
-		    		linea = (datos.get("ADRDE2") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE2");
-		    		break;
+		    		if (datos.get("ADRDE2") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("ADRDE2", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
+	    			break;
 		    	case 9:
-		    		linea = (datos.get("ADRDE3") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE3");
-		    		break;
+		    		if (datos.get("ADRDE3") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
+	    			break;
 		    	case 10:
 		    		linea = (datos.get("TIPMAIL") == null) ? linea.trim() : linea.trim() + datos.get("TIPMAIL");
 		    		break;
@@ -392,55 +419,55 @@ public class WriterPasos {
 		    		linea = (datos.get("HORENVI") == null) ? linea.trim() : linea.trim() + datos.get("HORENVI");
 		    		break;
 		    	case 16:
-				if (datos.get("DADA721") == null && fi == "") {
-					linea = linea.trim();
-				}
-				else {
-					salida = MetodosAux.ComprobarTamañoLinea("DADA721", linea, fi, datos); 
-					linea = salida.get(0);
-					fi = salida.get(1);
-				}
+					if (datos.get("DADA721") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("DADA721", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
 	    			break;
 		    	case 17:
-				if (datos.get("DADA722") == null && fi == "") {
-					linea = linea.trim();
-				}
-				else {
-					salida = MetodosAux.ComprobarTamañoLinea("DADA722", linea, fi, datos); 
-					linea = salida.get(0);
-					fi = salida.get(1);
-				}
+					if (datos.get("DADA722") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("DADA722", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
 	    			break;
 		    	case 18:
-				if (datos.get("DADA723") == null && fi == "") {
-					linea = linea.trim();
-				}
-				else {
-					salida = MetodosAux.ComprobarTamañoLinea("DADA723", linea, fi, datos); 
-					linea = salida.get(0);
-					fi = salida.get(1);
-				}
+					if (datos.get("DADA723") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("DADA723", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
 	    			break;
 		    	case 19:
-				if (datos.get("DADA724") == null && fi == "") {
-					linea = linea.trim();
-				}
-				else {
-					salida = MetodosAux.ComprobarTamañoLinea("DADA724", linea, fi, datos); 
-					linea = salida.get(0);
-					fi = salida.get(1);
-				}
+					if (datos.get("DADA724") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("DADA724", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
 	    			break;
 		    	case 20:
 		    		//Revisar nombre variable
-				if (datos.get("DADA725") == null && fi == "") {
-					linea = linea.trim();
-				}
-				else {
-					salida = MetodosAux.ComprobarTamañoLinea("DADA725", linea, fi, datos); 
-					linea = salida.get(0);
-					fi = salida.get(1);
-				}
+					if (datos.get("DADA725") == null && fi == "") {
+						linea = linea.trim();
+					}
+					else {
+						salida = MetodosAux.ComprobarTamañoLinea("DADA725", linea, fi, datos); 
+						linea = salida.get(0);
+						fi = salida.get(1);
+					}
 	    		break;
 				default:
 					break;
@@ -449,8 +476,8 @@ public class WriterPasos {
 		    	writerCortex.write(linea);
 		    	writerCortex.newLine();
 		    }
-		    lectorMAILTXT.close();		
-		    writeIF(datos, writerCortex);
+		    lectorMAILTXT.close();
+		    writeIF(datos, writerCortex);		
 		    writeComments(datos, writerCortex);
 	}
 
@@ -1010,8 +1037,7 @@ public class WriterPasos {
 	    	case 4:
 	    		String aux = linea.replace("------.TXT      ", datos.get("SORTIDA") +" ");
 	    		if (aux.length() > 72) {
-	    			linea = linea.substring(0, 26);
-	    			linea = linea.replace("FITTXT=------.TXT", "FITTXT=" + datos.get("SORTIDA"));
+	    			linea = linea.replace("FITTXT=------.TXT      <= debe ser idÃ©ntico al informado en IDEANEX", "FITTXT=" + datos.get("SORTIDA"));
 				}else {
 		    		linea = linea.replace("------.TXT      ", datos.get("SORTIDA")+" ");
 				}
@@ -1023,17 +1049,45 @@ public class WriterPasos {
 	    		linea = (datos.get("ADREMI") == null) ? linea.trim() : linea.trim() + datos.get("ADREMI");
 	    		break;
 	    	case 8:
-	    		linea = (datos.get("ADRDES") == null) ? linea.trim() : linea.trim() + datos.get("ADRDES");
-	    		break;
+	    		if (datos.get("ADRDES") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDES", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
 	    	case 9:
-	    		linea = (datos.get("ADRDE1") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE1");
-	    		break;
+	    		if (datos.get("ADRDE1") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE1", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
 	    	case 10:
-	    		linea = (datos.get("ADRDE2") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE2");
-	    		break;
+	    		if (datos.get("ADRDE2") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE2", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
 	    	case 11:
-	    		linea = (datos.get("ADRDE3") == null) ? linea.trim() : linea.trim() + datos.get("ADRDE3");
-	    		break;
+	    		if (datos.get("ADRDE3") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
 	    	case 12:
 	    		linea = (datos.get("TIPMAIL") == null) ? linea.trim() : linea.replace("???", datos.get("TIPMAIL"));
 	    		break;
@@ -1106,8 +1160,8 @@ public class WriterPasos {
 	    	writerCortex.write(linea);
 	    	writerCortex.newLine();
 	    }
-	    lectorJMAILANX.close();		
-	    writeIF(datos, writerCortex);
+	    lectorJMAILANX.close();	
+	    writeIF(datos, writerCortex);	
 	    writeComments(datos, writerCortex);
 	}
 	
