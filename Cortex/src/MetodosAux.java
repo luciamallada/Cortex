@@ -292,7 +292,11 @@ public class MetodosAux {
 			if(datos.get(cabecera) == null) {
 				salida.add(0 ,linea.trim() + fi.trim());
 			}else {
-				salida.add(0 ,linea.trim() + fi.trim() + " " + datos.get(cabecera));
+				if (fi.isEmpty()) {
+					salida.add(0 ,linea.trim() + fi.trim() + datos.get(cabecera));
+				}else {
+					salida.add(0 ,linea.trim() + fi.trim() + " " + datos.get(cabecera));
+				}
 			}
 			salida.add(1, "");			 
 		}

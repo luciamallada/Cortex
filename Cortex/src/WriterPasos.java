@@ -1856,5 +1856,179 @@ public class WriterPasos {
 	    writeComments(datos, writerCortex);	
 	}
 
+	public void writeJMAIL123(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JMAIL123--------------------------
+	    FileReader ficheroJMAIL123 = new FileReader("C:\\Cortex\\Plantillas\\JMAIL123.txt");
+	    BufferedReader lectorJMAIL123 = new BufferedReader(ficheroJMAIL123);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+		String fi = "";
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"MAIL06", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    int contadorLinea = 0;
+	    
+	    ArrayList<String> salida = new ArrayList<String>();
+	    
+	    //----------------Método---------------------------------------------
+	    while((linea = lectorJMAIL123.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 3:
+	    		StringBuffer SQLIN = new StringBuffer("SQLIN='" + datos.get("SQLIN") + "',");
+	    		for (int k = SQLIN.length(); k < 42; k++) {
+	    			SQLIN.append(" ");
+	    		}
+	    		linea = linea.replace("SQLIN='XXXXXXXX_XX',                      ", SQLIN);
+	    		break;
+	    	case 4:
+	    		if(datos.get("SORTIDA").contains("_")) {
+	    			String aux = "'" + datos.get("SORTIDA") + "'";
+	    			datos.replace("SORTIDA", aux);
+	    		}
+	    		if(datos.get("SORTIDA").contains("_&")) {
+	    			String aux = datos.get("SORTIDA");
+	    			aux = aux.replaceAll("_&", "-&");
+	    			datos.replace("SORTIDA", aux);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+	    			System.out.println("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.newLine();
+	    		}
+	    		StringBuffer fitTxt = new StringBuffer("FITTXT=" + datos.get("SORTIDA"));
+	    		for (int k =  fitTxt.length(); k < 42; k++) {
+	    			fitTxt.append(" ");
+	    		}
+	    		linea = linea.replace("FITTXT=                                   ", fitTxt);
+	    		break;
+	    	case 6:
+	    		linea = (datos.get("ASUNTO") == null) ? linea.trim() : linea.trim() + datos.get("ASUNTO");
+	    		break;
+	    	case 7:
+	    		linea = (datos.get("ADREMI") == null) ? linea.trim() : linea.trim() + datos.get("ADREMI");
+	    		break;
+	    	case 8:
+	    		if (datos.get("ADRDES") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDES", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 9:
+	    		if (datos.get("ADRDE1") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE1", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 10:
+	    		if (datos.get("ADRDE2") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE2", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 11:
+	    		if (datos.get("ADRDE3") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 12:
+	    		linea = (datos.get("TIPMAIL") == null) ? linea.trim() : linea.replace("???", datos.get("TIPMAIL"));
+	    		break;
+	    	case 14:
+	    		linea = (datos.get("UIDPETI") == null) ? linea.trim() : linea.trim() + datos.get("UIDPETI");
+	    		break;
+	    	case 15:
+	    		linea = (datos.get("SORTIDA") == null) ? linea.trim() : linea.replace("------.TXT", datos.get("SORTIDA"));
+	    		break;
+	    	case 16:
+	    		linea = (datos.get("DATENVI") == null) ? linea.trim() : linea.trim() + datos.get("DATENVI");
+	    		break;
+	    	case 17:
+	    		linea = (datos.get("HORENVI") == null) ? linea.trim() : linea.trim() + datos.get("HORENVI");
+	    		break;
+	    	case 18:
+				if (datos.get("DADA721") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA721", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+	    		break;
+	    	case 19:
+				if (datos.get("DADA722") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA722", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+	    		break;
+	    	case 20:
+				if (datos.get("DADA723") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA723", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+				break;
+	    	case 21:
+				if (datos.get("DADA724") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA724", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+				break;
+	    	case 22:
+				if (datos.get("DADA725") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA725", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+				break;
+	    	default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJMAIL123.close();	
+	    writeIF(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	}
 
+	
 }

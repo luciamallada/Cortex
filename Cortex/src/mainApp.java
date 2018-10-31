@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "SIN04H";
+	public static String programa = "DIV28Q";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -160,6 +160,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFTPVER(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "NAME=MAIL123":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJMAIL123(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "ignore":
 				break;
 			default:
@@ -256,6 +260,9 @@ public class mainApp {
 			}
 			if (fichero.get(inicio).contains("PGM=SOF07070")) {
 				tipoPaso = "JPAUSA";
+			}
+			if (fichero.get(inicio).contains("PGM=IEBGENER")) {
+				tipoPaso = "JIEBGEN2";
 			}
 		}
 		
