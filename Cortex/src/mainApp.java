@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AUT01C";
+	public static String programa = "SIN41M";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -148,14 +148,18 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJSOFCHEC(datos, letraPaso, pasoE, writerCortex);
 				break;
-			case "SOFINF":
+			case "NAME=SOFINF":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJSOFINF(datos, letraPaso, pasoE, writerCortex);
+				break;
+			case "NAME=FTPS123":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJFTPS123(datos, letraPaso, pasoE, writerCortex);
 				break;
 			case "ignore":
 				break;
 			default:
-				if(tipoPaso.equals("NAME=SOF30QM")) {
+				if(tipoPaso.equals("NAME=SOF30QM") || tipoPaso.equals("NAME=SOF30Q")) {
 					tipoPaso = "Plantilla QMF - Avisar Aplicación";
 				}
 				writerCortex.write("**************************************************");
