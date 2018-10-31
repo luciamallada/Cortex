@@ -1626,4 +1626,54 @@ public class WriterPasos {
 	    lectorJSOFCHEC.close();		
 	    writeComments(datos, writerCortex);
 	}
+
+	public void writeJSOFINF(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JSOFINF--------------------------
+	    FileReader ficheroJSOFINF = new FileReader("C:\\Cortex\\Plantillas\\JSOFINF.txt");
+	    BufferedReader lectorJSOFINF = new BufferedReader(ficheroJSOFINF);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"INF00", numeroPaso};
+	    histPasos.put(numeroPasoE, valor); 
+	    int contadorLinea = 0;
+	    while((linea = lectorJSOFINF.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 3:
+	    		linea = linea.replace("XXXXXXXX,", "'" + datos.get("TAULA") + "',");
+	    		break;
+	    	case 4:
+	    		linea = linea.replace("XXXXXXXX,", "'" + datos.get("COL") + "',");
+	    		break;
+	    	case 5:
+	    		int aux = Integer.parseInt(datos.get("LONG"));
+	    		linea = linea.replace("XXXX,", Integer.toString(aux) + ",");
+	    		break;
+	    	case 6:
+	    		linea = linea.replace("&YYYYYY,", datos.get("DATBAIXA") + ",");
+	    		break;
+	    	case 7:
+	    		linea = linea.replace("XXXXXXX", "'" + datos.get("TIPREM") + "'");
+	    		break;
+	    	default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJSOFINF.close();		
+	    writeComments(datos, writerCortex);	
+	}
+
+
+
+
 }

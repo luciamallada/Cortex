@@ -146,7 +146,11 @@ public class mainApp {
 				break;
 			case "JSOFCHEC":
 				datos = lectorPasos.leerPaso(pasos);
-				writerPasos.writeJPAUSA(datos, letraPaso, pasoE, writerCortex);
+				writerPasos.writeJSOFCHEC(datos, letraPaso, pasoE, writerCortex);
+				break;
+			case "SOFINF":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJSOFINF(datos, letraPaso, pasoE, writerCortex);
 				break;
 			case "ignore":
 				break;
