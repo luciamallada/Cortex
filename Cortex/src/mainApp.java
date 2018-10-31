@@ -144,6 +144,10 @@ public class mainApp {
 				datos = lectorPasos.leerPasoJPAUSA(pasos);
 				writerPasos.writeJPAUSA(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "JSOFCHEC":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJPAUSA(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "ignore":
 				break;
 			default:

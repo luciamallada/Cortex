@@ -1527,4 +1527,49 @@ public class WriterPasos {
 	    writeComments(datos, writerCortex);
 	}
 
+	public void writeJSOFCHEC(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JSOFCHEC--------------------------
+	    FileReader ficheroJSOFCHEC = new FileReader("C:\\Cortex\\Plantillas\\JSOFCHEC.txt");
+	    BufferedReader lectorJSOFCHEC = new BufferedReader(ficheroJSOFCHEC);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"JSOFCHEC", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    int contadorLinea = 0;
+	    while((linea = lectorJSOFCHEC.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 3:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 4:
+	    		String[] valores = datos.get("PARDB2").split(" ");
+	    		String[] plantillas = {"&NOMQDRE", "&FECHAQ", "&OPCIONQ"};
+	    		String lineaEditada = "";
+	    		for(int i=0; i < valores.length; i++) {
+		    		if(valores[i].startsWith("&")) {
+		    			linea = linea.replaceAll(plantillas[i], valores[i]);
+		    		}else{
+		    			lineaEditada = "**   SET " + plantillas[i].substring(1) +"='" + valores[i] + "'";
+		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // añadir literial cabecera PROG=SOFCHEC3");
+		    			System.out.println("Escribimos: " + lineaEditada);
+		    	    	writerCortex.write(lineaEditada);
+		    	    	writerCortex.newLine();
+		    		}
+	    		}
+	    		break;
+	    	default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJSOFCHEC.close();		
+	    writeComments(datos, writerCortex);
+	}
 }
