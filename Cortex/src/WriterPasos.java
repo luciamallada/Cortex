@@ -96,16 +96,16 @@ public class WriterPasos {
 		}
 		if (datos.containsKey("IF")) {
 			String valorIF = datos.get("IF");
-			int index = valorIF.indexOf("IF " + mainApp.letraPaso);
-			String pasoCortex = valorIF.substring(index + 4, index + 6);
-			String[] infoPaso = WriterPasos.histPasos.get(pasoCortex);
+			int index1 = valorIF.indexOf("IF " + mainApp.letraPaso);
+			int index2 = valorIF.indexOf(".", index1);
+			String pasoCortex = valorIF.substring(index1 + 4, index2);
+			String[] infoPaso = WriterPasos.histPasos.get(pasoCortex.substring(0,2));
 			valorIF = valorIF.replace(" " + mainApp.letraPaso + pasoCortex + ".", " " + mainApp.letraPaso + infoPaso[1] + "." + infoPaso[0] + ".");
 
 			System.out.println("Escribimos: " + valorIF);
 	    	writerCortex.write(valorIF);
 	    	writerCortex.newLine();
 		}
-		
 	}
 
 	private void writeReports(Map<String, String> datos, BufferedWriter writerCortex, int pasoE, String letraPaso) throws IOException {
@@ -1782,6 +1782,79 @@ public class WriterPasos {
 	    writeComments(datos, writerCortex);	
 	}
 
+	public void writeJFTPVER(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JFTPVER--------------------------
+	    FileReader ficheroJFTPVER = new FileReader("C:\\Cortex\\Plantillas\\JFTPVER.txt");
+	    BufferedReader lectorJFTPVER = new BufferedReader(ficheroJFTPVER);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"F01", numeroPaso};
+	    histPasos.put(numeroPasoE, valor); 
+	    int contadorLinea = 0, spaces = 0;
+	    while((linea = lectorJFTPVER.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 3:
+	    		StringBuffer orig = new StringBuffer("ORIG=" + datos.get("ORIG") + ",");
+	    	    spaces = 40 - orig.length();  		
+	    		for (int j = 0; j < spaces; j++) {
+	    			orig.append(" ");
+	    		}
+	    		linea = linea.replace("ORIG=SERVIDOR_ORIGEN,                   ", orig);
+	    		break;
+	    	case 4:
+	    		if(datos.get("FITXER").contains("_")) {
+	    			String aux = "'" + datos.get("FITXER") + "'";
+	    			datos.replace("FITXER", aux);
+	    		}
+	    		if(datos.get("FITXER").contains("_&")) {
+	    			String aux = datos.get("FITXER");
+	    			aux = aux.replaceAll("_&", "-&");
+	    			datos.replace("FITXER", aux);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+	    			System.out.println("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.newLine();
+	    		}
+	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FITXER"));
+	    		if(datos.containsKey("DIR")) {
+	    			fit.append(",");
+	    		}
+	    		spaces = 40 - fit.length();  		
+	    		for (int j = 0; j < spaces; j++) {
+	    			fit.append(" ");
+	    		}
+	    		linea = linea.replace("FIT=nomfichred                          ", fit);
+	    		break;
+	    	case 5:
+	    		if(datos.containsKey("DIR")) {
+	    			linea = linea.replace("//*", "// "); 
+	    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
+		    		spaces = 40 - dir.length();  		
+		    		for (int j = 0; j < spaces; j++) {
+		    			dir.append(" ");
+		    		}
+		    		linea = linea.replace("DIR=XXX                                 ", dir);
+	    		}
+	    		break;
+	    	default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJFTPVER.close();	
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);	
+	}
 
 
 }

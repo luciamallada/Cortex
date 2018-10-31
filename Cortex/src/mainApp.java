@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "SIN41M";
+	public static String programa = "SIN04H";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -155,6 +155,10 @@ public class mainApp {
 			case "NAME=FTPS123":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFTPS123(datos, letraPaso, pasoE, writerCortex);
+				break;
+			case "NAME=FTPVER":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJFTPVER(datos, letraPaso, pasoE, writerCortex);
 				break;
 			case "ignore":
 				break;
