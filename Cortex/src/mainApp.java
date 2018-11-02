@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AUT01J";
+	public static String programa = "AUT03E";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -167,6 +167,10 @@ public class mainApp {
 			case "JBORRARF":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJBORRARFPasos(datos, letraPaso, pasoE, writerCortex);
+				break;
+			case "PAVERDSN":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJFIVERDS(datos, letraPaso, pasoE, writerCortex);
 				break;
 			case "ignore":
 				break;

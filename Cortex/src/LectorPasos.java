@@ -126,6 +126,11 @@ public class LectorPasos {
 					valor = "//         ENDIF";
 					datos.put(clave, valor);
 				}
+				if(pasos.get(i).contains("ELSE")) {
+					clave = "ELSE";
+					valor = "//         ELSE";
+					datos.put(clave, valor);
+				}
 			}
 		}
 		

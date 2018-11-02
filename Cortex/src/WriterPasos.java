@@ -1,6 +1,5 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -83,10 +82,10 @@ public class WriterPasos {
 	    }
 //--------------- Miramos si hay reportes para informar:
 	    writeReports(datos, writerCortex, pasoE, letraPaso);
-//--------------- Miramos si hay Comentarios:
-	    writeComments(datos, writerCortex);
 //--------------- Miramos si hay IF o ENDIF:
 	    writeIF(datos, writerCortex);
+//--------------- Miramos si hay Comentarios:
+	    writeComments(datos, writerCortex);
 	}
 
 	private void writeIF(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
@@ -108,6 +107,11 @@ public class WriterPasos {
 	    	writerCortex.write(valorIF);
 	    	writerCortex.newLine();
 		}
+		if (datos.containsKey("ELSE")) {
+			System.out.println("Escribimos: " + datos.get("ELSE"));
+	    	writerCortex.write(datos.get("ELSE"));
+	    	writerCortex.newLine();
+		}
 	}
 
 	private void writeReports(Map<String, String> datos, BufferedWriter writerCortex, int pasoE, String letraPaso) throws IOException {
@@ -125,6 +129,7 @@ public class WriterPasos {
 
 	public void writeComments(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
 		for (int i = 1; datos.containsKey("Comentario" + String.valueOf(i)); i++) {
+			System.out.println("Escribimos: " + "//" + datos.get("Comentario" + String.valueOf(i)));
 	    	writerCortex.write("//" + datos.get("Comentario" + String.valueOf(i)));
 	    	writerCortex.newLine();
 	    }
@@ -2162,7 +2167,6 @@ public class WriterPasos {
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    //----------------Método---------------------------------------------
-	    Map<String, String> infoFich = new HashMap<String, String>();
 	    lineaProc = metodosAux.buscaInfoProc(pasoE, letraPaso, "SYSIN");
 	    
 	    while((linea = lectorJBORRAF.readLine()) != null) {
@@ -2192,7 +2196,52 @@ public class WriterPasos {
 	    
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);	
-	}		
+	}
 
+	public void writeJFIVERDS(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JFIVERDS--------------------------
+	    FileReader ficheroJFIVERDS = new FileReader("C:\\Cortex\\Plantillas\\JFIVERDS.txt");
+	    BufferedReader lectorJFIVERDS = new BufferedReader(ficheroJFIVERDS);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    ArrayList<String> lineaProc;
+	    int contadorLinea = 0;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"A00TS", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    //----------------Método---------------------------------------------
+	    lineaProc = metodosAux.buscaInfoProc(pasoE, letraPaso, "SYSIN");
+	    
+	    while((linea = lectorJFIVERDS.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---D-", "//" + letraPaso + numeroPaso);
+	    		break;
+	    	default:
+				break;
+	    	}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJFIVERDS.close();	 
+	    Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + "// DSN no encontrada PROC - Acudir a: " );
+	    System.out.println("Escribimos: Revisar SYSIN Cortex");
+    	writerCortex.write("***** REVISAR SYSIN Cortex");
+    	writerCortex.newLine();
+	    for(int i = 0; i < lineaProc.size(); i++) {
+	    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + lineaProc.get(i));
+	    	System.out.println("Escribimos: " + lineaProc.get(i).replace("//", "**"));
+	    	writerCortex.write(lineaProc.get(i).replace("//", "**"));
+	    	writerCortex.newLine();
+	    }
+	    
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);	
+	}
 	
 }
