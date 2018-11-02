@@ -11,7 +11,7 @@ import java.util.logging.Level;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "DIV28Q";
+	public static String programa = "AUT01J";
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -164,20 +164,26 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJMAIL123(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "JBORRARF":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJBORRARFPasos(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "ignore":
 				break;
 			default:
 				if(tipoPaso.equals("NAME=SOF30QM") || tipoPaso.equals("NAME=SOF30Q")) {
 					tipoPaso = "Plantilla QMF - Avisar Aplicación";
 				}
+				WriterPasos.pasoS += 2;
+				String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
-				writerCortex.write("*******AÑADIR PLANTILLA: " + tipoPaso + "*********");
+				writerCortex.write("*******AÑADIR PLANTILLA: //"+ letraPaso + numeroPaso + tipoPaso + "*********");
 				writerCortex.newLine();
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
 				Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Añadir Plantilla: " + tipoPaso);
-				WriterPasos.pasoS += 2;
+				
 				break;
 			}
 		    System.out.println("------- Datos sacados del Paso:  -------");
@@ -239,13 +245,18 @@ public class mainApp {
 			if(fichero.get(inicio).contains("PGM=SOFCHEC3")) {
 				tipoPaso = "JSOFCHEC";
 			}
+			if (fichero.get(inicio).contains("NAME=IEBGCOPY")) {
+				tipoPaso = "JIEBGENE - Caso particular";
+			}
 		}else {
 			if (fichero.get(inicio).contains(" SORT")) {
 				tipoPaso = "SORT";
 			}
 			if (fichero.get(inicio).contains("PGM=SOF07013")) {
 				String numeroPaso = (WriterPasos.pasoS - 2 < 10) ? "0" + String.valueOf(WriterPasos.pasoS - 2) : String.valueOf(WriterPasos.pasoS - 2) ;
-				if (WriterPasos.histPasos.containsKey(numeroPaso) && WriterPasos.histPasos.get(numeroPaso).equals("JFUSION")) {
+				if (WriterPasos.histPasos.containsKey(numeroPaso) 
+						&& (WriterPasos.histPasos.get(numeroPaso)[0].equals("JFUSION") 
+								|| WriterPasos.histPasos.get(numeroPaso)[0].equals("JGENCUAD"))) {
 					tipoPaso = "ignore";
 				}else {
 					tipoPaso = "JBORRARF";
@@ -262,7 +273,7 @@ public class mainApp {
 				tipoPaso = "JPAUSA";
 			}
 			if (fichero.get(inicio).contains("PGM=IEBGENER")) {
-				tipoPaso = "JIEBGEN2";
+				tipoPaso = "JIEBGEN2 - Caso particular";
 			}
 		}
 		

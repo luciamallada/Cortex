@@ -57,59 +57,6 @@ public class LectorPasos {
 						}
 					}
 				}
-				
-				
-//// --------------- Buscamos comentarios
-//				if(pasos.get(i).startsWith("*")) {
-//					int j = i + 1, totalComents = 0;
-//					while (pasos.size() > j && pasos.get(j).startsWith("*")) {
-//						j++;
-//					}
-//					totalComents = j - i;
-//					if (pasos.size() > j && pasos.get(j).contains("FILE")) {
-//						index = 0;
-//						index = pasos.get(j).indexOf("MODE=") + 5;
-//						if (pasos.get(j).charAt(index) == 'I' || pasos.get(j).charAt(index) == 'U') {
-//							for (int k = 0; k < totalComents; k++) {
-//								clave = "ComFichE" + String.valueOf(archivosEntrada + 1) + String.valueOf(k + 1);
-//								valor = pasos.get(i + k);
-//								datos.put(clave, valor);
-//							}
-//						}else {
-//							for (int k = 1; k <= totalComents; k++) {
-//								clave = "ComFichS" + String.valueOf(archivosEntrada + 1) + String.valueOf(k);
-//								valor = pasos.get(i + k);
-//								datos.put(clave, valor);
-//							}
-//						}
-//					i = j-1;
-//					}else {
-//						comentarios++;
-//						clave = "Comentario" + String.valueOf(comentarios);
-//						valor = pasos.get(i);
-//						datos.put(clave, valor);
-//					}
-//				}
-//// --------------- Buscar reportes	
-//				if (pasos.get(i).contains(" REPORT ")) {
-//					if(pasos.get(i).trim().endsWith("SYSOUT=S") || pasos.get(i).trim().endsWith("SYSOUT=*") || pasos.get(i).trim().endsWith("SYSOUT=*END") ) {
-//						continue;
-//					}else {
-//						reportes++;
-//						clave = "Reporte" + String.valueOf(reportes);
-//						valor = pasos.get(i).substring(0,9);
-//						datos.put(clave, valor);
-//					}	
-//				}
-//// --------------- Buscar IF - ENDIF
-//				if(pasos.get(i).matches("(.*)IF [" + mainApp.letraPaso + "][0-9]{2}(.*)")) {
-//					clave = "IF";
-//					index = pasos.get(i).indexOf("IF " + mainApp.letraPaso);
-//					valor = pasos.get(i).substring(index);
-////					System.out.println(clave + " - " + valor);
-//					datos.put(clave, valor);
-//				}
-//			}	
 			}
 		}
 		datos = busquedaAdicional(datos, pasos);
@@ -157,7 +104,8 @@ public class LectorPasos {
 				}
 		//--------------- Buscar reportes	
 				if (pasos.get(i).contains(" REPORT ")) {
-					if(pasos.get(i).trim().endsWith("SYSOUT=S") || pasos.get(i).trim().endsWith("SYSOUT=*") || pasos.get(i).trim().endsWith("SYSOUT=*END") ) {
+					if(pasos.get(i).trim().endsWith("SYSOUT=S") || pasos.get(i).trim().endsWith("SYSOUT=*") || pasos.get(i).trim().endsWith("SYSOUT=*END")
+							|| pasos.get(i).trim().endsWith("SYSOUT=P")) {
 						continue;
 					}else {
 						reportes++;

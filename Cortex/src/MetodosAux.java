@@ -24,6 +24,28 @@ public class MetodosAux {
 		}
 		return false;
 	}
+	
+	public String tratarLiteralesPARDB2(String PARDB2) {
+		// TODO Auto-generated method stub
+		int index = PARDB2.indexOf("=");
+		
+		while (index != -1) {
+			for (int i = index; i >= 0; i--) {
+				if (PARDB2.charAt(i) == '-' || i == 0) {
+					i = i > 0 ? i + 1 : i;
+					String aux = PARDB2.substring(i, index + 1);
+					PARDB2 = PARDB2.replace(aux, "");
+					i = -1;
+				}
+			}
+			index = PARDB2.indexOf("=", index+1);
+		}
+		if (index != -1) {
+			
+		}
+		
+		return PARDB2;
+	}
 
 	public ArrayList<String> buscaInfoProc(int pasoE, String letraPaso, String nombre) throws IOException{
 		boolean seguir = true, buscar = false;	
@@ -301,16 +323,77 @@ public class MetodosAux {
 			salida.add(1, "");			 
 		}
 		else{
-			fi = linea.trim()+ fi.trim() + " " + datos.get(cabecera);
+			if (fi.isEmpty()) {
+				fi = linea.trim()+ fi.trim() + datos.get(cabecera);
+			}else {
+				fi = linea.trim()+ fi.trim() + " " + datos.get(cabecera);
+			}
+			
 			for(int i = 72; i > 0; i--) {
-				if(fi.lastIndexOf(" ", i) != -1) {
-					salida.add(0, fi.substring(0, fi.lastIndexOf(" ", i)));
-					salida.add(1, fi.substring(fi.lastIndexOf(" ", i)) + " ");
+				int index = fi.lastIndexOf(" ", i);
+				index = index == -1 ? fi.lastIndexOf(";", i) : index;
+				
+				if(index != -1) {
+					salida.add(0, fi.substring(0, index));
+					salida.add(1, fi.substring(index + 1) + " ");
 					i = -1;
 				}
 			}			
 		}		
 		return salida;
+	}
+
+	public Map<String, String> infomultiDSN(int pasoE, String letraPaso, String name) throws IOException {
+		// TODO Auto-generated method stub
+		boolean seguir = true, buscar = false;	
+		@SuppressWarnings("unused")
+		String linea, clave, valor = "";
+		int index = 0, contador=0;
+		Map<String, String> datos = new HashMap<String, String>();
+		//----------------Fichero de plantilla JPROC--------------------------
+	    FileReader ficheroPROC = new FileReader("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
+	    BufferedReader lectorPROC = new BufferedReader(ficheroPROC);
+		//-----------------------------------------------------------------------
+	    
+	    String numeroPaso;    
+	    numeroPaso = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    
+	    while((linea = lectorPROC.readLine()) != null && seguir) {
+	    	if(linea.startsWith("//" + letraPaso + numeroPaso)) {
+	    		buscar = true;
+	    	}
+	    	if(buscar) {
+	    		if(linea.startsWith("//" + name + "  ")){
+	    			index = linea.indexOf('=', index);
+	    			clave = lectorPasos.leerClave(linea, index)+ contador;
+					valor = lectorPasos.leerValor(linea, index);
+					datos.put(clave, valor);
+					contador++;
+	    		}else if(linea.startsWith("//  ")) {
+	    			index = linea.indexOf('=', index);
+	    			clave = lectorPasos.leerClave(linea, index)+ contador;
+					valor = lectorPasos.leerValor(linea, index);
+					datos.put(clave, valor);
+					contador++;
+	    		}else if(linea.startsWith("//SYSUT2")){
+					buscar = false;
+					seguir = false;
+	    		}
+	    	}	    	
+	    }
+	    lectorPROC.close();
+		System.out.println("------- Datos sacados del Fichero:  -------");
+	    datos.forEach((k,v) -> System.out.println(k + "-" + v));
+	    System.out.println("----------------------------------------");
+		return datos;
+	}
+
+	public ArrayList<String> infoJBORRAR(int pasoE, String letraPaso) throws IOException {
+		// TODO Auto-generated method stub
+		ArrayList<String> infoJBorrar = buscaInfoProc(pasoE, letraPaso, "SYSIN");
+		
+		
+		return infoJBorrar;
 	}
 
 }

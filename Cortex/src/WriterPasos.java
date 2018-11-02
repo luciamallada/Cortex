@@ -1,5 +1,6 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,13 +56,14 @@ public class WriterPasos {
 	    		if(!datos.containsKey("PARDB2")) {
 	    			continue;
 	    		}
-	    		linea = linea.replace("&VAR1-&VAR2-..." , datos.get("PARDB2"));
 	    		if (metodosAux.checkLiteralesPARDB2(datos.get("PARDB2"))) {
-	    			writerCortex.write("****** LITERALES EN LOS PARAMETROS DEL PROGRAMA *****");
+	    			writerCortex.write("****** LITERALES EN LOS PARAMETROS DEL PROGRAMA: " + datos.get("PARDB2") + "*****");
 	    	    	writerCortex.newLine();
 	    	    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Literales en el programa: "
 	    	    			+ datos.get("PARDB2"));
 	    		}
+	    		
+	    		linea = linea.replace("&VAR1-&VAR2-..." , metodosAux.tratarLiteralesPARDB2(datos.get("PARDB2")));
 			default:
 				break;
 	    	}
@@ -336,149 +338,156 @@ public class WriterPasos {
 
 	public void writeMAILTXT(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-			//----------------Fichero de plantilla JJMAILTXT--------------------------
-		    FileReader ficheroMAILTXT = new FileReader("C:\\Cortex\\Plantillas\\JMAILTXT.txt");
-		    BufferedReader lectorMAILTXT = new BufferedReader(ficheroMAILTXT);	
-		    //----------------Variables------------------------------------------
-		    String linea, fi = "";
-		    pasoS += 2;
-		    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-		    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
-		    String[] valor = {"MAIL00", numeroPaso};
-		    histPasos.put(numeroPasoE, valor);
-		    int contadorLinea = 0;
-		    ArrayList<String> salida = new ArrayList<String>();
-		    
-		    
-		    //----------------Método---------------------------------------------
-		    while((linea = lectorMAILTXT.readLine()) != null) {
-		    	contadorLinea ++;
-		    	switch (contadorLinea) {
-		    	case 2:
-		    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
-					break;
-		    	case 4:
-		    		linea = (datos.get("ASUNTO") == null) ? linea.trim() : linea.trim() + datos.get("ASUNTO");
-		    		break;
-		    	case 5:
-		    		linea = (datos.get("ADREMI") == null) ? linea.trim() : linea.trim() + datos.get("ADREMI");
-		    		break;
-		    	case 6:
-		    		if (datos.get("ADRDES") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("ADRDES", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
-	    			break;
-		    	case 7:
-		    		if (datos.get("ADRDE1") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("ADRDE1", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
-	    			break;
-		    	case 8:
-		    		if (datos.get("ADRDE2") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("ADRDE2", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
-	    			break;
-		    	case 9:
-		    		if (datos.get("ADRDE3") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
-	    			break;
-		    	case 10:
-		    		linea = (datos.get("TIPMAIL") == null) ? linea.trim() : linea.trim() + datos.get("TIPMAIL");
-		    		break;
-		    	case 12:
-		    		linea = (datos.get("UIDPETI") == null) ? linea.trim() : linea.trim() + datos.get("UIDPETI");
-		    		break;
-		    	case 13:
-		    		linea = (datos.get("IDEANEX") == null) ? linea.trim() : linea.trim() + datos.get("IDEANEX");
-		    		break;
-		    	case 14:
-		    		linea = (datos.get("DATAENVI") == null) ? linea.trim() : linea.trim() + datos.get("DATAENVI");
-		    		break;
-		    	case 15:
-		    		linea = (datos.get("HORENVI") == null) ? linea.trim() : linea.trim() + datos.get("HORENVI");
-		    		break;
-		    	case 16:
-					if (datos.get("DADA721") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("DADA721", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
-	    			break;
-		    	case 17:
-					if (datos.get("DADA722") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("DADA722", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
-	    			break;
-		    	case 18:
-					if (datos.get("DADA723") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("DADA723", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
-	    			break;
-		    	case 19:
-					if (datos.get("DADA724") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("DADA724", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
-	    			break;
-		    	case 20:
-		    		//Revisar nombre variable
-					if (datos.get("DADA725") == null && fi == "") {
-						linea = linea.trim();
-					}
-					else {
-						salida = MetodosAux.ComprobarTamañoLinea("DADA725", linea, fi, datos); 
-						linea = salida.get(0);
-						fi = salida.get(1);
-					}
+		//----------------Fichero de plantilla JJMAILTXT--------------------------
+	    FileReader ficheroMAILTXT = new FileReader("C:\\Cortex\\Plantillas\\JMAILTXT.txt");
+	    BufferedReader lectorMAILTXT = new BufferedReader(ficheroMAILTXT);	
+	    //----------------Variables------------------------------------------
+	    String linea, fi = "";
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"MAIL00", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    int contadorLinea = 0;
+	    ArrayList<String> salida = new ArrayList<String>();
+	    
+	    
+	    //----------------Método---------------------------------------------
+	    while((linea = lectorMAILTXT.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 4:
+	    		linea = (datos.get("ASUNTO") == null) ? linea.trim() : linea.trim() + datos.get("ASUNTO");
 	    		break;
-				default:
-					break;
+	    	case 5:
+	    		linea = (datos.get("ADREMI") == null) ? linea.trim() : linea.trim() + datos.get("ADREMI");
+	    		break;
+	    	case 6:
+	    		if (datos.get("ADRDES") == null && fi == "") {
+					linea = linea.trim();
 				}
-		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
-		    	writerCortex.newLine();
-		    }
-		    lectorMAILTXT.close();
-		    writeIF(datos, writerCortex);		
-		    writeComments(datos, writerCortex);
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDES", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 7:
+	    		if (datos.get("ADRDE1") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE1", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 8:
+	    		if (datos.get("ADRDE2") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE2", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 9:
+	    		if (datos.get("ADRDE3") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+					if (!fi.isEmpty()) {
+		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // No caben todos los correos - Falta añadir: " + fi);
+		    			System.out.println("Escribimos: " + "***** No caben todos los correos. Revisar  ****");
+		    	    	writerCortex.write("***** No caben todos los correos. Revisar  ****");
+		    	    	writerCortex.newLine();
+		    	    	fi = "";
+					}
+				}
+    			break;
+	    	case 10:
+	    		linea = (datos.get("TIPMAIL") == null) ? linea.trim() : linea.trim() + datos.get("TIPMAIL");
+	    		break;
+	    	case 12:
+	    		linea = (datos.get("UIDPETI") == null) ? linea.trim() : linea.trim() + datos.get("UIDPETI");
+	    		break;
+	    	case 13:
+	    		linea = (datos.get("IDEANEX") == null) ? linea.trim() : linea.trim() + datos.get("IDEANEX");
+	    		break;
+	    	case 14:
+	    		linea = (datos.get("DATAENVI") == null) ? linea.trim() : linea.trim() + datos.get("DATAENVI");
+	    		break;
+	    	case 15:
+	    		linea = (datos.get("HORENVI") == null) ? linea.trim() : linea.trim() + datos.get("HORENVI");
+	    		break;
+	    	case 16:
+				if (datos.get("DADA721") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA721", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 17:
+				if (datos.get("DADA722") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA722", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 18:
+				if (datos.get("DADA723") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA723", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 19:
+				if (datos.get("DADA724") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA724", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    			break;
+	    	case 20:
+	    		//Revisar nombre variable
+				if (datos.get("DADA725") == null && fi == "") {
+					linea = linea.trim();
+				}
+				else {
+					salida = MetodosAux.ComprobarTamañoLinea("DADA725", linea, fi, datos); 
+					linea = salida.get(0);
+					fi = salida.get(1);
+				}
+    		break;
+			default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorMAILTXT.close();
+	    writeIF(datos, writerCortex);		
+	    writeComments(datos, writerCortex);
 	}
 
 	public void writeSORT(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -668,233 +677,246 @@ public class WriterPasos {
 	
 	public void writeJFTPREB(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-				//----------------Fichero de plantilla JFTPREB--------------------------
-			    FileReader ficheroJFTPREB = new FileReader("C:\\Cortex\\Plantillas\\JFTPREB.txt");
-			    BufferedReader lectorJFTPREB = new BufferedReader(ficheroJFTPREB);	
-			    //----------------Variables------------------------------------------
-			    String linea;
-			    pasoS += 2;
-			    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-			    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
-			    String[] valor = {"F01", numeroPaso};
-			    histPasos.put(numeroPasoE, valor);
-			    int contadorLinea = 0, spaces = 0;
-			    Map<String, String> infoFtpReb = new HashMap<String, String>();
-			    //----------------Método---------------------------------------------
-			    
-			    infoFtpReb = metodosAux.infoFtpReb(pasoE, letraPaso);
-			    //----------------Método---------------------------------------------
-			    while((linea = lectorJFTPREB.readLine()) != null) {
-			    	contadorLinea ++;
-			    	switch (contadorLinea) {
-			    	case 2:
-			    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
-			    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFtpReb.get("DSN"));
-						break;
-			    	case 3:
-			    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
-			    		break;
-			    	case 4:
-			    		//Calculamos cuantos espacios hay que añadir detrás para que no se muevan los comentarios de posición
-			    		StringBuffer orig = new StringBuffer("ORIG=" + datos.get("ORIG") + ",");
-			    		spaces = 39 - orig.length();
-			    		for (int j = 0; j < spaces; j++) {
-			    			orig.append(" ");
-			    		}
-			    		linea = linea.replace("ORIG=SERVIDOR_ORIGEN,                  ", orig);
-						break;
-			    	case 5:
-			    		if(datos.get("FORIG").contains("_")) {
-			    			String aux = "'" + datos.get("FORIG") + "'";
-			    			datos.replace("FORIG", aux);
-			    		}
-			    		if(datos.get("FORIG").contains("_&")) {
-			    			String aux = datos.get("FORIG");
-			    			aux = aux.replaceAll("_&", "-&");
-			    			datos.replace("FORIG", aux);
-							Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
-			    			System.out.println("*****REVISAR FICHERO CON _&*****");
-			    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
-			    	    	writerCortex.newLine();
-			    		}
-			    		if(datos.get("FORIG").contains("*")) {
-			    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
-					    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
-					    	writerCortex.newLine();
-							Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
-			    		}
-			    	    StringBuffer forig = new StringBuffer("FIT=" + datos.get("FORIG").replace("*", "****"));
-			    	    if(datos.containsKey("DIR")) {
-			    	    	forig.append(",");
-			    	    }
-			    	    spaces = 39 - forig.length();  		
-			    		for (int j = 0; j < spaces; j++) {
-			    			forig.append(" ");
-			    		}
-			    		linea = linea.replace("FIT=NOMFICHRED.TXT                     ", forig);
-			    		break;
-			    	case 6:
-			    		if(datos.containsKey("DIR")) {
-			    			linea = linea.replace("//*", "// "); 
-			    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
-			    			spaces = 38 - dir.length();  		
-				    		for (int j = 0; j < spaces; j++) {
-				    			dir.append(" ");
-				    		}
-				    		linea = linea.replace("DIR=XXX                               ", dir);
-			    		}
-			    		break;
-			    	case 7:
-			    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFtpReb.get("DSN"));
-			    		break;
-			    	case 9:
-			    		if(infoFtpReb.containsKey("MGMTCLAS")) {
-			    			linea = linea.replace("//*", "// ");
-			    			linea = linea.replace("EXLIXXXX", infoFtpReb.get("MGMTCLAS"));
-			    		}
-			    		break;
-			    	case 10:
-			    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFtpReb.get("Definicion"));
-			    	case 11:
-			    		linea = linea.replace("LONGREG", infoFtpReb.get("LRECL"));
-					default:
-						break;
-					}
-			    	System.out.println("Escribimos: " + linea);
-			    	writerCortex.write(linea);
+		//----------------Fichero de plantilla JFTPREB--------------------------
+	    FileReader ficheroJFTPREB = new FileReader("C:\\Cortex\\Plantillas\\JFTPREB.txt");
+	    BufferedReader lectorJFTPREB = new BufferedReader(ficheroJFTPREB);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"F01", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    int contadorLinea = 0, spaces = 0;
+	    Map<String, String> infoFtpReb = new HashMap<String, String>();
+	    //----------------Método---------------------------------------------
+	    
+	    infoFtpReb = metodosAux.infoFtpReb(pasoE, letraPaso);
+	    //----------------Método---------------------------------------------
+	    while((linea = lectorJFTPREB.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFtpReb.get("DSN"));
+				break;
+	    	case 3:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		break;
+	    	case 4:
+	    		//Calculamos cuantos espacios hay que añadir detrás para que no se muevan los comentarios de posición
+	    		StringBuffer orig = new StringBuffer("ORIG=" + datos.get("ORIG") + ",");
+	    		spaces = 39 - orig.length();
+	    		for (int j = 0; j < spaces; j++) {
+	    			orig.append(" ");
+	    		}
+	    		linea = linea.replace("ORIG=SERVIDOR_ORIGEN,                  ", orig);
+				break;
+	    	case 5:
+	    		if(datos.get("FORIG").contains("_")) {
+	    			String aux = "'" + datos.get("FORIG") + "'";
+	    			datos.replace("FORIG", aux);
+	    		}
+	    		if(datos.get("FORIG").contains("_&")) {
+	    			String aux = datos.get("FORIG");
+	    			aux = aux.replaceAll("_&", "-&");
+	    			datos.replace("FORIG", aux);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+	    			System.out.println("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.newLine();
+	    		}
+	    		if(datos.get("FORIG").contains("*")) {
+	    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
 			    	writerCortex.newLine();
-			    }
-			    lectorJFTPREB.close();
-			    writeIF(datos, writerCortex);
-			    writeComments(datos, writerCortex);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
+	    		}
+	    	    StringBuffer forig = new StringBuffer("FIT=" + datos.get("FORIG").replace("*", "****"));
+	    	    if(datos.containsKey("DIR")) {
+	    	    	forig.append(",");
+	    	    }
+	    	    spaces = 39 - forig.length();  		
+	    		for (int j = 0; j < spaces; j++) {
+	    			forig.append(" ");
+	    		}
+	    		linea = linea.replace("FIT=NOMFICHRED.TXT                     ", forig);
+	    		break;
+	    	case 6:
+	    		if(datos.containsKey("DIR")) {
+	    			linea = linea.replace("//*", "// "); 
+	    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
+	    			spaces = 38 - dir.length();  		
+		    		for (int j = 0; j < spaces; j++) {
+		    			dir.append(" ");
+		    		}
+		    		linea = linea.replace("DIR=XXX                               ", dir);
+	    		}
+	    		break;
+	    	case 7:
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFtpReb.get("DSN"));
+	    		break;
+	    	case 9:
+	    		if(infoFtpReb.containsKey("MGMTCLAS")) {
+	    			linea = linea.replace("//*", "// ");
+	    			linea = linea.replace("EXLIXXXX", infoFtpReb.get("MGMTCLAS"));
+	    		}
+	    		break;
+	    	case 10:
+	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFtpReb.get("Definicion"));
+	    	case 11:
+	    		linea = linea.replace("LONGREG", infoFtpReb.get("LRECL"));
+			default:
+				break;
 			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJFTPREB.close();
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);
+	}
 	
 	public void writeFTPDEL(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-			//----------------Fichero de plantilla JFTDEL--------------------------
-		    FileReader ficheroJFTPDEL = new FileReader("C:\\Cortex\\Plantillas\\JFTPDEL.txt");
-		    BufferedReader lectorJFTPDEL = new BufferedReader(ficheroJFTPDEL);	
-		    //----------------Variables------------------------------------------
-		    String linea;
-		    pasoS += 2;
-		    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-		    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
-		    String[] valor = {"F01", numeroPaso};
-		    histPasos.put(numeroPasoE, valor);
-		    int contadorLinea = 0, spaces = 0;
-		    //----------------Método---------------------------------------------
-		    
-		    while((linea = lectorJFTPDEL.readLine()) != null) {
-		    	contadorLinea ++;
-		    	switch (contadorLinea) {
-		    	case 2:
-	    			linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
-	    			break;
-		    	case 3:	
-		    		StringBuffer orig = new StringBuffer("ORIG=" + datos.get("ORIG") + ",");
-		    		spaces = 40 - orig.length();
+		//----------------Fichero de plantilla JFTDEL--------------------------
+	    FileReader ficheroJFTPDEL = new FileReader("C:\\Cortex\\Plantillas\\JFTPDEL.txt");
+	    BufferedReader lectorJFTPDEL = new BufferedReader(ficheroJFTPDEL);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"F01", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    int contadorLinea = 0, spaces = 0;
+	    //----------------Método---------------------------------------------
+	    
+	    while((linea = lectorJFTPDEL.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+    			linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+    			break;
+	    	case 3:	
+	    		StringBuffer orig = new StringBuffer("ORIG=" + datos.get("ORIG") + ",");
+	    		spaces = 40 - orig.length();
+	    		for (int j = 0; j < spaces; j++) {
+	    			orig.append(" ");
+	    		}
+	    		linea = linea.replace("ORIG=SERVIDOR_ORIGEN,                   ", orig);
+				break;
+	    	case 4:
+	    		if(datos.get("FITXER").contains("_")) {
+	    			String aux = "'" + datos.get("FITXER") + "'";
+	    			datos.replace("FITXER", aux);
+	    		}
+	    		if(datos.get("FITXER").contains("_&")) {
+	    			String aux = datos.get("FITXER");
+	    			aux = aux.replaceAll("_&", "-&");
+	    			datos.replace("FITXER", aux);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+	    			System.out.println("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.newLine();
+	    		}
+	    	    StringBuffer forig = new StringBuffer("FIT=" + datos.get("FITXER"));
+	    	    if(datos.containsKey("DIR")) {
+	    	    	forig.append(",");
+	    	    }
+	    	    spaces = 40 - forig.length();  		
+	    		for (int j = 0; j < spaces; j++) {
+	    			forig.append(" ");
+	    		}
+	    		linea = linea.replace("FIT=nomfichred                          ", forig);
+	    		break;
+	    	case 5:
+	    		if(datos.containsKey("DIR")) {
+	    			linea = linea.replace("//*", "// "); 
+	    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
+	    			spaces = 40 - dir.length();  		
 		    		for (int j = 0; j < spaces; j++) {
-		    			orig.append(" ");
+		    			dir.append(" ");
 		    		}
-		    		linea = linea.replace("ORIG=SERVIDOR_ORIGEN,                   ", orig);
-					break;
-		    	case 4:
-		    		if(datos.get("FITXER").contains("_")) {
-		    			String aux = "'" + datos.get("FITXER") + "'";
-		    			datos.replace("FITXER", aux);
-		    		}
-		    		if(datos.get("FITXER").contains("_&")) {
-		    			String aux = datos.get("FITXER");
-		    			aux = aux.replaceAll("_&", "-&");
-		    			datos.replace("FITXER", aux);
-						Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
-		    			System.out.println("*****REVISAR FICHERO CON _&*****");
-		    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
-		    	    	writerCortex.newLine();
-		    		}
-		    	    StringBuffer forig = new StringBuffer("FIT=" + datos.get("FITXER"));
-		    	    if(datos.containsKey("DIR")) {
-		    	    	forig.append(",");
-		    	    }
-		    	    spaces = 40 - forig.length();  		
-		    		for (int j = 0; j < spaces; j++) {
-		    			forig.append(" ");
-		    		}
-		    		linea = linea.replace("FIT=nomfichred                          ", forig);
-		    		break;
-		    	case 5:
-		    		if(datos.containsKey("DIR")) {
-		    			linea = linea.replace("//*", "// "); 
-		    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
-		    			spaces = 40 - dir.length();  		
-			    		for (int j = 0; j < spaces; j++) {
-			    			dir.append(" ");
-			    		}
-			    		linea = linea.replace("DIR=XXX                                 ", dir);
-		    		}
-		    		break;
-				default:
-					break;
-				}
-		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
-		    	writerCortex.newLine();
-		    }
-		    lectorJFTPDEL.close();
-		    writeIF(datos, writerCortex);
-		    writeComments(datos, writerCortex);	
+		    		linea = linea.replace("DIR=XXX                                 ", dir);
+	    		}
+	    		break;
+			default:
+				break;
+			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJFTPDEL.close();
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);	
 	}
 
 	public void writeJMAILMSG(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
-				//----------------Fichero de plantilla JMAILMSG--------------------------
-			    FileReader ficheroJMAILMSG = new FileReader("C:\\Cortex\\Plantillas\\JMAILMSG.txt");
-			    BufferedReader lectorJMAILMSG = new BufferedReader(ficheroJMAILMSG);	
-			    //----------------Variables------------------------------------------
-			    String linea;
-			    pasoS += 2;
-			    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
-			    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
-			    String[] valor = {"TSMAIL04", numeroPaso};
-			    histPasos.put(numeroPasoE, valor);
-			    int contadorLinea = 0, spaces = 0;
-			    //----------------Método---------------------------------------------    
-			    
-			    while((linea = lectorJMAILMSG.readLine()) != null) {
-			    	contadorLinea ++;
-			    	switch (contadorLinea) {
-			    	case 2:
-			    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
-						break;
-			    	case 3:
-			    		//Calculamos cuantos espacios hay que añadir detrás para que no se muevan los comentarios de posición
-			    		StringBuffer dsnName = new StringBuffer("DSNAME=Z." + metodosAux.infoDSN(pasoE, letraPaso, "ENTRA1") + ",");
-			    		spaces = 42 - dsnName.length();
-			    		for (int j = 0; j < spaces; j++) {
-			    			dsnName.append(" ");
-			    		}
-			    		linea = linea.replace("DSNAME=,                                  ", dsnName);
-						break;
-			    	case 4:
-			    		//Calculamos cuantos espacios hay que añadir detrás para que no se muevan los comentarios de posición
-			    		StringBuffer fitTxt = new StringBuffer("FITTXT=" + datos.get("SORTIDA"));
-			    		spaces = 42 - fitTxt.length();
-			    		for (int j = 0; j < spaces; j++) {
-			    			fitTxt.append(" ");
-			    		}
-			    		linea = linea.replace("FITTXT=                                   ", fitTxt);
-						break;
-					default:
-						break;
-					}
-			    	System.out.println("Escribimos: " + linea);
-			    	writerCortex.write(linea);
-			    	writerCortex.newLine();
-			    }
-			    lectorJMAILMSG.close();	
-			    writeIF(datos, writerCortex);
-			    writeComments(datos, writerCortex);
+		//----------------Fichero de plantilla JMAILMSG--------------------------
+	    FileReader ficheroJMAILMSG = new FileReader("C:\\Cortex\\Plantillas\\JMAILMSG.txt");
+	    BufferedReader lectorJMAILMSG = new BufferedReader(ficheroJMAILMSG);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"TSMAIL04", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    int contadorLinea = 0, spaces = 0;
+	    //----------------Método---------------------------------------------    
+	    
+	    while((linea = lectorJMAILMSG.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+				break;
+	    	case 3:
+	    		//Calculamos cuantos espacios hay que añadir detrás para que no se muevan los comentarios de posición
+	    		StringBuffer dsnName = new StringBuffer("DSNAME=Z." + metodosAux.infoDSN(pasoE, letraPaso, "ENTRA1") + ",");
+	    		spaces = 42 - dsnName.length();
+	    		for (int j = 0; j < spaces; j++) {
+	    			dsnName.append(" ");
+	    		}
+	    		linea = linea.replace("DSNAME=,                                  ", dsnName);
+				break;
+	    	case 4:
+	    		if(datos.get("SORTIDA").contains("_")) {
+	    			String aux = "'" + datos.get("SORTIDA") + "'";
+	    			datos.replace("SORTIDA", aux);
+	    		}
+	    		if(datos.get("SORTIDA").contains("_&")) {
+	    			String aux = datos.get("SORTIDA");
+	    			aux = aux.replaceAll("_&", "-&");
+	    			datos.replace("SORTIDA", aux);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+	    			System.out.println("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.newLine();
+	    		}
+	    		//Calculamos cuantos espacios hay que añadir detrás para que no se muevan los comentarios de posición
+	    		StringBuffer fitTxt = new StringBuffer("FITTXT=" + datos.get("SORTIDA"));
+	    		spaces = 42 - fitTxt.length();
+	    		for (int j = 0; j < spaces; j++) {
+	    			fitTxt.append(" ");
+	    		}
+	    		linea = linea.replace("FITTXT=                                   ", fitTxt);
+				break;
+			default:
+				break;
 			}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJMAILMSG.close();	
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);
+	}
 
 	public void writeJFTPSAPP(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
@@ -1035,6 +1057,19 @@ public class WriterPasos {
 	    		linea = linea.replace("DSNAME=,               ", dsname);
 	    		break;
 	    	case 4:
+	    		if(datos.get("SORTIDA").contains("_")) {
+	    			String aux = "'" + datos.get("SORTIDA") + "'";
+	    			datos.replace("SORTIDA", aux);
+	    		}
+	    		if(datos.get("SORTIDA").contains("_&")) {
+	    			String aux = datos.get("SORTIDA");
+	    			aux = aux.replaceAll("_&", "-&");
+	    			datos.replace("SORTIDA", aux);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+	    			System.out.println("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		String aux = linea.replace("------.TXT      ", datos.get("SORTIDA") +" ");
 	    		if (aux.length() > 72) {
 	    			linea = linea.replace("FITTXT=------.TXT      <= debe ser idÃ©ntico al informado en IDEANEX", "FITTXT=" + datos.get("SORTIDA"));
@@ -1086,6 +1121,13 @@ public class WriterPasos {
 					salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
 					linea = salida.get(0);
 					fi = salida.get(1);
+					if (!fi.isEmpty()) {
+		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // No caben todos los correos - Falta añadir: " + fi);
+		    			System.out.println("Escribimos: " + "***** No caben todos los correos. Revisar  ****");
+		    	    	writerCortex.write("***** No caben todos los correos. Revisar  ****");
+		    	    	writerCortex.newLine();
+		    	    	fi = "";
+					}
 				}
     			break;
 	    	case 12:
@@ -1951,6 +1993,13 @@ public class WriterPasos {
 					salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
 					linea = salida.get(0);
 					fi = salida.get(1);
+					if (!fi.isEmpty()) {
+		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // No caben todos los correos - Falta añadir: " + fi);
+		    			System.out.println("Escribimos: " + "***** No caben todos los correos. Revisar  ****");
+		    	    	writerCortex.write("***** No caben todos los correos. Revisar  ****");
+		    	    	writerCortex.newLine();
+		    	    	fi = "";
+					}
 				}
     			break;
 	    	case 12:
@@ -2029,6 +2078,121 @@ public class WriterPasos {
 	    writeIF(datos, writerCortex);	
 	    writeComments(datos, writerCortex);
 	}
+	
+	public void writeJIEBGENE(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JIEBGCOPY--------------------------
+	    FileReader ficheroJIEBGENE = new FileReader("C:\\Cortex\\Plantillas\\JIEBGENE.txt");
+	    BufferedReader lectorJIEBGENE = new BufferedReader(ficheroJIEBGENE);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    Map<String, String> infoFichOut = new HashMap<String, String>();
+	    Map<String, String> infoFichIn = new HashMap<String, String>();
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"INF00", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    infoFichIn = metodosAux.infomultiDSN(pasoE, letraPaso, "SYSUT1");
+	    infoFichOut = metodosAux.infoFichero(pasoE, letraPaso, "SYSUT2");
+	    int contadorLinea = 0;
+	    
+	    while((linea = lectorJIEBGENE.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		linea = linea.replace("APL.YYYYYYYY.NOMMEM2.&FAAMMDDV", metodosAux.infoDSN(pasoE, letraPaso, "SYSUT2"));
+	    		break;
+	    	case 3:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		break;
+	    	case 4:
+	    		for(int i = 0; infoFichIn.containsKey("DSN" + i); i++) {
+	    			String lineaEditada = linea;
+	    			if(i==0) {
+	    				lineaEditada = lineaEditada.replace("APL.XXXXXXXX.NOMMEM1.&FAAMMDDV", infoFichIn.get("DSN" + i));
+	    			}else {
+	    				lineaEditada = lineaEditada.replace("//SYSUT1", "//      ");
+	    				lineaEditada = lineaEditada.replace("APL.XXXXXXXX.NOMMEM1.&FAAMMDDV", infoFichIn.get("DSN" + i));
+	    			}
+	    			System.out.println("Escribimos: " + lineaEditada);
+	    	    	writerCortex.write(lineaEditada);
+	    	    	writerCortex.newLine();
+	    		}
+	    		linea = "";
+	    		break;
+	    	case 5:
+	    		linea = linea.replace("APL.YYYYYYYY.NOMMEM2.&FAAMMDDV", metodosAux.infoDSN(pasoE, letraPaso, "SYSUT2"));
+	    		break;
+	    	case 7:
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM1.&FAAMMDDV,", metodosAux.infoDSN(pasoE, letraPaso, "SYSUT1"));
+	    		break;
+	    	case 8:
+	    		if(infoFichOut.containsKey("MGMTCLAS")) {
+	    			linea = linea.replace("EXLIXXXX", infoFichOut.get("MGMTCLAS"));
+	    		}else {
+	    			linea = linea.replace("// ", "//*");
+	    		}
+	    		break; 
+	    	default:
+				break;
+			}
+	    	if(!linea.equals("")) {
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea);
+		    	writerCortex.newLine();
+	    	}
+	    }
+	    lectorJIEBGENE.close();	
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);	
+	}
+
+	public void writeJBORRARFPasos(Map<String, String> datos, String letraPaso, int pasoE,
+			BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JBORRAF--------------------------
+	    FileReader ficheroJBORRAF = new FileReader("C:\\Cortex\\Plantillas\\JBORRAF.txt");
+	    BufferedReader lectorJBORRAF = new BufferedReader(ficheroJBORRAF);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    ArrayList<String> lineaProc;
+	    int contadorLinea = 0;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    //----------------Método---------------------------------------------
+	    Map<String, String> infoFich = new HashMap<String, String>();
+	    lineaProc = metodosAux.buscaInfoProc(pasoE, letraPaso, "SYSIN");
+	    
+	    while((linea = lectorJBORRAF.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---D-", "//" + letraPaso + numeroPaso);
+	    		break;
+	    	default:
+				break;
+	    	}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJBORRAF.close();	 
+	    Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + "// DSN no encontrada PROC - Acudir a: " );
+	    System.out.println("Escribimos: Revisar SYSIN Cortex");
+    	writerCortex.write("***** REVISAR SYSIN Cortex");
+    	writerCortex.newLine();
+	    for(int i = 0; i < lineaProc.size(); i++) {
+	    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + lineaProc.get(i));
+	    	System.out.println("Escribimos: " + lineaProc.get(i).replace("//", "**"));
+	    	writerCortex.write(lineaProc.get(i).replace("//", "**"));
+	    	writerCortex.newLine();
+	    }
+	    
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);	
+	}		
 
 	
 }
