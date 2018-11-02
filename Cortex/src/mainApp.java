@@ -6,17 +6,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.logging.Level;
 
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AUT03E";
+	public static String programa = "AGE01B";
+	public static boolean withProc = true;
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
 	public static Map<String, String> datos = new HashMap<String, String>();
-	static String letraPaso = programa.substring(5,6);
+	static String letraPaso = "";
 	static int pasoE = 0;
 	static int pasoS = 1;
 	static ArrayList<String> fichero = new ArrayList<String>();
@@ -33,6 +35,18 @@ public class mainApp {
 		// TODO Auto-generated method stub
 		String linea, tipoPaso;
 		boolean seguir = true, escribir = false;
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca el nombre del programa: ");
+		programa = sc.nextLine();
+		System.out.println("¿Con archivo PROC? SI-NO");
+		if(sc.nextLine().equalsIgnoreCase("NO")) {
+			withProc = false;
+		}
+		letraPaso = programa.substring(5,6);
+		sc.close();
+		
+		
 
 //-------------------------------------Ficheros-------------------------------------------------		
 	    FileReader ficheroPCL = new FileReader("C:\\Cortex\\PCL.txt");
@@ -200,6 +214,7 @@ public class mainApp {
 			}
 	    }
 	    writerCortex.close();
+	    System.out.println("***** PROCESO FINALIZADO CORRECTAMENTE *****");
 	}
 
 	private static String aislamientoDePaso() {

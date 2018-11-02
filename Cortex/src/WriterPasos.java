@@ -2167,7 +2167,6 @@ public class WriterPasos {
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    //----------------Método---------------------------------------------
-	    lineaProc = metodosAux.buscaInfoProc(pasoE, letraPaso, "SYSIN");
 	    
 	    while((linea = lectorJBORRAF.readLine()) != null) {
 	    	contadorLinea ++;
@@ -2187,12 +2186,15 @@ public class WriterPasos {
 	    System.out.println("Escribimos: Revisar SYSIN Cortex");
     	writerCortex.write("***** REVISAR SYSIN Cortex");
     	writerCortex.newLine();
-	    for(int i = 0; i < lineaProc.size(); i++) {
-	    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + lineaProc.get(i));
-	    	System.out.println("Escribimos: " + lineaProc.get(i).replace("//", "**"));
-	    	writerCortex.write(lineaProc.get(i).replace("//", "**"));
-	    	writerCortex.newLine();
-	    }
+    	if (mainApp.withProc) {
+    		lineaProc = metodosAux.buscaInfoProc(pasoE, letraPaso, "SYSIN");
+		    for(int i = 0; i < lineaProc.size(); i++) {
+		    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + lineaProc.get(i));
+		    	System.out.println("Escribimos: " + lineaProc.get(i).replace("//", "**"));
+		    	writerCortex.write(lineaProc.get(i).replace("//", "**"));
+		    	writerCortex.newLine();
+		    }
+    	}
 	    
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);	
