@@ -1640,20 +1640,32 @@ public class WriterPasos {
 	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
 	    String[] valor = {"JSOFCHEC", numeroPaso};
 	    histPasos.put(numeroPasoE, valor);
+	    // Borrado de ficheros de salida
+	    for (int i = 1; datos.containsKey("Borrar" + String.valueOf(i)); i++) {
+	    	if(!datos.get("Borrar" + String.valueOf(i)).equals("No")) {
+	    		writeJBORRAF(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
+	    	}
+	    }
+	    
 	    int contadorLinea = 0;
 	    while((linea = lectorJSOFCHEC.readLine()) != null) {
 	    	contadorLinea ++;
 	    	switch (contadorLinea) {
 	    	case 3:
 	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		if (datos.containsKey("COND1") && datos.get("COND1").equals("EVEN")){
+	    			linea = linea.replace("SOFCHEC3,", "SOFCHEC3," + "COND=((EVEN)),");
+	    		}
+	    		
 				break;
 	    	case 4:
 	    		String[] valores = datos.get("PARDB2").split(" ");
 	    		String[] plantillas = {"&NOMQDRE", "&FECHAQ", "&OPCIONQ"};
 	    		String lineaEditada = "";
-	    		for(int i=0; i < valores.length; i++) {
+	    		int i = 0;
+	    		for(i=0; i < plantillas.length; i++) {
 		    		if(valores[i].startsWith("&")) {
-		    			linea = linea.replaceAll(plantillas[i], valores[i]);
+		    			linea = linea.replace(plantillas[i], valores[i]);
 		    		}else{
 		    			lineaEditada = "**   SET " + plantillas[i].substring(1) +"='" + valores[i] + "'";
 		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // añadir literial cabecera PROG=SOFCHEC3");
@@ -1662,15 +1674,49 @@ public class WriterPasos {
 		    	    	writerCortex.newLine();
 		    		}
 	    		}
+	    		for(int j = i; j < valores.length; j++) {
+	    			if(valores[i].startsWith("&")) {
+	    				linea = linea.trim() + "-" + valores[i];
+	    			}else {
+	    				lineaEditada = "**   SET " + valores[i] +"='" + valores[i] + "'";
+	    				Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // añadir literial cabecera PROG=SOFCHEC3");
+		    			System.out.println("Escribimos: " + lineaEditada);
+		    	    	writerCortex.write(lineaEditada);
+		    	    	writerCortex.newLine();
+		    	    	linea = linea + "-&" + valores[i];
+	    			}
+	    		}
+	    		break;
+	    	case 5:
+	    		if(datos.containsKey("Salida1") || datos.containsKey("Entrada1")) {
+		    		linea = "";
+	    		}
 	    		break;
 	    	default:
 				break;
 			}
-	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
-	    	writerCortex.newLine();
+	    	if (!linea.equals("")) {
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea);
+		    	writerCortex.newLine();
+	    	}
 	    }
 	    lectorJSOFCHEC.close();		
+	    
+	  //--------------- Miramos si hay ficheros de entrada:
+	    for (int i = 1; datos.containsKey("Entrada" + String.valueOf(i)); i++) {
+	    	writeJFICHENT(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
+	    }
+	  //--------------- Miramos si hay ficheros de Salida:
+	    for (int i = 1; datos.containsKey("Salida" + String.valueOf(i)); i++) {
+	    	writeJFICHSAL(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
+	    }
+	    
+	  //--------------- Miramos si hay reportes para informar:
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
+	  //--------------- Miramos si hay IF o ENDIF:
+	    writeIF(datos, writerCortex);
+	    
 	    writeComments(datos, writerCortex);
 	}
 
@@ -2221,7 +2267,7 @@ public class WriterPasos {
 	    	contadorLinea ++;
 	    	switch (contadorLinea) {
 	    	case 2:
-	    		linea = linea.replace("//---D-", "//" + letraPaso + numeroPaso);
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
 	    		break;
 	    	default:
 				break;

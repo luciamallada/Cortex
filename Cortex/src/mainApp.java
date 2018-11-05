@@ -1,8 +1,10 @@
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -39,6 +41,7 @@ public class mainApp {
 		Scanner sc = new Scanner(System.in);
 		System.out.println("Introduzca el nombre del programa: ");
 		programa = sc.nextLine();
+		programa = programa.toUpperCase();
 		System.out.println("¿Con archivo PROC? SI-NO");
 		if(sc.nextLine().equalsIgnoreCase("NO")) {
 			withProc = false;
@@ -57,7 +60,13 @@ public class mainApp {
 //----------------------------------------------------------------------------------------------	    
 	     
 //------------------------------------PROGRAMA--------------------------------------------------
-	    Avisos.LOGGER.log(Level.INFO, "Comienza el proceso - PROGRAMA: " + programa.substring(0,6));	 
+	    
+	    File ficheroFecha = new File("C:\\Cortex\\PCL.txt");
+	    long mod = ficheroFecha.lastModified();
+	    Date fecha = new Date(mod);
+	    
+	    Avisos.LOGGER.log(Level.INFO, "Comienza el proceso - PROGRAMA: " + programa.substring(0,6));	
+	    Avisos.LOGGER.log(Level.INFO, "Se está usando el fichero PCL con ultima modificación: " + fecha);
 
 	    //Aisla el JCL a tratar.
 	    while ((linea = lectorPCL.readLine()) != null && seguir) {
@@ -193,10 +202,10 @@ public class mainApp {
 					tipoPaso = "Plantilla QMF - Avisar Aplicación";
 				}
 				WriterPasos.pasoS += 2;
-				String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+				String numeroPaso = (WriterPasos.pasoS < 10) ? "0" + String.valueOf(WriterPasos.pasoS) : String.valueOf(WriterPasos.pasoS) ;
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
-				writerCortex.write("*******AÑADIR PLANTILLA: //"+ letraPaso + numeroPaso + tipoPaso + "*********");
+				writerCortex.write("*******AÑADIR PLANTILLA: //"+ letraPaso + numeroPaso + "-" + tipoPaso + "*********");
 				writerCortex.newLine();
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
@@ -293,6 +302,9 @@ public class mainApp {
 			}
 			if (fichero.get(inicio).contains("PGM=IEBGENER")) {
 				tipoPaso = "JIEBGEN2 - Caso particular";
+			}
+			if (tipoPaso.equals("")) {
+				tipoPaso = "JPGM";
 			}
 		}
 		
