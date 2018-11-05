@@ -57,6 +57,24 @@ public class LectorPasos {
 						}
 					}
 				}
+//---------------- Buscamos ficheros Cortex
+				if (pasos.get(i).contains("DATA  *")) {
+					datos.put("FCortex", pasos.get(i).substring(0, pasos.get(i).indexOf(" ")));
+					String aux = "";
+					int lineaSalida = 0, contFCortex = 0;
+					for (int j = i + 1; j < pasos.size(); j++) {
+						if (pasos.get(j).contains("DATAEND")) {
+							aux = pasos.get(j).substring(0, pasos.get(j).indexOf("DATAEND"));
+							lineaSalida = j + 1;
+							j =  pasos.size() + 1;
+						}else {
+							aux = pasos.get(j).trim();	
+						}
+						contFCortex++;
+						datos.put("FC" + contFCortex, aux);						
+					}
+					i = lineaSalida - 1;
+				}
 			}
 		}
 		datos = busquedaAdicional(datos, pasos);

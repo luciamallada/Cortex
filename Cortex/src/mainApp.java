@@ -200,6 +200,8 @@ public class mainApp {
 				writerPasos.writeJFTBSEND(datos, letraPaso, pasoE, writerCortex);
 				break;
 			case "ignore":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeComments(datos, writerCortex);
 				break;
 			default:
 				if(tipoPaso.equals("NAME=SOF30QM") || tipoPaso.equals("NAME=SOF30Q")) {
@@ -306,6 +308,9 @@ public class mainApp {
 			}
 			if (fichero.get(inicio).contains("PGM=IEBGENER")) {
 				tipoPaso = "JIEBGEN2 - Caso particular";
+			}
+			if (fichero.get(inicio).contains("PGM=CZX3PSRC")) {
+				tipoPaso = "ignore";
 			}
 			if (tipoPaso.equals("")) {
 				tipoPaso = "JPGM";

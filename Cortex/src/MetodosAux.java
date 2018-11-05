@@ -132,13 +132,14 @@ public class MetodosAux {
 				    	secundario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;; 
 				    	secundario = secundario < 3 ? 3 : secundario;
 			    	}else {
-						Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " //Fichero no contiene LRCL: " + nombre);
 						infoFich.put("LRECL","LRECL");
 			    	}
 			    }else {
 			    	if(infoFichero.get(j).contains("SPACE") && infoFich.get("SPACE").equals("CYL")) {
 			    		primario = 15;
 			    		secundario = 1;
+						Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " //Comprobar fichero CYL migrado correctamente");
+			    		infoFich.put("LRECL","CYL");
 			    	}
 			    }
 		    }

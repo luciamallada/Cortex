@@ -71,7 +71,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorDB2.close();
-	    
+//--------------- Miramos si hay ficheros Cortex:
+	    if (datos.containsKey("FCortex")) {
+	    	writeFCortex(datos, writerCortex);
+	    }
 //--------------- Miramos si hay ficheros de entrada:
 	    for (int i = 1; datos.containsKey("Entrada" + String.valueOf(i)); i++) {
 	    	writeJFICHENT(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
@@ -86,6 +89,25 @@ public class WriterPasos {
 	    writeIF(datos, writerCortex);
 //--------------- Miramos si hay Comentarios:
 	    writeComments(datos, writerCortex);
+	}
+
+	private void writeFCortex(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		System.out.println("Escribimos: " + "//*--FICHERO CORTEX----------------------------------------------------");
+    	writerCortex.write("//*--FICHERO CORTEX----------------------------------------------------");
+    	writerCortex.newLine();
+		StringBuffer fCortex = new StringBuffer("//" + datos.get("FCortex"));
+		for(int j = fCortex.length(); j < 11; j++) {
+			fCortex.append(" ");
+		}
+		System.out.println("Escribimos: " + fCortex + "DD *");
+    	writerCortex.write(fCortex + "DD *");
+    	writerCortex.newLine();
+		for (int i = 1; datos.containsKey("FC" + i); i++) {
+			System.out.println("Escribimos: " + datos.get("FC" + i));
+	    	writerCortex.write(datos.get("FC" + i));
+	    	writerCortex.newLine();
+		}
 	}
 
 	private void writeIF(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
