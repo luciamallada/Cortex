@@ -2292,11 +2292,11 @@ public class WriterPasos {
 	    writeComments(datos, writerCortex);	
 	}
 	
-	public void writeJBINSEND(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+	public void writeJFTBSEND(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
 		//----------------Fichero de plantilla JFTBSEND--------------------------
-	    FileReader ficheroJBINSEND = new FileReader("C:\\Cortex\\Plantillas\\JBINSEND.txt");
-	    BufferedReader lectorJBINSEND = new BufferedReader(ficheroJBINSEND);	
+	    FileReader ficheroJFTBSEND = new FileReader("C:\\Cortex\\Plantillas\\JFTBSEND.txt");
+	    BufferedReader lectorJFTBSEND = new BufferedReader(ficheroJFTBSEND);	
 	    //----------------Variables------------------------------------------
 	    String linea;
 	    pasoS += 2;
@@ -2306,7 +2306,7 @@ public class WriterPasos {
 	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0, spaces = 0;
 	    
-	    while((linea = lectorJBINSEND.readLine()) != null) {
+	    while((linea = lectorJFTBSEND.readLine()) != null) {
 	    	contadorLinea ++;
 	    	switch (contadorLinea) {
 	    	case 2:
@@ -2405,7 +2405,7 @@ public class WriterPasos {
 		    	writerCortex.newLine();
 	    	}
 	    }
-	    lectorJBINSEND.close();	
+	    lectorJFTBSEND.close();	
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);	
 	}

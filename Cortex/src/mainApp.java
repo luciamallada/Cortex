@@ -197,7 +197,7 @@ public class mainApp {
 				break;
 			case "NAME=FTBSEND":
 				datos = lectorPasos.leerPaso(pasos);
-				writerPasos.writeJBINSEND(datos, letraPaso, pasoE, writerCortex);
+				writerPasos.writeJFTBSEND(datos, letraPaso, pasoE, writerCortex);
 				break;
 			case "ignore":
 				break;
