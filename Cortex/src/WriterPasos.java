@@ -629,7 +629,12 @@ public class WriterPasos {
 	    		for (int j = 0; j < spaces; j++) {
 	    			fit.append(" ");
 	    		}
-	    		linea = linea.replace("FIT=nomfichred                          ", fit);
+	    		String aux = linea = linea.replace("FIT=nomfichred                          ", fit);
+	    		if(aux.length() > 72) {
+	    			linea = linea.replace("FIT=nomfichred                          <== nombre fich red", fit);
+	    		}else {
+	    			linea = linea.replace("FIT=nomfichred                          ", fit);
+	    		}
 	    		break;
 	    	case 6:
 	    		if(datos.containsKey("DIR")) {
@@ -2350,10 +2355,8 @@ public class WriterPasos {
 	    		for (int j = 0; j < spaces; j++) {
 	    			fit.append(" ");
 	    		}
-	    		if(fit.length() > 69) {
-	    			String cadena = fit.toString();
-	    			cadena=cadena.substring(0, cadena.lastIndexOf("'")+1);
-	    			fit = new StringBuffer(cadena);
+	    		String aux = linea = linea.replace("FIT=nomfichred                          ", fit);
+	    		if(aux.length() > 72) {
 	    			linea = linea.replace("FIT=nomfichred                          <== nombre fich red", fit);
 	    		}else {
 	    			linea = linea.replace("FIT=nomfichred                          ", fit);
