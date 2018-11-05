@@ -16,6 +16,7 @@ public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
 	public static String programa = "AGE01B";
 	public static boolean withProc = true;
+	public static boolean withCntl = false;
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -229,7 +230,11 @@ public class mainApp {
 			}
 	    }
 	    writerCortex.close();
-	    System.out.println("***** PROCESO FINALIZADO CORRECTAMENTE *****");
+	    System.out.println("***** PROCESO Migración a TEST finalizado CORRECTAMENTE *****");
+		Avisos.LOGGER.log(Level.INFO, "***** PROCESO Migración a TEST finalizado CORRECTAMENTE *****");
+		
+		Explomig.migracionPREP();
+
 	}
 
 	private static String aislamientoDePaso() {
@@ -384,20 +389,21 @@ public class mainApp {
 	    String linea;
 	    int contadorLinea = 0;
 	    //----------------Método---------------------------------------------
-	    while((linea = lectorJJOB.readLine()) != null) {
-	    	contadorLinea ++;
-	    	switch (contadorLinea) {
-			//Solo modificamos la línea 1 de la plantilla
-	    	case 1:
-				linea = linea.replace("AAAAAA", programa.substring(0,6));
-				break;
-			default:
-				break;
-			}
-	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
-	    	writerCortex.newLine();
-	    }
+		    while((linea = lectorJJOB.readLine()) != null) {
+		    	contadorLinea ++;
+		    	switch (contadorLinea) {
+				//Solo modificamos la línea 1 de la plantilla
+		    	case 1:
+					linea = linea.replace("AAAAAA", programa.substring(0,6));
+					break;
+				default:
+					break;
+				}
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea);
+		    	writerCortex.newLine();
+		    }
+
 	    lectorJJOB.close();
 	    Avisos.LOGGER.log(Level.INFO, "Añadir las variables de cabecera");
 	}
