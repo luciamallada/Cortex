@@ -2292,4 +2292,122 @@ public class WriterPasos {
 	    writeComments(datos, writerCortex);	
 	}
 	
+	public void writeJBINSEND(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JFTBSEND--------------------------
+	    FileReader ficheroJBINSEND = new FileReader("C:\\Cortex\\Plantillas\\JBINSEND.txt");
+	    BufferedReader lectorJBINSEND = new BufferedReader(ficheroJBINSEND);	
+	    //----------------Variables------------------------------------------
+	    String linea;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"FTBSEND", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    int contadorLinea = 0, spaces = 0;
+	    
+	    while((linea = lectorJBINSEND.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		break;
+	    	case 3:
+	    		StringBuffer des = new StringBuffer("DES=" + datos.get("DES") + ",");
+	    		spaces = 40 - des.length();
+	    		for (int j = 0; j < spaces; j++) {
+	    			des.append(" ");
+	    		}
+	    		linea = linea.replace("DES=destino,                            ", des);
+				break;
+	    	case 4:
+	    	    StringBuffer host = new StringBuffer("HOST=Z." + metodosAux.infoFTP(pasoE, letraPaso, datos.get("FHOST")) + ",");
+	    	    spaces = 40 - host.length();  		
+	    		for (int j = 0; j < spaces; j++) {
+	    			host.append(" ");
+	    		}
+	    		linea = linea.replace("HOST=,                                  ", host);
+	    		break;
+	    	case 5:
+	    		if(datos.get("FDEST").contains("_")) {
+	    			String aux = "'" + datos.get("FDEST") + "'";
+	    			datos.replace("FDEST", aux);
+	    		}
+	    		if(datos.get("FDEST").contains("_&")) {
+	    			String aux = datos.get("FDEST");
+	    			aux = aux.replaceAll("_&", "-&");
+	    			datos.replace("FDEST", aux);
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
+	    			System.out.println("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
+	    	    	writerCortex.newLine();
+	    		}
+	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FDEST"));
+	    		if(datos.containsKey("MSG") || datos.containsKey("DIR")) {
+	    			fit.append(",");
+	    		}
+	    		spaces = 40 - fit.length();  		
+	    		for (int j = 0; j < spaces; j++) {
+	    			fit.append(" ");
+	    		}
+	    		if(fit.length() > 69) {
+	    			String cadena = fit.toString();
+	    			cadena=cadena.substring(0, cadena.lastIndexOf("'")+1);
+	    			fit = new StringBuffer(cadena);
+	    			linea = linea.replace("FIT=nomfichred                          <== nombre fich red", fit);
+	    		}else {
+	    			linea = linea.replace("FIT=nomfichred                          ", fit);
+	    		}
+	    		break;
+	    	case 6:
+	    		if(datos.containsKey("DIR")) {
+	    			linea = linea.replace("//*", "// "); 
+	    			StringBuffer dir = new StringBuffer("DIR='" + datos.get("DIR") + "'");
+		    		if(datos.containsKey("MSG")) {
+		    			dir.append(",");
+		    		}
+		    		spaces = 40 - dir.length();  		
+		    		for (int j = 0; j < spaces; j++) {
+		    			dir.append(" ");
+		    		}
+		    		linea = linea.replace("DIR=XXX                                 ", dir);
+	    		}
+	    		break;
+	    	case 7:
+	    		if(datos.containsKey("MSG")) {
+	    			linea = linea.replace("//*", "// ");
+	    			if(!datos.containsKey("MSG2")) { 
+		    			StringBuffer msg = new StringBuffer("MSG='" + datos.get("MSG").replace("-", ",") + "'");
+			    		spaces = 40 - msg.length();  		
+			    		for (int j = 0; j < spaces; j++) {
+			    			msg.append(" ");
+			    		}
+			    		linea = linea.replace("MSG='UE----,UE----'                     ", msg);
+	    			}else {
+	    				StringBuffer msg = new StringBuffer("MSG='" + datos.get("MSG").replace("-", ",")
+	    						+ datos.get("MSG2").trim().replace("-", ",") + "'");
+	    				if (msg.length() > 68) {
+	    					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Variable MSG excede de la longitud permitida - " + msg);
+	    	    			System.out.println("*****REVISAR LONGITUD MSG*****");
+	    	    	    	writerCortex.write("*****REVISAR LONGITUD MSG*****");
+	    	    	    	writerCortex.newLine();
+	    				}
+	    				linea = linea.replace("MSG='UE----,UE----'                     <== aviso usuario (opc.)", msg);
+	    			}
+	    		}
+	    		break;	
+	    	default:
+				break;
+			}
+	    	if(!linea.equals("")) {
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea);
+		    	writerCortex.newLine();
+	    	}
+	    }
+	    lectorJBINSEND.close();	
+	    writeIF(datos, writerCortex);
+	    writeComments(datos, writerCortex);	
+	}
+
 }

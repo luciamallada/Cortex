@@ -195,6 +195,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFIVERDS(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "NAME=FTBSEND":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJBINSEND(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "ignore":
 				break;
 			default:
