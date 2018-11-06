@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.logging.Level;
 
 public class Explomig {
@@ -14,7 +15,18 @@ public class Explomig {
 	static ArrayList<String> cntl = new ArrayList<String>();
 	public static Map<String, String> datos = new HashMap<String, String>();
 	
-	
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		String programa;
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Introduzca el nombre del programa: ");
+		programa = sc.nextLine();
+		programa = programa.toUpperCase();
+		mainApp.programa = programa;
+		mainApp.letraPaso = programa.substring(5,6);
+		sc.close();
+		Explomig.migracionPREP();
+	}
 	
 	public static void migracionPREP() throws IOException {
 		// TODO Auto-generated method stub

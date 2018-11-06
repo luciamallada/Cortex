@@ -561,9 +561,12 @@ public class WriterPasos {
 	    		}
 	    		break;
 	    	case 9:
+	    		linea = linea.replace("XXX", infoFich.get("LRECL"));
+	    		break;
+	    	case 10:
 	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
 	    		break;
-	    	case 11:
+	    	case 12:
 	    		for (int j = 1; datos.containsKey("SORT" + j); j++) {
 	    			if (datos.get("SORT" + j).startsWith("SORT")) {
 	    				linea = linea.replace("SORT FIELDS=(X,XX,XX,X)", datos.get("SORT" + j));
