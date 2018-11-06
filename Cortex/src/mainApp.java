@@ -39,7 +39,24 @@ public class mainApp {
 		String linea, tipoPaso;
 		boolean seguir = true, escribir = false;
 		
+		//-------------------------------------Ficheros-------------------------------------------------		
+	    FileReader ficheroPCL = new FileReader("C:\\Cortex\\PCL.txt");
+	    BufferedReader lectorPCL = new BufferedReader(ficheroPCL);
+	    
+	    FileWriter ficheroCortex = new FileWriter("C:\\Cortex\\Migrados\\" + programa.substring(0,6) + ".txt");
+	    BufferedWriter writerCortex = new BufferedWriter(ficheroCortex);
+        //----------------------------------------------------------------------------------------------	    
+	     
+        //------------------------------------PROGRAMA--------------------------------------------------
+	    
+	    File ficheroFecha = new File("C:\\Cortex\\PCL.txt");
+	    long mod = ficheroFecha.lastModified();
+	    Date fecha = new Date(mod);
+		
+		
 		Scanner sc = new Scanner(System.in);
+		System.out.println("Última versión PCL: " + fecha);
+		sc.nextLine();
 		System.out.println("Introduzca el nombre del programa: ");
 		programa = sc.nextLine();
 		programa = programa.toUpperCase();
@@ -49,22 +66,6 @@ public class mainApp {
 		}
 		letraPaso = programa.substring(5,6);
 		sc.close();
-		
-		
-
-//-------------------------------------Ficheros-------------------------------------------------		
-	    FileReader ficheroPCL = new FileReader("C:\\Cortex\\PCL.txt");
-	    BufferedReader lectorPCL = new BufferedReader(ficheroPCL);
-	    
-	    FileWriter ficheroCortex = new FileWriter("C:\\Cortex\\Migrados\\" + programa.substring(0,6) + ".txt");
-	    BufferedWriter writerCortex = new BufferedWriter(ficheroCortex);
-//----------------------------------------------------------------------------------------------	    
-	     
-//------------------------------------PROGRAMA--------------------------------------------------
-	    
-	    File ficheroFecha = new File("C:\\Cortex\\PCL.txt");
-	    long mod = ficheroFecha.lastModified();
-	    Date fecha = new Date(mod);
 	    
 	    Avisos.LOGGER.log(Level.INFO, "Comienza el proceso - PROGRAMA: " + programa.substring(0,6));	
 	    Avisos.LOGGER.log(Level.INFO, "Se está usando el fichero PCL con ultima modificación: " + fecha);
@@ -222,6 +223,7 @@ public class mainApp {
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
 				Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Añadir Plantilla: " + tipoPaso);
+				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeIF(datos, writerCortex);
 				
 				break;
@@ -239,7 +241,7 @@ public class mainApp {
 	    System.out.println("***** PROCESO Migración a TEST finalizado CORRECTAMENTE *****");
 		Avisos.LOGGER.log(Level.INFO, "***** PROCESO Migración a TEST finalizado CORRECTAMENTE *****");
 		
-		Explomig.migracionPREP();
+		//Explomig.migracionPREP();
 
 	}
 
