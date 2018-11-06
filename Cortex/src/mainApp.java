@@ -8,8 +8,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.logging.Level;
+
+import javax.swing.JOptionPane;
 
 
 public class mainApp {
@@ -54,18 +55,31 @@ public class mainApp {
 	    Date fecha = new Date(mod);
 		
 		
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Última versión PCL: " + fecha);
-		sc.nextLine();
-		System.out.println("Introduzca el nombre del programa: ");
-		programa = sc.nextLine();
-		programa = programa.toUpperCase();
-		System.out.println("¿Con archivo PROC? SI-NO");
-		if(sc.nextLine().equalsIgnoreCase("NO")) {
-			withProc = false;
-		}
+//		Scanner sc = new Scanner(System.in);
+//		System.out.println("Última versión PCL: " + fecha);
+//		sc.nextLine();
+//		System.out.println("Introduzca el nombre del programa: ");
+//		programa = sc.nextLine();
+//		programa = programa.toUpperCase();
+//		System.out.println("¿Con archivo PROC? SI-NO");
+//		if(sc.nextLine().equalsIgnoreCase("NO")) {
+//			withProc = false;
+//		}
+//		System.out.println("¿Con archivo CNTL? SI-NO");
+//		if(sc.nextLine().equalsIgnoreCase("SI")) {
+//			withProc = true;
+//		}
+//		sc.close();
+	    JOptionPane.showMessageDialog(null, "Última versión PCL: " + fecha); 
+	    programa = JOptionPane.showInputDialog("Introduzca el nombre del programa:");
+		programa = programa.toUpperCase(); 
+		int proc = JOptionPane.showConfirmDialog(null, "¿Con archivo PROC?", "Alerta!", JOptionPane.YES_NO_OPTION);
+		withProc = proc == 0 ? true : false;
+
+		int cntl = JOptionPane.showConfirmDialog(null, "¿Con archivo CNTL?", "Alerta!", JOptionPane.YES_NO_OPTION);
+		withCntl = cntl == 0 ? true : false;
 		letraPaso = programa.substring(5,6);
-		sc.close();
+
 	    
 	    Avisos.LOGGER.log(Level.INFO, "Comienza el proceso - PROGRAMA: " + programa.substring(0,6));	
 	    Avisos.LOGGER.log(Level.INFO, "Se está usando el fichero PCL con ultima modificación: " + fecha);
@@ -393,10 +407,56 @@ public class mainApp {
 		//----------------Fichero de plantilla JJOB--------------------------
 	    FileReader ficheroJJOB = new FileReader("C:\\Cortex\\Plantillas\\JJOB.txt");
 	    BufferedReader lectorJJOB = new BufferedReader(ficheroJJOB);
+		MetodosAux metodosAux = new MetodosAux();
 	    //----------------Variables------------------------------------------
 	    String linea;
 	    int contadorLinea = 0;
 	    //----------------Método---------------------------------------------
+	    if(withCntl) {
+		    Map<String, String> prueba = new HashMap<String, String>();
+		    prueba = metodosAux.cabecera(pasoE, letraPaso);
+		    while((linea = lectorJJOB.readLine()) != null) {
+		    	contadorLinea ++;
+		    	switch (contadorLinea) {
+				//Solo modificamos la línea 1 de la plantilla
+		    	case 1:
+					linea = linea.replace("AAAAAA", programa.substring(0,6));
+					break;
+		    	case 6:
+		    		if(prueba.containsKey("OPC" + 0)) {
+			    		for(int x = 0; prueba.containsKey("OPC" + x); x++) {
+			    			if(linea.contains(prueba.get("OPC" + x))) {
+						    	System.out.println("Escribimos: " + linea);
+						    	writerCortex.write(linea);
+						    	writerCortex.newLine();
+			    			}else {
+				    			String lineaEditadaOPC = "//*%" + prueba.get("OPC" + x);
+				    			System.out.println("Escribimos: " + lineaEditadaOPC);
+				    	    	writerCortex.write(lineaEditadaOPC);
+				    	    	writerCortex.newLine();
+					    		}
+			    			}
+		    		}
+		    		linea = "";
+		    		break;
+		    	case 8:
+		    		for(int i = 0; prueba.containsKey("Variable" + i); i++) {
+		    			String lineaEditada = "//   SET " + prueba.get("Variable" + i);
+		    			System.out.println("Escribimos: " + lineaEditada);
+		    	    	writerCortex.write(lineaEditada);
+		    	    	writerCortex.newLine();
+		    		}
+		    		linea = "";
+				default:
+					break;
+				}
+		    	if(!linea.equals("")) {
+			    	System.out.println("Escribimos: " + linea);
+			    	writerCortex.write(linea);
+			    	writerCortex.newLine();
+		    	}
+		    }
+	    }else {
 		    while((linea = lectorJJOB.readLine()) != null) {
 		    	contadorLinea ++;
 		    	switch (contadorLinea) {
@@ -411,7 +471,7 @@ public class mainApp {
 		    	writerCortex.write(linea);
 		    	writerCortex.newLine();
 		    }
-
+	    }
 	    lectorJJOB.close();
 	    Avisos.LOGGER.log(Level.INFO, "Añadir las variables de cabecera");
 	}

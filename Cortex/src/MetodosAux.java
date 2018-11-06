@@ -194,6 +194,7 @@ public class MetodosAux {
 		}else {
 			clave = "ReportKey";
 			valor = "Sacar reporte del PROC - nombre:" + nombre;
+			infoRep.put(clave, valor);
 		}
 		return infoRep;
 	}
@@ -421,4 +422,50 @@ public class MetodosAux {
 		return datos;
 	}
 
+	public Map<String, String> cabecera(int pasoE, String letraPaso) throws IOException {
+		// TODO Auto-generated method stub
+		boolean seguir = true, buscar = false;	
+		String linea, clave, valor = "";
+		int index = 0, contador=0, numVariable=0, numOPC=0;
+		Map<String, String> datos = new HashMap<String, String>();
+		//----------------Fichero de plantilla CNTL--------------------------
+	    FileReader ficheroCNTL = new FileReader("C:\\Cortex\\CNTL\\" + mainApp.programa.substring(0,6) + ".txt");
+	    BufferedReader lectorCNTL = new BufferedReader(ficheroCNTL);
+		//-----------------------------------------------------------------------
+	    
+	    while((linea = lectorCNTL.readLine()) != null && seguir) {
+	    	if(linea.startsWith("//REPORT ")) {
+	    		buscar = true;
+	    	}
+	    	if(buscar) {
+	    		if(linea.startsWith("//*%")){
+	    			index = linea.lastIndexOf("%");
+    				clave = "OPC" + numOPC;
+    				valor = linea.substring(index+1);
+					datos.put(clave, valor);
+					numOPC++;
+	    		}
+    			else if(linea.startsWith("//"+ mainApp.programa.substring(0,6))) {
+    				continue;
+    			}else if(linea.startsWith("// ")) {
+    				index = linea.lastIndexOf(" ");
+    				clave = "Variable" + numVariable;
+    				valor = linea.substring(index+1);
+					datos.put(clave, valor);
+					numVariable++;
+    			}else if(linea.startsWith("//*")) {
+    				index = linea.lastIndexOf("*");
+    				clave = "Comentario" + contador;
+    				valor = linea.substring(index+1);
+					datos.put(clave, valor);
+					contador++;
+    			}
+	    	}	    	
+	    }
+	    lectorCNTL.close();
+		System.out.println("------- Datos sacados del Fichero:  -------");
+	    datos.forEach((k,v) -> System.out.println(k + "-" + v));
+	    System.out.println("----------------------------------------");
+		return datos;
+	}
 }
