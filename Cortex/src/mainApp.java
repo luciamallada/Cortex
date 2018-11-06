@@ -206,10 +206,15 @@ public class mainApp {
 				break;
 			default:
 				if(tipoPaso.equals("NAME=SOF30QM") || tipoPaso.equals("NAME=SOF30Q")) {
-					tipoPaso = "Plantilla QMF - Avisar Aplicación";
+					tipoPaso = "Plantilla QMF - Avisar Aplicación";	
+
 				}
 				WriterPasos.pasoS += 2;
-				String numeroPaso = (WriterPasos.pasoS < 10) ? "0" + String.valueOf(WriterPasos.pasoS) : String.valueOf(WriterPasos.pasoS) ;
+			    String numeroPaso = (WriterPasos.pasoS < 10) ? "0" + String.valueOf(WriterPasos.pasoS) : String.valueOf(WriterPasos.pasoS) ;
+			    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+				String[] valor = {"IF referido a paso no migrado", numeroPaso};
+			    WriterPasos.histPasos.put(numeroPasoE, valor);
+			    
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
 				writerCortex.write("*******AÑADIR PLANTILLA: //"+ letraPaso + numeroPaso + "-" + tipoPaso + "*********");
@@ -217,6 +222,7 @@ public class mainApp {
 				writerCortex.write("**************************************************");
 				writerCortex.newLine();
 				Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Añadir Plantilla: " + tipoPaso);
+				writerPasos.writeIF(datos, writerCortex);
 				
 				break;
 			}

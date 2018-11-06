@@ -110,7 +110,7 @@ public class WriterPasos {
 		}
 	}
 
-	private void writeIF(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
+	public void writeIF(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
 		// TODO Auto-generated method stub
 		if (datos.containsKey("ENDIF")) {
 			System.out.println("Escribimos: " + datos.get("ENDIF"));
@@ -123,7 +123,15 @@ public class WriterPasos {
 			int index2 = valorIF.indexOf(".", index1);
 			String pasoCortex = valorIF.substring(index1 + 4, index2);
 			String[] infoPaso = WriterPasos.histPasos.get(pasoCortex.substring(0,2));
-			valorIF = valorIF.replace(" " + mainApp.letraPaso + pasoCortex + ".", " " + mainApp.letraPaso + infoPaso[1] + "." + infoPaso[0] + ".");
+			if(!infoPaso[0].equals("IF referido a paso no migrado")) {
+				valorIF = valorIF.replace(" " + mainApp.letraPaso + pasoCortex + ".", " " + mainApp.letraPaso + infoPaso[1] + "." + infoPaso[0] + ".");
+			}else {
+				valorIF = valorIF.replace("//", "/*");
+    			Avisos.LOGGER.log(Level.INFO, mainApp.letraPaso + String.valueOf(mainApp.pasoE) + " // IF referido a paso no migrado: ");
+				System.out.println("Escribimos: " + "***** IF REFERIDO A PASO NO MIGRADO *****");
+		    	writerCortex.write("***** IF REFERIDO A PASO NO MIGRADO *****");
+		    	writerCortex.newLine();
+			}
 
 			System.out.println("Escribimos: " + valorIF);
 	    	writerCortex.write(valorIF);
