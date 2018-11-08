@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.Scanner;
 import java.util.logging.Level;
 
+import javax.swing.JOptionPane;
+
 public class Explomig {
 	
 	static ArrayList<String> jclTest = new ArrayList<String>();
@@ -18,14 +20,15 @@ public class Explomig {
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
 		String programa;
-		Scanner sc = new Scanner(System.in);
-		System.out.println("Introduzca el nombre del programa: ");
-		programa = sc.nextLine();
-		programa = programa.toUpperCase();
+
+		
+	    programa = JOptionPane.showInputDialog("Introduzca el nombre del programa:");
+		programa = programa.toUpperCase(); 
 		mainApp.programa = programa;
 		mainApp.letraPaso = programa.substring(5,6);
-		sc.close();
+		
 		Explomig.migracionPREP();
+		
 	}
 	
 	public static void migracionPREP() throws IOException {
