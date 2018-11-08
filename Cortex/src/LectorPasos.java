@@ -58,7 +58,7 @@ public class LectorPasos {
 					}
 				}
 //---------------- Buscamos ficheros Cortex
-				if (pasos.get(i).contains("DATA  *")) {
+				if (pasos.get(i).contains("DATA  *") && mainApp.tipoPaso.equals("DB2") ) {
 					datos.put("FCortex", pasos.get(i).substring(0, pasos.get(i).indexOf(" ")));
 					String aux = "";
 					int lineaSalida = 0, contFCortex = 0;
@@ -149,12 +149,39 @@ public class LectorPasos {
 					valor = "//         ELSE";
 					datos.put(clave, valor);
 				}
+				
+		//---------------- Buscar condicionales
+				if(pasos.get(i).contains("COND1=") || pasos.get(i).contains("COND1=")) {
+					if(pasos.get(i).indexOf("COND1") != -1) {
+						int ind = pasos.get(i).indexOf("COND1");
+						ind = pasos.get(i).indexOf("=", ind);
+						valor = leerCond(pasos.get(i), ind);
+						datos.put("COND1", valor);
+					}
+					if(pasos.get(i).indexOf("COND2") != -1) {
+						int ind = pasos.get(i).indexOf("COND2");
+						ind = pasos.get(i).indexOf("=", ind);
+						valor = leerCond(pasos.get(i), ind);
+						datos.put("COND2", valor);
+					}
+				}
 			}
 		}
 		
 		return datos;	
 	}
 	
+	private String leerCond(String linea, int ind) {
+		String valor = "";
+		for(int i = ind; i < linea.length(); i++) {
+			if(linea.charAt(i) == ')') {
+				valor = linea.substring(ind, i + 1);
+				i = linea.length() + 1;
+			}
+		}
+		return valor;
+	}
+
 	private String leerArchivoSalida(String linea, Map<String, String> datos, int archivosSalida) {
 		// TODO Auto-generated method stub
 		String valor = "";

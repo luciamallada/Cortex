@@ -89,6 +89,19 @@ public class WriterPasos {
 	    writeIF(datos, writerCortex);
 //--------------- Miramos si hay Comentarios:
 	    writeComments(datos, writerCortex);
+//--------------- Escribimos la alerta de Condicionales:
+	    writeCondicionales(datos, writerCortex);    
+	    
+	}
+
+	private void writeCondicionales(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		for (int i = 1; datos.containsKey("COND" + i); i++) {
+			Avisos.LOGGER.log(Level.INFO, mainApp.letraPaso + String.valueOf(mainApp.pasoE) + " // Condicional " + i + ": " + datos.get("COND" + i) );
+			System.out.println("Escribimos: " + "*** CONDICIONAL " + i + ": " + datos.get("COND" + i));
+	    	writerCortex.write("*** CONDICIONAL " + i + ": " + datos.get("COND" + i));
+	    	writerCortex.newLine();
+		}
 	}
 
 	private void writeFCortex(Map<String, String> datos, BufferedWriter writerCortex) throws IOException {
@@ -521,8 +534,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorMAILTXT.close();
-	    writeIF(datos, writerCortex);		
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);   
 	}
 
 	public void writeSORT(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -598,8 +613,10 @@ public class WriterPasos {
 	    	}
 	    }
 	    lectorJSORT.close();
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJFTPSEND(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -714,8 +731,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPSEND.close();		
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 	
 	public void writeJFTPREB(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -817,8 +836,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPREB.close();
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 	
 	public void writeFTPDEL(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -893,8 +914,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPDEL.close();
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
-	    writeComments(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJMAILMSG(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -957,8 +980,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJMAILMSG.close();	
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJFTPSAPP(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1067,8 +1092,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPSAPP.close();
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJMAILANX(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1246,8 +1273,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJMAILANX.close();	
-	    writeIF(datos, writerCortex);	
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 	
 	public void writeJFIVACIO(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1279,8 +1308,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFIVACIO.close();		
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJOPCREC(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1315,8 +1346,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJOPCREC.close();	
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 	
 	public void writeJFUSION(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1432,8 +1465,10 @@ public class WriterPasos {
 	    	}
 	    }
 	    lectorJFUSION.close();
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 	
 	public void writeJGENCUAD(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1544,8 +1579,10 @@ public class WriterPasos {
 	    	}
 	    }
 	    lectorJGENCUAD.close();		
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJPAPYRUS(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1629,8 +1666,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJPAPYRUS.close();
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJPAUSA(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1662,8 +1701,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJPAUSA.close();		
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJSOFCHEC(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1750,12 +1791,10 @@ public class WriterPasos {
 	    	writeJFICHSAL(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
 	    }
 	    
-	  //--------------- Miramos si hay reportes para informar:
 	    writeReports(datos, writerCortex, pasoE, letraPaso);
-	  //--------------- Miramos si hay IF o ENDIF:
 	    writeIF(datos, writerCortex);
-	    
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJSOFINF(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1801,8 +1840,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJSOFINF.close();
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
-	    writeComments(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJFTPS123(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1909,8 +1950,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPS123.close();	
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
-	    writeComments(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJFTPVER(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -1983,8 +2026,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPVER.close();	
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
-	    writeComments(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJMAIL123(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -2164,8 +2209,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    lectorJMAIL123.close();	
-	    writeIF(datos, writerCortex);	
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
+	    writeIF(datos, writerCortex);
 	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 	
 	public void writeJIEBGENE(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -2234,8 +2281,10 @@ public class WriterPasos {
 	    	}
 	    }
 	    lectorJIEBGENE.close();	
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
-	    writeComments(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJBORRARFPasos(Map<String, String> datos, String letraPaso, int pasoE,
@@ -2280,8 +2329,10 @@ public class WriterPasos {
 		    }
     	}
 	    
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
-	    writeComments(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 	public void writeJFIVERDS(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -2326,8 +2377,10 @@ public class WriterPasos {
 	    	writerCortex.newLine();
 	    }
 	    
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
-	    writeComments(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 	
 	public void writeJFTBSEND(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
@@ -2442,8 +2495,10 @@ public class WriterPasos {
 	    	}
 	    }
 	    lectorJFTBSEND.close();	
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
 	    writeIF(datos, writerCortex);
-	    writeComments(datos, writerCortex);	
+	    writeComments(datos, writerCortex);
+	    writeCondicionales(datos, writerCortex);  
 	}
 
 }

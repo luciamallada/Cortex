@@ -34,18 +34,17 @@ public class mainApp {
 	static LectorPasos lectorPasos = new LectorPasos();
 	static WriterPasos writerPasos = new WriterPasos();
 	static Avisos  avisos = new Avisos();
+	static String tipoPaso = "";
 	
 	public static void main(String[] args) throws IOException {
 		// TODO Auto-generated method stub
-		String linea, tipoPaso;
+//		String linea, tipoPaso;
+		String linea;
 		boolean seguir = true, escribir = false;
 		
-		//-------------------------------------Ficheros-------------------------------------------------		
+		//-------------------------------------FICHERO DE ENTRADA---------------------------------------		
 	    FileReader ficheroPCL = new FileReader("C:\\Cortex\\PCL.txt");
 	    BufferedReader lectorPCL = new BufferedReader(ficheroPCL);
-	    
-	    FileWriter ficheroCortex = new FileWriter("C:\\Cortex\\Migrados\\" + programa.substring(0,6) + ".txt");
-	    BufferedWriter writerCortex = new BufferedWriter(ficheroCortex);
         //----------------------------------------------------------------------------------------------	    
 	     
         //------------------------------------PROGRAMA--------------------------------------------------
@@ -80,7 +79,10 @@ public class mainApp {
 		withCntl = cntl == 0 ? true : false;
 		letraPaso = programa.substring(5,6);
 
-	    
+//----------------------- FICHERO DE SALIDA ----------------------------------------------------------
+		FileWriter ficheroCortex = new FileWriter("C:\\Cortex\\Migrados\\" + programa.substring(0,6) + ".txt");
+	    BufferedWriter writerCortex = new BufferedWriter(ficheroCortex);
+//----------------------------------------------------------------------------------------------------	    
 	    Avisos.LOGGER.log(Level.INFO, "Comienza el proceso - PROGRAMA: " + programa.substring(0,6));	
 	    Avisos.LOGGER.log(Level.INFO, "Se está usando el fichero PCL con ultima modificación: " + fecha);
 
