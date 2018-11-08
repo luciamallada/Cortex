@@ -1,3 +1,5 @@
+import java.awt.Dimension;
+import java.awt.Font;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -9,8 +11,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
-
 import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+
 
 
 public class mainApp {
@@ -52,7 +55,12 @@ public class mainApp {
 	    File ficheroFecha = new File("C:\\Cortex\\PCL.txt");
 	    long mod = ficheroFecha.lastModified();
 	    Date fecha = new Date(mod);
-		
+	    
+	    UIManager.put("OptionPane.minimumSize",new Dimension(400,150)); 
+	    UIManager.put("OptionPane.messageFont", new Font("System", Font.PLAIN, 20));
+	    UIManager.put("OptionPane.buttonFont", new Font("System", Font.PLAIN, 20)); 
+	    UIManager.put("TextField.font", new Font("System", Font.PLAIN, 20)); 
+
 	    JOptionPane.showMessageDialog(null, "Última versión PCL: " + fecha); 
 	    programa = JOptionPane.showInputDialog("Introduzca el nombre del programa:");
 		programa = programa.toUpperCase(); 
@@ -245,7 +253,7 @@ public class mainApp {
 	    System.out.println("***** PROCESO Migración a TEST finalizado CORRECTAMENTE *****");
 		Avisos.LOGGER.log(Level.INFO, "***** PROCESO Migración a TEST finalizado CORRECTAMENTE *****");
 		
-		//Explomig.migracionPREP();
+		Explomig.migracionPREP();
 
 	}
 

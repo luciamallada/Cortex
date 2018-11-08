@@ -2567,7 +2567,7 @@ public class WriterPasos {
 	    pasoS += 2;
 	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
-	    String[] valor = {"DB2", numeroPaso};
+	    String[] valor = {"JPGM", numeroPaso};
 	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    Map<String, String> infoFich = new HashMap<String, String>();
@@ -2582,9 +2582,6 @@ public class WriterPasos {
 		    	datos.replace("Borrar" + i, nombre);
 		    	writeJBORRAF(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
 		    }
-//	    	if(!datos.get("Borrar" + String.valueOf(i)).equals("No")) {
-//	    		writeJBORRAF(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
-//	    	}
 	    }
 	    
 	    //---------------- Escribimos la plantilla JDB2
