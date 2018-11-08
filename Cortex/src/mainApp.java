@@ -53,22 +53,6 @@ public class mainApp {
 	    long mod = ficheroFecha.lastModified();
 	    Date fecha = new Date(mod);
 		
-		
-//		Scanner sc = new Scanner(System.in);
-//		System.out.println("Última versión PCL: " + fecha);
-//		sc.nextLine();
-//		System.out.println("Introduzca el nombre del programa: ");
-//		programa = sc.nextLine();
-//		programa = programa.toUpperCase();
-//		System.out.println("¿Con archivo PROC? SI-NO");
-//		if(sc.nextLine().equalsIgnoreCase("NO")) {
-//			withProc = false;
-//		}
-//		System.out.println("¿Con archivo CNTL? SI-NO");
-//		if(sc.nextLine().equalsIgnoreCase("SI")) {
-//			withProc = true;
-//		}
-//		sc.close();
 	    JOptionPane.showMessageDialog(null, "Última versión PCL: " + fecha); 
 	    programa = JOptionPane.showInputDialog("Introduzca el nombre del programa:");
 		programa = programa.toUpperCase(); 

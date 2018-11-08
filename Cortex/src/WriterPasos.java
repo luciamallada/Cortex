@@ -671,6 +671,12 @@ public class WriterPasos {
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.newLine();
 	    		}
+	    		if(datos.get("FDEST").contains("*")) {
+	    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.newLine();
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
+	    		}
 	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FDEST"));
 	    		if(datos.containsKey("MSG") || datos.containsKey("DIR")) {
 	    			fit.append(",");
@@ -885,6 +891,12 @@ public class WriterPasos {
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.newLine();
 	    		}
+	    		if(datos.get("FITXER").contains("*")) {
+	    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.newLine();
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
+	    		}
 	    	    StringBuffer forig = new StringBuffer("FIT=" + datos.get("FITXER"));
 	    	    if(datos.containsKey("DIR")) {
 	    	    	forig.append(",");
@@ -1036,6 +1048,12 @@ public class WriterPasos {
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.newLine();
+	    		}
+	    		if(datos.get("FDEST").contains("*")) {
+	    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.newLine();
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
 	    		}
 	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FDEST"));
 	    		if(datos.containsKey("MSG") || datos.containsKey("DIR")) {
@@ -1895,6 +1913,12 @@ public class WriterPasos {
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.newLine();
 	    		}
+	    		if(datos.get("FDEST").contains("*")) {
+	    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.newLine();
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
+	    		}
 	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FDEST"));
 	    		if(datos.containsKey("MSG") || datos.containsKey("DIR")) {
 	    			fit.append(",");
@@ -1996,6 +2020,12 @@ public class WriterPasos {
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.newLine();
+	    		}
+	    		if(datos.get("FITXER").contains("*")) {
+	    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.newLine();
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
 	    		}
 	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FITXER"));
 	    		if(datos.containsKey("DIR")) {
@@ -2432,6 +2462,12 @@ public class WriterPasos {
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.newLine();
+	    		}
+	    		if(datos.get("FDEST").contains("*")) {
+	    			System.out.println("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.write("******** FICHERO CON ASTERISCOS - AVISAR APLICACIÓN ******");
+			    	writerCortex.newLine();
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Fichero con * - Avisar Aplicacion ");
 	    		}
 	    		StringBuffer fit = new StringBuffer("FIT=" + datos.get("FDEST"));
 	    		if(datos.containsKey("MSG") || datos.containsKey("DIR")) {
