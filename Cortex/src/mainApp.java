@@ -201,6 +201,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFTBSEND(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "JPGM":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJPGM(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "ignore":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeComments(datos, writerCortex);

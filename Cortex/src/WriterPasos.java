@@ -55,14 +55,14 @@ public class WriterPasos {
 	    		if(!datos.containsKey("PARDB2")) {
 	    			continue;
 	    		}
-	    		if (metodosAux.checkLiteralesPARDB2(datos.get("PARDB2"))) {
+	    		if (metodosAux.checkLiteralesPARDB2(datos.get("PARDB2").replace("*&", "-&"))) {
 	    			writerCortex.write("****** LITERALES EN LOS PARAMETROS DEL PROGRAMA: " + datos.get("PARDB2") + "*****");
 	    	    	writerCortex.newLine();
 	    	    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Literales en el programa: "
 	    	    			+ datos.get("PARDB2"));
 	    		}
 	    		
-	    		linea = linea.replace("&VAR1-&VAR2-..." , metodosAux.tratarLiteralesPARDB2(datos.get("PARDB2")));
+	    		linea = linea.replace("&VAR1-&VAR2-..." , metodosAux.tratarLiteralesPARDB2(datos.get("PARDB2").replace("*&", "-&")));
 			default:
 				break;
 	    	}
@@ -554,11 +554,10 @@ public class WriterPasos {
 	    histPasos.put(numeroPasoE, valor);
 	    int contadorLinea = 0;
 	    int i = 1;
-	    Map<String, String> infoFich = new HashMap<String, String>();
-	    
+	    Map<String, String> infoSortOut = new HashMap<String, String>();
 	    //----------------Método---------------------------------------------
 	    
-	    infoFich = metodosAux.infoSort(pasoE, letraPaso);
+	    infoSortOut = metodosAux.infoFichero(pasoE, letraPaso, "SORTOUT");
 	    //---------------- Escribimos la plantilla JSORT
 	    while((linea = lectorJSORT.readLine()) != null) {
 	    	contadorLinea ++;
@@ -566,28 +565,35 @@ public class WriterPasos {
 	    	case 2:
 	    		linea = linea.replace("//---D1", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
 	    		i++;
-	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoSortOut.get("DSN"));
 				break;
 	    	case 4:
 	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
 	    		break;
 	    	case 5:
-	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("SORTIN"));
+	    		ArrayList<String> sortIn = new ArrayList<String>();
+	    		sortIn =  metodosAux.infoSORTIN(pasoE, letraPaso);
+	    		for (int j = 0; j < sortIn.size(); j++) {
+	    			System.out.println("Escribimos: " + sortIn.get(j));
+		    		writerCortex.write(sortIn.get(j));
+		    		writerCortex.newLine();
+	    		}
+	    		linea = "";
 	    		break;
 	    	case 6:
-	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
+	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoSortOut.get("DSN"));
 	    		break;
 	    	case 8:
-	    		if(infoFich.containsKey("MGMTCLAS")) {
+	    		if(infoSortOut.containsKey("MGMTCLAS")) {
 	    			linea = linea.replace("//*", "// ");
-	    			linea = linea.replace("EXLIXXXX", infoFich.get("MGMTCLAS"));
+	    			linea = linea.replace("EXLIXXXX", infoSortOut.get("MGMTCLAS"));
 	    		}
 	    		break;
 	    	case 9:
-	    		linea = linea.replace("XXX", infoFich.get("LRECL"));
+	    		linea = linea.replace("XXX", infoSortOut.get("LRECL"));
 	    		break;
 	    	case 10:
-	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoFich.get("Definicion"));
+	    		linea = linea.replace("(LONGREG,(KKK,KK))", infoSortOut.get("Definicion"));
 	    		break;
 	    	case 12:
 	    		for (int j = 1; datos.containsKey("SORT" + j); j++) {
@@ -650,7 +656,14 @@ public class WriterPasos {
 	    		linea = linea.replace("DES=destino,                            ", des);
 				break;
 	    	case 4:
-	    	    StringBuffer host = new StringBuffer("HOST=Z." + metodosAux.infoFTP(pasoE, letraPaso, datos.get("FHOST")) + ",");
+	    		String dsn = metodosAux.infoFTP(pasoE, letraPaso, datos.get("FHOST"));
+	    		if (dsn.equals("")){
+	    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // DSN Fichero no encontrada ");
+	    			System.out.println("***** REVISAR FICHERO - DSN NO ENCONTRADA *****");
+	    	    	writerCortex.write("***** REVISAR FICHERO - DSN NO ENCONTRADA *****");
+	    	    	writerCortex.newLine();
+	    		}
+	    	    StringBuffer host = new StringBuffer("HOST=Z." + dsn + ",");
 	    	    spaces = 40 - host.length();  		
 	    		for (int j = 0; j < spaces; j++) {
 	    			host.append(" ");
@@ -2442,7 +2455,14 @@ public class WriterPasos {
 	    		linea = linea.replace("DES=destino,                            ", des);
 				break;
 	    	case 4:
-	    	    StringBuffer host = new StringBuffer("HOST=Z." + metodosAux.infoFTP(pasoE, letraPaso, datos.get("FHOST")) + ",");
+	    		String dsn = metodosAux.infoFTP(pasoE, letraPaso, datos.get("FHOST"));
+	    		if (dsn.equals("")){
+	    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // DSN Fichero no encontrada ");
+	    			System.out.println("***** REVISAR FICHERO - DSN NO ENCONTRADA *****");
+	    	    	writerCortex.write("***** REVISAR FICHERO - DSN NO ENCONTRADA *****");
+	    	    	writerCortex.newLine();
+	    		}
+	    	    StringBuffer host = new StringBuffer("HOST=Z." + dsn + ",");
 	    	    spaces = 40 - host.length();  		
 	    		for (int j = 0; j < spaces; j++) {
 	    			host.append(" ");
@@ -2537,4 +2557,83 @@ public class WriterPasos {
 	    writeCondicionales(datos, writerCortex);  
 	}
 
+	public void writeJPGM(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {
+		// TODO Auto-generated method stub
+		//----------------Fichero de plantilla JPGM--------------------------
+	    FileReader ficheroJPGM = new FileReader("C:\\Cortex\\Plantillas\\JPGM.txt");
+	    BufferedReader lectorJPGM = new BufferedReader(ficheroJPGM);	
+	    //----------------Variables------------------------------------------
+	    String linea, nombre;
+	    pasoS += 2;
+	    String numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
+	    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+	    String[] valor = {"DB2", numeroPaso};
+	    histPasos.put(numeroPasoE, valor);
+	    int contadorLinea = 0;
+	    Map<String, String> infoFich = new HashMap<String, String>();
+	    
+	    //----------------Método---------------------------------------------
+	    
+	    //--------------- Miramos si hay archivos para borrar antes de ejecutar:
+	    for (int i = 1; datos.containsKey("Salida" + String.valueOf(i)); i++) {
+	    	nombre = datos.get("Salida" + String.valueOf(i));
+		    infoFich = metodosAux.infoFichero(pasoE, letraPaso, nombre);
+		    if(infoFich.get("DISP").equals("NEW")) {
+		    	datos.replace("Borrar" + i, nombre);
+		    	writeJBORRAF(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
+		    }
+//	    	if(!datos.get("Borrar" + String.valueOf(i)).equals("No")) {
+//	    		writeJBORRAF(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
+//	    	}
+	    }
+	    
+	    //---------------- Escribimos la plantilla JDB2
+	    while((linea = lectorJPGM.readLine()) != null) {
+	    	contadorLinea ++;
+	    	switch (contadorLinea) {
+	    	case 2:
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		linea = linea.replace("NOMPROGR", datos.get("PGM"));
+	    		if(!datos.containsKey("PARM")) {
+	    			linea = linea.replace(datos.get("PGM") + ",PARM=&VAR1-&VAR2-...", datos.get("PGM"));
+	    		}else {
+	    			if (metodosAux.checkLiteralesPARDB2(datos.get("PARM").replace("*", "-"))) {
+		    			writerCortex.write("****** LITERALES EN LOS PARAMETROS DEL PROGRAMA: " + datos.get("PARDB2") + "*****");
+		    	    	writerCortex.newLine();
+		    	    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Literales en el programa: "
+		    	    			+ datos.get("PARM"));
+		    		}
+	    			linea = linea.replace("&VAR1-&VAR2-...", "('" + datos.get("PARM").replace("*", "-") + "')");
+	    		}	    		
+				break;
+			default:
+				break;
+	    	}
+	    	System.out.println("Escribimos: " + linea);
+	    	writerCortex.write(linea);
+	    	writerCortex.newLine();
+	    }
+	    lectorJPGM.close();
+//--------------- Miramos si hay ficheros Cortex:
+	    if (datos.containsKey("FCortex")) {
+	    	writeFCortex(datos, writerCortex);
+	    }
+//--------------- Miramos si hay ficheros de entrada:
+	    for (int i = 1; datos.containsKey("Entrada" + String.valueOf(i)); i++) {
+	    	writeJFICHENT(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
+	    }
+//--------------- Miramos si hay ficheros de Salida:
+	    for (int i = 1; datos.containsKey("Salida" + String.valueOf(i)); i++) {
+	    	writeJFICHSAL(datos, numeroPaso, i, letraPaso, writerCortex, pasoE);
+	    }
+//--------------- Miramos si hay reportes para informar:
+	    writeReports(datos, writerCortex, pasoE, letraPaso);
+//--------------- Miramos si hay IF o ENDIF:
+	    writeIF(datos, writerCortex);
+//--------------- Miramos si hay Comentarios:
+	    writeComments(datos, writerCortex);
+//--------------- Escribimos la alerta de Condicionales:
+	    writeCondicionales(datos, writerCortex);    
+	    
+	}
 }

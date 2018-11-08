@@ -139,7 +139,7 @@ public class MetodosAux {
 			    		primario = 15;
 			    		secundario = 1;
 						Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " //Comprobar fichero CYL migrado correctamente");
-			    		infoFich.put("LRECL","CYL");
+			    		//infoFich.put("LRECL","CYL");
 			    	}
 			    }
 		    }
@@ -236,25 +236,45 @@ public class MetodosAux {
 		return valor;
 	}
 
-	public Map<String, String> infoSort(int paso, String letraPaso) throws IOException {
-		// TODO Auto-generated method stub
-	    Map<String, String> infoFichIn = new HashMap<String, String>();
-	    Map<String, String> infoFich   = new HashMap<String, String>();
-	    String clave, valor;
-	    
-	    if (mainApp.withProc) {
-		    infoFichIn = infoFichero(paso, letraPaso, "SORTIN");
-		    infoFich   = infoFichero(paso, letraPaso, "SORTOUT");    
-		    clave = "SORTIN";
-		    valor = infoFichIn.get("DSN");
-		    infoFich.put(clave, valor);
-	    }else {
-	    	infoFich   = infoFichero(paso, letraPaso, "SORTOUT");  
-	    	infoFich.put("SORTIN", "SORTIN");;
-	    }
-		return infoFich;
-	}
+//	public Map<String, String> infoSort(int paso, String letraPaso) throws IOException {
+//		// TODO Auto-generated method stub
+//	    Map<String, String> infoFich   = new HashMap<String, String>();
+//	    String clave, valor;
+//	    
+//	    if (mainApp.withProc) {
+//		    infoFich   = infoFichero(paso, letraPaso, "SORTOUT");    
+//	    }else {
+//	    	infoFich   = infoFichero(paso, letraPaso, "SORTOUT");  
+//	    }
+//		return infoFich;
+//	}
 	
+	public ArrayList<String> infoSORTIN(int pasoE, String letraPaso) throws IOException {
+		// TODO Auto-generated method stub
+		ArrayList<String> infoFichero = new ArrayList<String>();
+		ArrayList<String> infoFicheroProc = new ArrayList<String>();
+		int ini = 0, fin = 0;
+		
+		if(mainApp.withProc) {
+			String primero = "", segundo = "", tercero = "";
+			infoFicheroProc = buscaInfoProc(pasoE, letraPaso, "SORTIN");
+			for(int i = 0; i < infoFicheroProc.size(); i++) {
+				fin = infoFicheroProc.get(i).indexOf("DSN=");
+				primero = infoFicheroProc.get(i).substring(0, fin);
+				ini = fin;
+				fin = infoFicheroProc.get(i).indexOf(",DISP=");
+				tercero = infoFicheroProc.get(i).substring(ini, ini + 4) + "Z." + infoFicheroProc.get(i).substring(ini + 4, fin);
+				ini = fin + 1;
+				segundo = infoFicheroProc.get(i).substring(ini) + ",";
+				infoFichero.add(primero + segundo + tercero);	
+			}
+		}else {
+			infoFichero.add("**** No encontrado fichero SORTIN");
+			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " //Comprobar fichero CYL migrado correctamente");
+		}
+		return infoFichero;
+	}
+
 	public Map<String, String> infoFtpReb(int pasoE, String letraPaso) throws IOException {
 		// TODO Auto-generated method stub
 		Map<String, String> infoFich   = new HashMap<String, String>();

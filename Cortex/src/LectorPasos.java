@@ -58,7 +58,7 @@ public class LectorPasos {
 					}
 				}
 //---------------- Buscamos ficheros Cortex
-				if (pasos.get(i).contains("DATA  *") && mainApp.tipoPaso.equals("DB2") ) {
+				if (pasos.get(i).contains("DATA  *") && (mainApp.tipoPaso.equals("DB2") || mainApp.tipoPaso.equals("JPGM"))) {
 					datos.put("FCortex", pasos.get(i).substring(0, pasos.get(i).indexOf(" ")));
 					String aux = "";
 					int lineaSalida = 0, contFCortex = 0;
@@ -105,12 +105,14 @@ public class LectorPasos {
 								valor = pasos.get(i + k);
 								datos.put(clave, valor);
 							}
+							archivosEntrada++;
 						}else {
 							for (int k = 1; k <= totalComents; k++) {
 								clave = "ComFichS" + String.valueOf(archivosSalida + 1) + String.valueOf(k);
 								valor = pasos.get(i + k);
 								datos.put(clave, valor);
 							}
+							archivosSalida++;
 						}
 					i = j-1;
 					}else {

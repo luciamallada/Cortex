@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.logging.Level;
 
 import javax.swing.JOptionPane;
@@ -35,8 +34,7 @@ public class Explomig {
 		// TODO Auto-generated method stub
 		LectorPasos lectorPasos = new LectorPasos();
 		String linea;
-		boolean librerias = true;
-		
+		boolean librerias = true;	
 		int i = 0;
 		//-------------------------------------Ficheros-------------------------------------------------		
 	    FileReader ficheroTEST = new FileReader("C:\\Cortex\\Migrados\\" + mainApp.programa.substring(0,6) + ".txt");
