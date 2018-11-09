@@ -193,10 +193,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFTPVER(datos, letraPaso, pasoE, writerCortex);
 				break;
-			case "NAME=MAIL123":
-				datos = lectorPasos.leerPaso(pasos);
-				writerPasos.writeJMAIL123(datos, letraPaso, pasoE, writerCortex);
-				break;
+//			case "NAME=MAIL123":
+//				datos = lectorPasos.leerPaso(pasos);
+//				writerPasos.writeJMAIL123(datos, letraPaso, pasoE, writerCortex);
+//				break;
 			case "JBORRARF":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJBORRARFPasos(datos, letraPaso, pasoE, writerCortex);
@@ -221,6 +221,9 @@ public class mainApp {
 				if(tipoPaso.equals("NAME=SOF30QM") || tipoPaso.equals("NAME=SOF30Q")) {
 					tipoPaso = "Plantilla QMF - Avisar Aplicación";	
 
+				}
+				if(tipoPaso.equals("NAME=MAIL123")) {
+					tipoPaso = "Plantilla JMAIL123 - Revisar";	
 				}
 				WriterPasos.pasoS += 2;
 			    String numeroPaso = (WriterPasos.pasoS < 10) ? "0" + String.valueOf(WriterPasos.pasoS) : String.valueOf(WriterPasos.pasoS) ;
