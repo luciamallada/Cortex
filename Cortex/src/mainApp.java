@@ -1,3 +1,4 @@
+import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.io.BufferedReader;
@@ -84,7 +85,7 @@ public class mainApp {
 	    	if(linea.startsWith(":/ ADD NAME=" + programa.substring(0,6)) || escribir) {
 	    		escribir = true;
 	    		fichero.add(linea);
-	    		if(linea.startsWith(":/ ADD NAME=") && !linea.startsWith(":/ ADD NAME=" + programa.substring(0,6))) {
+	    		if(linea.startsWith(":/ ADD NAME=") && !linea.startsWith(":/ ADD NAME=" + programa.substring(0,6) + " ")) {
 		    		escribir = false;
 		    		seguir = false;
 		    	}
@@ -263,6 +264,7 @@ public class mainApp {
 		Avisos.LOGGER.log(Level.INFO, "***** PROCESO Migración a TEST finalizado CORRECTAMENTE *****");
 		
 		Explomig.migracionPREP();
+		abrirIncidencias();
 
 	}
 
@@ -464,6 +466,7 @@ public class mainApp {
 		    	}
 		    }
 	    }else {
+		    Avisos.LOGGER.log(Level.INFO, "Añadir las variables de cabecera");
 		    while((linea = lectorJJOB.readLine()) != null) {
 		    	contadorLinea ++;
 		    	switch (contadorLinea) {
@@ -480,6 +483,19 @@ public class mainApp {
 		    }
 	    }
 	    lectorJJOB.close();
-	    Avisos.LOGGER.log(Level.INFO, "Añadir las variables de cabecera");
+	}
+
+	private static void abrirIncidencias() {
+		// TODO Auto-generated method stub
+		try {
+		      Desktop desktop = null;
+		      if (Desktop.isDesktopSupported()) {
+		        desktop = Desktop.getDesktop();
+		      }
+
+		       desktop.open(new File("C:\\Cortex\\incidencias.log"));
+		    } catch (IOException ioe) {
+		      ioe.printStackTrace();
+		    }
 	}
 }

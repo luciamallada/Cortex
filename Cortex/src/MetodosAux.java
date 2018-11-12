@@ -446,7 +446,7 @@ public class MetodosAux {
 		// TODO Auto-generated method stub
 		boolean seguir = true, buscar = false;	
 		String linea, clave, valor = "";
-		int index = 0, contador=0, numVariable=0, numOPC=0;
+		int index = 0, contador=0, numVariable=0, numOPC=0, finIndex = 0;
 		Map<String, String> datos = new HashMap<String, String>();
 		//----------------Fichero de plantilla CNTL--------------------------
 	    FileReader ficheroCNTL = new FileReader("C:\\Cortex\\CNTL\\" + mainApp.programa.substring(0,6) + ".txt");
@@ -471,6 +471,10 @@ public class MetodosAux {
     				index = linea.lastIndexOf(" ");
     				clave = "Variable" + numVariable;
     				valor = linea.substring(index+1);
+    				if(valor.charAt(valor.length()-1)==',') {
+    					finIndex = valor.length() + index;
+    					valor = linea.substring(index+1,finIndex);	
+    				}
 					datos.put(clave, valor);
 					numVariable++;
     			}else if(linea.startsWith("//*")) {

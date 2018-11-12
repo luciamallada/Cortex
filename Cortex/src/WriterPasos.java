@@ -68,7 +68,7 @@ public class WriterPasos {
 				break;
 	    	}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorDB2.close();
@@ -285,7 +285,7 @@ public class WriterPasos {
 	    		    	
 		    	if (!linea.equals("")) {
 			    	System.out.println("Escribimos: " + linea);
-			    	writerCortex.write(linea);
+			    	writerCortex.write(linea.trim());
 			    	writerCortex.newLine();
 		    	}
 		    }
@@ -334,7 +334,7 @@ public class WriterPasos {
 					break;
 		    	}
 		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
+		    	writerCortex.write(linea.trim());
 		    	writerCortex.newLine();
 		    }
 	    }else {
@@ -379,7 +379,7 @@ public class WriterPasos {
 				break;
 	    	}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJBORRAF.close();	 
@@ -536,7 +536,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorMAILTXT.close();
@@ -620,7 +620,7 @@ public class WriterPasos {
 			}
 	    	if (!linea.equals("")) {
 	    		System.out.println("Escribimos: " + linea);
-	    		writerCortex.write(linea);
+	    		writerCortex.write(linea.trim());
 	    		writerCortex.newLine();
 	    	}
 	    }
@@ -752,7 +752,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPSEND.close();		
@@ -857,7 +857,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPREB.close();
@@ -941,7 +941,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPDEL.close();
@@ -1007,7 +1007,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJMAILMSG.close();	
@@ -1125,7 +1125,7 @@ public class WriterPasos {
 				break;	
 	    	}
 		    System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPSAPP.close();
@@ -1311,7 +1311,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJMAILANX.close();	
@@ -1346,7 +1346,7 @@ public class WriterPasos {
 				break;			    	
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJFIVACIO.close();		
@@ -1384,7 +1384,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJOPCREC.close();	
@@ -1502,7 +1502,7 @@ public class WriterPasos {
 			}
 	    	if(!linea.equals("")) {
 		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
+		    	writerCortex.write(linea.trim());
 		    	writerCortex.newLine();
 	    	}
 	    }
@@ -1616,7 +1616,7 @@ public class WriterPasos {
 			}
 	    	if(!linea.equals("")) {
 		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
+		    	writerCortex.write(linea.trim());
 		    	writerCortex.newLine();
 	    	}
 	    }
@@ -1704,7 +1704,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJPAPYRUS.close();
@@ -1739,7 +1739,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJPAUSA.close();		
@@ -1818,7 +1818,7 @@ public class WriterPasos {
 			}
 	    	if (!linea.equals("")) {
 		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
+		    	writerCortex.write(linea.trim());
 		    	writerCortex.newLine();
 	    	}
 	    }
@@ -1878,7 +1878,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJSOFINF.close();
@@ -1994,7 +1994,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPS123.close();	
@@ -2076,7 +2076,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJFTPVER.close();	
@@ -2259,7 +2259,7 @@ public class WriterPasos {
 				break;
 			}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJMAIL123.close();	
@@ -2330,7 +2330,7 @@ public class WriterPasos {
 			}
 	    	if(!linea.equals("")) {
 		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
+		    	writerCortex.write(linea.trim());
 		    	writerCortex.newLine();
 	    	}
 	    }
@@ -2416,7 +2416,7 @@ public class WriterPasos {
 				break;
 	    	}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJFIVERDS.close();	 
@@ -2557,7 +2557,7 @@ public class WriterPasos {
 			}
 	    	if(!linea.equals("")) {
 		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea);
+		    	writerCortex.write(linea.trim());
 		    	writerCortex.newLine();
 	    	}
 	    }
@@ -2618,7 +2618,7 @@ public class WriterPasos {
 				break;
 	    	}
 	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea);
+	    	writerCortex.write(linea.trim());
 	    	writerCortex.newLine();
 	    }
 	    lectorJPGM.close();
