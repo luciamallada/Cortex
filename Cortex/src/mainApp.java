@@ -487,7 +487,7 @@ public class mainApp {
 
 	private static void abrirIncidencias() {
 		// TODO Auto-generated method stub
-		try {
+		try { 
 		      Desktop desktop = null;
 		      if (Desktop.isDesktopSupported()) {
 		        desktop = Desktop.getDesktop();
