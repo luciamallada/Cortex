@@ -13,6 +13,7 @@ public class WriterPasos {
 	MetodosAux metodosAux = new MetodosAux();
 	public static int pasoS = -1;
 	public static Map<String, String[]> histPasos = new HashMap<String, String[]>();
+	public static boolean masMail = false;
 	
 	
 
@@ -446,16 +447,21 @@ public class WriterPasos {
 	    	case 9:
 	    		if (datos.get("ADRDE3") == null && fi == "") {
 					linea = linea.trim();
+					masMail = false;
 				}
 				else {
 					salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
 					linea = salida.get(0);
 					fi = salida.get(1);
 					if (!fi.isEmpty()) {
-		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // No caben todos los correos - Falta añadir: " + fi);
-		    			System.out.println("Escribimos: " + "***** No caben todos los correos. Revisar  ****");
-		    	    	writerCortex.write("***** No caben todos los correos. Revisar  ****");
-		    	    	writerCortex.newLine();
+						masMail = true;
+						datos.put("ADRDES", fi);
+						datos.put("ADRDE1", "");
+						datos.put("ADRDE2", "");
+//		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // No caben todos los correos - Falta añadir: " + fi);
+//		    			System.out.println("Escribimos: " + "***** No caben todos los correos. Revisar  ****");
+//		    	    	writerCortex.write("***** No caben todos los correos. Revisar  ****");
+//		    	    	writerCortex.newLine();
 		    	    	fi = "";
 					}
 				}
@@ -1217,16 +1223,21 @@ public class WriterPasos {
 	    	case 11:
 	    		if (datos.get("ADRDE3") == null && fi == "") {
 					linea = linea.trim();
+					masMail = false;
 				}
 				else {
 					salida = MetodosAux.ComprobarTamañoLinea("ADRDE3", linea, fi, datos); 
 					linea = salida.get(0);
 					fi = salida.get(1);
 					if (!fi.isEmpty()) {
-		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // No caben todos los correos - Falta añadir: " + fi);
-		    			System.out.println("Escribimos: " + "***** No caben todos los correos. Revisar  ****");
-		    	    	writerCortex.write("***** No caben todos los correos. Revisar  ****");
-		    	    	writerCortex.newLine();
+						masMail = true;
+						datos.put("ADRDES", fi);
+						datos.put("ADRDE1", "");
+						datos.put("ADRDE2", "");
+//		    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // No caben todos los correos - Falta añadir: " + fi);
+//		    			System.out.println("Escribimos: " + "***** No caben todos los correos. Revisar  ****");
+//		    	    	writerCortex.write("***** No caben todos los correos. Revisar  ****");
+//		    	    	writerCortex.newLine();
 		    	    	fi = "";
 					}
 				}

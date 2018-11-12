@@ -122,6 +122,9 @@ public class mainApp {
 			case "NAME=MAILTXT":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeMAILTXT(datos, letraPaso, pasoE, writerCortex);
+				while(WriterPasos.masMail) {
+					writerPasos.writeMAILTXT(datos, letraPaso, pasoE, writerCortex);
+				}
 				break;
 			case "SORT":
 				datos = lectorPasos.leerPasoSort(pasos);
@@ -150,6 +153,9 @@ public class mainApp {
 			case "NAME=MAIL":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJMAILANX(datos, letraPaso, pasoE, writerCortex);
+				while(WriterPasos.masMail) {
+					writerPasos.writeMAILTXT(datos, letraPaso, pasoE, writerCortex);
+				}
 				break;
 			case "NAME=VERBUIT":
 				datos = lectorPasos.leerPaso(pasos);

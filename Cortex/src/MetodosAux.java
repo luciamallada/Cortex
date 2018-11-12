@@ -374,9 +374,9 @@ public class MetodosAux {
 			if (fi.isEmpty()) {
 				fi = linea.trim()+ fi.trim() + datos.get(cabecera);
 			}else {
-				fi = linea.trim()+ fi.trim() + " " + datos.get(cabecera);
+				String masdatos = datos.get(cabecera) != null ? datos.get(cabecera) : "";
+				fi = linea.trim()+ fi.trim() + " " + masdatos;
 			}
-			
 			for(int i = 72; i > 0; i--) {
 				int index = fi.lastIndexOf(" ", i);
 				index = index == -1 ? fi.lastIndexOf(";", i) : index;
