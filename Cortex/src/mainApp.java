@@ -109,8 +109,10 @@ public class mainApp {
 // ------------ Para cada paso, leemos el tipo de paso y escribimos su correspondiente plantilla
 		    switch (tipoPaso) {
 		    case "Inicio":
+		    	String comentarioAnterior = "";
 				for(int i = 0; i < pasos.size(); i++) {
-					if (pasos.get(i).startsWith("*")){
+					if (pasos.get(i).startsWith("*") && !pasos.get(i).equals(comentarioAnterior)){
+						comentarioAnterior = pasos.get(i);
 						writerCortex.write("//" + pasos.get(i));
 						writerCortex.newLine();
 					}
