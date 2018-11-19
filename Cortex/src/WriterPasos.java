@@ -360,29 +360,31 @@ public class WriterPasos {
 	    nombre = datos.get("Borrar" + String.valueOf(i));
 	    infoFich = metodosAux.infoFichero(pasoE, letraPaso, nombre);
 	    
-	    while((linea = lectorJBORRAF.readLine()) != null) {
-	    	contadorLinea ++;
-	    	if(i > 1 && contadorLinea == 1) {
-	    		//No queremos que vuelva a escribir la primera línea de la plantilla
-	    		continue;
-	    	}
-	    	switch (contadorLinea) {
-	    	case 2:
-	    		if(i < 10) {
-	    			linea = linea.replace("//---D-", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
-	    		}else {
-	    			linea = linea.replace("//---D- ", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
-	    		}
-	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
-	    		break;
-	    	default:
-				break;
-	    	}
-	    	System.out.println("Escribimos: " + linea);
-	    	writerCortex.write(linea.replaceAll("\\s*$",""));
-	    	writerCortex.newLine();
+	    if (!infoFich.containsKey("DUMMY")) {
+		    while((linea = lectorJBORRAF.readLine()) != null) {
+		    	contadorLinea ++;
+		    	if(i > 1 && contadorLinea == 1) {
+		    		//No queremos que vuelva a escribir la primera línea de la plantilla
+		    		continue;
+		    	}
+		    	switch (contadorLinea) {
+		    	case 2:
+		    		if(i < 10) {
+		    			linea = linea.replace("//---D-", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
+		    		}else {
+		    			linea = linea.replace("//---D- ", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
+		    		}
+		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
+		    		break;
+		    	default:
+					break;
+		    	}
+		    	System.out.println("Escribimos: " + linea);
+		    	writerCortex.write(linea.replaceAll("\\s*$",""));
+		    	writerCortex.newLine();
+		    }
+		    lectorJBORRAF.close();	 
 	    }
-	    lectorJBORRAF.close();	 
 	}
 
 	public void writeMAILTXT(Map<String, String> datos, String letraPaso, int pasoE, BufferedWriter writerCortex) throws IOException {

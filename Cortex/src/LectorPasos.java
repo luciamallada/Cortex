@@ -153,7 +153,7 @@ public class LectorPasos {
 				}
 				
 		//---------------- Buscar condicionales
-				if(pasos.get(i).contains("COND1=") || pasos.get(i).contains("COND1=")) {
+				if(pasos.get(i).contains("COND1=") || pasos.get(i).contains("COND2=")) {
 					if(pasos.get(i).indexOf("COND1") != -1) {
 						int ind = pasos.get(i).indexOf("COND1");
 						ind = pasos.get(i).indexOf("=", ind);
@@ -173,7 +173,7 @@ public class LectorPasos {
 		return datos;	
 	}
 	
-	private String leerCond(String linea, int ind) {
+	public String leerCond(String linea, int ind) {
 		String valor = "";
 		for(int i = ind; i < linea.length(); i++) {
 			if(linea.charAt(i) == ')') {

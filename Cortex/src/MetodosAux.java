@@ -366,7 +366,8 @@ public class MetodosAux {
 //				}else {
 //					salida.add(0 ,linea.trim() + fi.trim() + " " + datos.get(cabecera));
 //				}
-				salida.add(0 ,linea.trim() + fi.trim() + datos.get(cabecera));
+//				salida.add(0 ,linea.trim() + fi.trim() + datos.get(cabecera));
+				salida.add(0 ,linea.trim() + fi + datos.get(cabecera));
 			}
 			salida.add(1, "");			 
 		}
@@ -383,7 +384,7 @@ public class MetodosAux {
 				
 				if(index != -1) {
 					salida.add(0, fi.substring(0, index));
-					salida.add(1, fi.substring(index + 1) + " ");
+					salida.add(1, fi.substring(index + 1).trim() + " ");
 					i = -1;
 				}
 			}			
@@ -487,7 +488,7 @@ public class MetodosAux {
 	    	}	    	
 	    }
 	    lectorCNTL.close();
-		System.out.println("------- Datos sacados del Fichero:  -------");
+		System.out.println("------- Datos sacados de la Cabecera:  -------");
 	    datos.forEach((k,v) -> System.out.println(k + "-" + v));
 	    System.out.println("----------------------------------------");
 		return datos;
