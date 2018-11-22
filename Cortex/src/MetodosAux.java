@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class MetodosAux {
+	private static final String CONST_EQUALS = "=";
+	private static final String CONST_DEFINICION = "Definicion";
 	static Avisos  avisos = new Avisos();
 	LectorPasos lectorPasos =  new LectorPasos();
 
@@ -27,7 +29,7 @@ public class MetodosAux {
 	
 	public String tratarLiteralesPARDB2(String PARDB2) {
 		// TODO Auto-generated method stub
-		int index = PARDB2.indexOf("=");
+		int index = PARDB2.indexOf(CONST_EQUALS);
 		
 		while (index != -1) {
 			for (int i = index; i >= 0; i--) {
@@ -38,7 +40,7 @@ public class MetodosAux {
 					i = -1;
 				}
 			}
-			index = PARDB2.indexOf("=", index+1);
+			index = PARDB2.indexOf(CONST_EQUALS, index+1);
 		}
 		if (index != -1) {
 			
@@ -144,7 +146,7 @@ public class MetodosAux {
 			    }
 		    }
 		    
-		    clave = "Definicion";
+		    clave = CONST_DEFINICION;
 		    valor = "(" + infoFich.get("LRECL") + ",(" + String.valueOf(primario) + "," + String.valueOf(secundario) + "))";
 			infoFich.put(clave, valor);
 			
@@ -160,7 +162,7 @@ public class MetodosAux {
 			}
 		}else {
 			infoFich.put("DSN", nombre);
-			infoFich.put("Definicion", "(LONGREG,(KKK,KK))");
+			infoFich.put(CONST_DEFINICION, "(LONGREG,(KKK,KK))");
 			infoFich.put("DISP", "NEW");
 			infoFich.put("LRECL", "NO");
 		}
@@ -337,7 +339,7 @@ public class MetodosAux {
 				if (infoFich.containsKey("MGMTCLAS")){
 					datos.put("MGMTCLAS", infoFich.get("MGMTCLAS"));
 				}
-				datos.put("Definicion", infoFich.get("Definicion"));
+				datos.put(CONST_DEFINICION, infoFich.get(CONST_DEFINICION));
 				datos.put("DSN", infoFich.get("DSN"));
 				datos.put("SALIDA", ficheros[0].replace("SORTIDA=", ""));
 				
@@ -475,6 +477,9 @@ public class MetodosAux {
     				if(valor.charAt(valor.length()-1)==',') {
     					finIndex = valor.length() + index;
     					valor = linea.substring(index+1,finIndex);	
+    				}
+    				if(valor.endsWith("=")) {
+    					valor += "''";
     				}
 					datos.put(clave, valor);
 					numVariable++;

@@ -37,7 +37,6 @@ public class mainApp {
 	static int auxUnidad = 0;
 	static LectorPasos lectorPasos = new LectorPasos();
 	static WriterPasos writerPasos = new WriterPasos();
-	static Avisos  avisos = new Avisos();
 	static String tipoPaso = "";
 	
 	public static void main(String[] args) throws IOException {
@@ -54,6 +53,7 @@ public class mainApp {
         //------------------------------------PROGRAMA--------------------------------------------------
 	    
 	    File ficheroFecha = new File("C:\\Cortex\\PCL.txt");
+
 	    long mod = ficheroFecha.lastModified();
 	    Date fecha = new Date(mod);
 	    
@@ -65,11 +65,19 @@ public class mainApp {
 	    JOptionPane.showMessageDialog(null, "Última versión PCL: " + fecha); 
 	    programa = JOptionPane.showInputDialog("Introduzca el nombre del programa:");
 		programa = programa.toUpperCase(); 
-		int proc = JOptionPane.showConfirmDialog(null, "¿Con archivo PROC?", "Alerta!", JOptionPane.YES_NO_OPTION);
-		withProc = proc == 0 ? true : false;
-
-		int cntl = JOptionPane.showConfirmDialog(null, "¿Con archivo CNTL?", "Alerta!", JOptionPane.YES_NO_OPTION);
-		withCntl = cntl == 0 ? true : false;
+		
+	    File ficheroPROC = new File("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
+		do {
+			int proc = JOptionPane.showConfirmDialog(null, "¿Con archivo PROC?", "Alerta!", JOptionPane.YES_NO_OPTION);
+			withProc = proc == 0 ? true : false;
+		}while(withProc && !ficheroPROC.exists());
+		
+	    File ficheroCNTL = new File("C:\\Cortex\\CNTL\\" + mainApp.programa.substring(0,6) + ".txt");
+		do {
+			int cntl = JOptionPane.showConfirmDialog(null, "¿Con archivo CNTL?", "Alerta!", JOptionPane.YES_NO_OPTION);
+			withCntl = cntl == 0 ? true : false;
+		}while(withCntl && !ficheroCNTL.exists());
+		
 		letraPaso = programa.substring(5,6);
 
 //----------------------- FICHERO DE SALIDA ----------------------------------------------------------
@@ -202,10 +210,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJFTPVER(datos, letraPaso, pasoE, writerCortex);
 				break;
-//			case "NAME=MAIL123":
-//				datos = lectorPasos.leerPaso(pasos);
-//				writerPasos.writeJMAIL123(datos, letraPaso, pasoE, writerCortex);
-//				break;
+			case "NAME=MAIL123":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJMAIL123(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "JBORRARF":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJBORRARFPasos(datos, letraPaso, pasoE, writerCortex);
@@ -231,9 +239,9 @@ public class mainApp {
 					tipoPaso = "Plantilla QMF - Avisar Aplicación";	
 
 				}
-				if(tipoPaso.equals("NAME=MAIL123")) {
-					tipoPaso = "Plantilla JMAIL123 - Revisar";	
-				}
+//				if(tipoPaso.equals("NAME=MAIL123")) {
+//					tipoPaso = "Plantilla JMAIL123 - Revisar";	
+//				}
 				WriterPasos.pasoS += 2;
 			    String numeroPaso = (WriterPasos.pasoS < 10) ? "0" + String.valueOf(WriterPasos.pasoS) : String.valueOf(WriterPasos.pasoS) ;
 			    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
