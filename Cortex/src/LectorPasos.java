@@ -15,7 +15,7 @@ public class LectorPasos {
 			index = 0;
 			if (!pasos.get(i).startsWith("CUADRE")) {
 // ------------- Buscamos las variables, con la referencia del igual	
-				if (!pasos.get(i).contains("FILE") && !pasos.get(i).startsWith("*")) {
+				if (!pasos.get(i).contains("FILE ") && !pasos.get(i).startsWith("*")) {
 					while (index != -1) {
 						index = pasos.get(i).indexOf('=', index);
 						if (index != -1 && pasos.get(i).charAt(index + 1) != '(') {

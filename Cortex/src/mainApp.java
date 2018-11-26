@@ -67,16 +67,20 @@ public class mainApp {
 		programa = programa.toUpperCase(); 
 		
 	    File ficheroPROC = new File("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
-		do {
-			int proc = JOptionPane.showConfirmDialog(null, "¿Con archivo PROC?", "Alerta!", JOptionPane.YES_NO_OPTION);
-			withProc = proc == 0 ? true : false;
-		}while(withProc && !ficheroPROC.exists());
+		int proc = JOptionPane.showConfirmDialog(null, "¿Con archivo PROC?", "Alerta!", JOptionPane.YES_NO_OPTION);
+		withProc = proc == 0 ? true : false;
+		if(withProc && !ficheroPROC.exists()) {
+			JOptionPane.showMessageDialog(null, "AVISO: No existe el PROC");
+			Avisos.LOGGER.log(Level.INFO, "AVISO: No existe el PROC");
+		}
 		
 	    File ficheroCNTL = new File("C:\\Cortex\\CNTL\\" + mainApp.programa.substring(0,6) + ".txt");
-		do {
-			int cntl = JOptionPane.showConfirmDialog(null, "¿Con archivo CNTL?", "Alerta!", JOptionPane.YES_NO_OPTION);
-			withCntl = cntl == 0 ? true : false;
-		}while(withCntl && !ficheroCNTL.exists());
+		int cntl = JOptionPane.showConfirmDialog(null, "¿Con archivo CNTL?", "Alerta!", JOptionPane.YES_NO_OPTION);
+		withCntl = cntl == 0 ? true : false;
+		if(withCntl && !ficheroCNTL.exists()) {
+			JOptionPane.showMessageDialog(null, "AVISO: No existe el CNTL");
+			Avisos.LOGGER.log(Level.INFO, "AVISO: No existe el CNTL");
+		}
 		
 		letraPaso = programa.substring(5,6);
 
@@ -311,7 +315,11 @@ public class mainApp {
 		if (index != -1) {
 			for(int i = index; i < fichero.get(inicio).trim().length(); i++) {
 				if(fichero.get(inicio).charAt(i) == ',') {
-					tipoPaso = fichero.get(inicio).substring(index + 8, i);
+					if(fichero.get(inicio).charAt(index + 8) == ' ') {
+						tipoPaso = fichero.get(inicio).substring(index + 9, i);
+					}else {
+						tipoPaso = fichero.get(inicio).substring(index + 8, i);
+					}
 					i = 80;
 				}
 				if(i + 1 == fichero.get(inicio).trim().length()) {
