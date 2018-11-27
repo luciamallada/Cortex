@@ -15,7 +15,7 @@ public class Avisos {
 		//Handler consoleHandler = new ConsoleHandler();
 		Handler fileHandler = null;
 		try {
-			fileHandler = new FileHandler("C:\\Cortex\\Incidencias" + programa + ".log", false);
+			fileHandler = new FileHandler("C:\\Cortex\\Incidencias\\" + programa + ".log", false);
 		} catch (SecurityException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
