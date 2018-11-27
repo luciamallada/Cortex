@@ -9,7 +9,7 @@ import java.util.logging.Level;
 public class MetodosAux {
 	private static final String CONST_EQUALS = "=";
 	private static final String CONST_DEFINICION = "Definicion";
-	static Avisos  avisos = new Avisos();
+//	static Avisos  avisos = new Avisos();
 	LectorPasos lectorPasos =  new LectorPasos();
 
 	public boolean checkLiteralesPARDB2(String param) {

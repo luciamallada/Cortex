@@ -19,7 +19,7 @@ import javax.swing.UIManager;
 
 public class mainApp {
 	//--------------------- DATO A INTRODUCIR ------------------------------
-	public static String programa = "AGE01B";
+	public static String programa = "";
 	public static boolean withProc = true;
 	public static boolean withCntl = false;
 	//----------------------------------------------------------------------
@@ -65,6 +65,8 @@ public class mainApp {
 	    JOptionPane.showMessageDialog(null, "Última versión PCL: " + fecha); 
 	    programa = JOptionPane.showInputDialog("Introduzca el nombre del programa:");
 		programa = programa.toUpperCase(); 
+		
+		new Avisos();
 		
 	    File ficheroPROC = new File("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
 		int proc = JOptionPane.showConfirmDialog(null, "¿Con archivo PROC?", "Alerta!", JOptionPane.YES_NO_OPTION);
@@ -511,7 +513,7 @@ public class mainApp {
 		        desktop = Desktop.getDesktop();
 		      }
 
-		       desktop.open(new File("C:\\Cortex\\incidencias.log"));
+		       desktop.open(new File("C:\\Cortex\\Incidencias\\" + programa + ".log"));
 		    } catch (IOException ioe) {
 		      ioe.printStackTrace();
 		    }

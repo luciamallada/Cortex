@@ -9,7 +9,7 @@ import java.util.logging.Level;
 
 
 public class WriterPasos {
-	static Avisos  avisos = new Avisos();
+	//static Avisos  avisos = new Avisos();
 	MetodosAux metodosAux = new MetodosAux();
 	public static int pasoS = -1;
 	public static Map<String, String[]> histPasos = new HashMap<String, String[]>();
