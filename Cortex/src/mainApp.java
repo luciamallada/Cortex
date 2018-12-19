@@ -380,7 +380,7 @@ public class mainApp {
 			}
 			if(!(tipoPaso.equals("SORT") || tipoPaso.equals("PGM=SOF07200"))) {
 				for (int j = i + 1; j < fichero.size() && fichero.get(j).startsWith(" "); j++) {
-					if(fichero.get(j).endsWith("X")) {
+					if(fichero.get(j).endsWith("X") || (fichero.get(j).length() > 71 && fichero.get(j).endsWith("-"))) {
 						linea = linea + fichero.get(j).substring(0, fichero.get(j).length()-1).trim();
 					}else {
 						linea = linea + fichero.get(j).trim();

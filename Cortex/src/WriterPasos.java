@@ -214,7 +214,11 @@ public class WriterPasos {
 		    	switch (contadorLinea) {
 		    	case 3:
 		    		linea = linea.replace("DDNAME--", nombre);
-		    		//REVISAR Z.
+		    		if(infoFich.get("DSN").contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
 		    		break;
 		    	case 5:
@@ -235,6 +239,11 @@ public class WriterPasos {
 		    		break;
 		    	case 9:
 		    		linea = linea.replace("DDNAME--", nombre);
+		    		if(infoFich.get("DSN").contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.XP", infoFich.get("DSN"));
 		    		break;
 		    	case 11:
@@ -248,6 +257,11 @@ public class WriterPasos {
 		    		break;
 		    	case 14:
 		    		linea = linea.replace("DDNAME--", nombre);
+		    		if(infoFich.get("DSN").contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
 		    		break;
 		    	case 16:
@@ -328,6 +342,11 @@ public class WriterPasos {
 		    	switch (contadorLinea) {
 		    	case 2:
 		    		linea = linea.replace("DDNAME--", nombre);
+		    		if(infoFich.get("DSN").contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", "Z." + infoFich.get("DSN"));
 		    		break;
 		    	default:
@@ -373,6 +392,11 @@ public class WriterPasos {
 		    			linea = linea.replace("//---D-", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
 		    		}else {
 		    			linea = linea.replace("//---D- ", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
+		    		}
+		    		if(infoFich.get("DSN").contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
 		    		}
 		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFich.get("DSN"));
 		    		break;
@@ -573,6 +597,11 @@ public class WriterPasos {
 	    	case 2:
 	    		linea = linea.replace("//---D1", "//" + letraPaso + numeroPaso + "D" + String.valueOf(i));
 	    		i++;
+	    		if(infoSortOut.get("DSN").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoSortOut.get("DSN"));
 				break;
 	    	case 4:
@@ -589,6 +618,11 @@ public class WriterPasos {
 	    		linea = "";
 	    		break;
 	    	case 6:
+	    		if(infoSortOut.get("DSN").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoSortOut.get("DSN"));
 	    		break;
 	    	case 8:
@@ -669,6 +703,11 @@ public class WriterPasos {
 	    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // DSN Fichero no encontrada ");
 	    			System.out.println("***** REVISAR FICHERO - DSN NO ENCONTRADA *****");
 	    	    	writerCortex.write("***** REVISAR FICHERO - DSN NO ENCONTRADA *****");
+	    	    	writerCortex.newLine();
+	    		}
+	    		if(dsn.contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
 	    	    	writerCortex.newLine();
 	    		}
 	    	    StringBuffer host = new StringBuffer("HOST=Z." + dsn + ",");
@@ -787,6 +826,11 @@ public class WriterPasos {
 	    	switch (contadorLinea) {
 	    	case 2:
 	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		if(infoFtpReb.get("DSN").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFtpReb.get("DSN"));
 				break;
 	    	case 3:
@@ -843,6 +887,11 @@ public class WriterPasos {
 	    		}
 	    		break;
 	    	case 7:
+	    		if(infoFtpReb.get("DSN").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", infoFtpReb.get("DSN"));
 	    		break;
 	    	case 9:
@@ -980,6 +1029,11 @@ public class WriterPasos {
 	    		spaces = 42 - dsnName.length();
 	    		for (int j = 0; j < spaces; j++) {
 	    			dsnName.append(" ");
+	    		}
+	    		if(dsnName.indexOf("CORTEX.") != -1) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
 	    		}
 	    		linea = linea.replace("DSNAME=,                                  ", dsnName);
 				break;
@@ -1163,6 +1217,11 @@ public class WriterPasos {
 				break;
 	    	case 3:
 	    		StringBuffer dsname = new StringBuffer("DSNAME=Z." + metodosAux.infoDSN(pasoE, letraPaso, "ENTRA1") + ", ");
+	    		if(dsname.indexOf("CORTEX.") != -1) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("DSNAME=,               ", dsname);
 	    		break;
 	    	case 4:
@@ -1343,7 +1402,12 @@ public class WriterPasos {
 	    	contadorLinea ++;
 	    	switch (contadorLinea) {
 	    	case 2:			    		
-	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);			    		
+	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);	
+	    		if(metodosAux.infoDSN(pasoE, letraPaso, "ENTRADA").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", metodosAux.infoDSN(pasoE, letraPaso, "ENTRADA"));
 				break;			    	
 			}
@@ -1419,6 +1483,11 @@ public class WriterPasos {
 	    	switch (contadorLinea) {
 	    	case 3:
 	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		if(datos.get("DSN").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", datos.get("DSN"));
 				break;
 	    	case 5:
@@ -1433,6 +1502,11 @@ public class WriterPasos {
 	    	case 10:
 	    		for(int i = 1; datos.containsKey("DSN" + i); i++) {
 	    			String lineaEditada = linea;
+	    			if(datos.get("DSN" + i).contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 	    			lineaEditada = lineaEditada.replace("TSFUS01.DD----1", "TSFUS01." + datos.get("FICH" + i));
 	    			if (i < 10) {
 	    				lineaEditada = lineaEditada.replace("&DUMY01", "&DUMY0" + i);
@@ -1467,6 +1541,11 @@ public class WriterPasos {
 	    			nameFich.append(" ");
 	    		}
 	    		linea = linea.replace("//DDSAL--  ", "//" + nameFich);
+	    		if(datos.get("DSN").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", datos.get("DSN"));
 	    		break;
 	    	case 16:
@@ -1486,6 +1565,11 @@ public class WriterPasos {
 	    		numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    		for(int i = 1; datos.containsKey("DSN" + i); i++) {
 	    			String lineaEditada = linea;
+	    			if(datos.get("DSN" + i).contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 	    			lineaEditada = lineaEditada.replace("//---D-", "//" + letraPaso + numeroPaso + "D" + i);
 	    			lineaEditada = lineaEditada.replace("APL.XXXXXXXX.NOMMEM.&GENE1", "Z." + datos.get("DSN" + i));
 	    			
@@ -1538,6 +1622,11 @@ public class WriterPasos {
 	    	switch (contadorLinea) {
 	    	case 3:
 	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		if(datos.get("DSN").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", datos.get("DSN"));
 				break;
 	    	case 5:
@@ -1552,6 +1641,11 @@ public class WriterPasos {
 	    	case 9:
 	    		for(int i = 1; datos.containsKey("DSN" + i); i++) {
 	    			String lineaEditada = linea;
+	    			if(datos.get("DSN" + i).contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 	    			lineaEditada = lineaEditada.replace("TSGENQ1.DD----1", "TSGENQ1." + datos.get("FICH" + i)); 
 	    			lineaEditada = lineaEditada.replace("APL.XXXXXXXX.NOMMEM.&GENE1", "Z." + datos.get("DSN" + i));
 	    			
@@ -1581,6 +1675,11 @@ public class WriterPasos {
 	    			nameFich.append(" ");
 	    		}
 	    		linea = linea.replace("//DDSAL--  ", "//" + nameFich);
+	    		if(datos.get("DSN").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", datos.get("DSN"));
 	    		break;
 	    	case 15:
@@ -1600,6 +1699,11 @@ public class WriterPasos {
 	    		numeroPaso = (pasoS < 10) ? "0" + String.valueOf(pasoS) : String.valueOf(pasoS) ;
 	    		for(int i = 1; datos.containsKey("DSN" + i); i++) {
 	    			String lineaEditada = linea;
+	    			if(datos.get("DSN" + i).contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 	    			lineaEditada = lineaEditada.replace("//---D-", "//" + letraPaso + numeroPaso + "D" + i);
 	    			lineaEditada = lineaEditada.replace("APL.XXXXXXXX.NOMMEM.&GENE1", "Z." + datos.get("DSN" + i));
 	    			
@@ -1700,6 +1804,11 @@ public class WriterPasos {
 	    		}
 	    		break;
 	    	case 10:
+	    		if(metodosAux.infoDSN(pasoE, letraPaso, "ENTRADA").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", "Z." + metodosAux.infoDSN(pasoE, letraPaso, "ENTRADA"));
 	    		break;
 	    	default:
@@ -2294,6 +2403,11 @@ public class WriterPasos {
 	    	switch (contadorLinea) {
 	    	case 2:
 	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
+	    		if(metodosAux.infoDSN(pasoE, letraPaso, "SYSUT2").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.YYYYYYYY.NOMMEM2.&FAAMMDDV", metodosAux.infoDSN(pasoE, letraPaso, "SYSUT2"));
 	    		break;
 	    	case 3:
@@ -2302,6 +2416,11 @@ public class WriterPasos {
 	    	case 4:
 	    		for(int i = 0; infoFichIn.containsKey("DSN" + i); i++) {
 	    			String lineaEditada = linea;
+	    			if(infoFichIn.get("DSN" + i).contains("CORTEX.")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+		    	    	writerCortex.newLine();
+		    		}
 	    			if(i==0) {
 	    				lineaEditada = lineaEditada.replace("APL.XXXXXXXX.NOMMEM1.&FAAMMDDV", infoFichIn.get("DSN" + i));
 	    			}else {
@@ -2315,9 +2434,19 @@ public class WriterPasos {
 	    		linea = "";
 	    		break;
 	    	case 5:
+	    		if(metodosAux.infoDSN(pasoE, letraPaso, "SYSUT2").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.YYYYYYYY.NOMMEM2.&FAAMMDDV", metodosAux.infoDSN(pasoE, letraPaso, "SYSUT2"));
 	    		break;
 	    	case 7:
+	    		if(metodosAux.infoDSN(pasoE, letraPaso, "SYSUT1").contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    	    	writerCortex.newLine();
+	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM1.&FAAMMDDV,", metodosAux.infoDSN(pasoE, letraPaso, "SYSUT1"));
 	    		break;
 	    	case 8:
@@ -2473,6 +2602,11 @@ public class WriterPasos {
 	    			Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // DSN Fichero no encontrada ");
 	    			System.out.println("***** REVISAR FICHERO - DSN NO ENCONTRADA *****");
 	    	    	writerCortex.write("***** REVISAR FICHERO - DSN NO ENCONTRADA *****");
+	    	    	writerCortex.newLine();
+	    		}
+	    		if(dsn.contains("CORTEX.")) {
+	    			Avisos.LOGGER.log(Level.INFO,"**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
+	    			writerCortex.write("**** FICHERO DE LIBRERÍA CORTEX - AVISAR APLICACIÓN ****");
 	    	    	writerCortex.newLine();
 	    		}
 	    	    StringBuffer host = new StringBuffer("HOST=Z." + dsn + ",");

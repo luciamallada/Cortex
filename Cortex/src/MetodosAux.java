@@ -7,6 +7,8 @@ import java.util.Map;
 import java.util.logging.Level;
 
 public class MetodosAux {
+	private static final String CONST_EMPTY = "";
+	private static final String CONST_AMPERSAND = "&";
 	private static final String CONST_EQUALS = "=";
 	private static final String CONST_DEFINICION = "Definicion";
 //	static Avisos  avisos = new Avisos();
@@ -14,7 +16,7 @@ public class MetodosAux {
 
 	public boolean checkLiteralesPARDB2(String param) {
 		// TODO Auto-generated method stub
-		if (!param.startsWith("&")) {
+		if (!param.startsWith(CONST_AMPERSAND)) {
 			return true;
 		}
 		for(int i = 1; i < param.length(); i++) {
@@ -36,7 +38,7 @@ public class MetodosAux {
 				if (PARDB2.charAt(i) == '-' || i == 0) {
 					i = i > 0 ? i + 1 : i;
 					String aux = PARDB2.substring(i, index + 1);
-					PARDB2 = PARDB2.replace(aux, "");
+					PARDB2 = PARDB2.replace(aux, CONST_EMPTY);
 					i = -1;
 				}
 			}
@@ -100,8 +102,8 @@ public class MetodosAux {
 					if (index != -1) {
 						clave = lectorPasos.leerClave(infoFichero.get(j), index);
 						valor = lectorPasos.leerValor(infoFichero.get(j), index);
-						valor = valor.replace("(","");
-						if (!clave.equals("") && !valor.equals("")) {
+						valor = valor.replace("(",CONST_EMPTY);
+						if (!clave.equals(CONST_EMPTY) && !valor.equals(CONST_EMPTY)) {
 							infoFich.put(clave, valor);
 						}
 					}
@@ -205,7 +207,7 @@ public class MetodosAux {
 		// TODO Auto-generated method stub
 		boolean seguir = true, buscar = false;	
 		@SuppressWarnings("unused")
-		String linea, clave, valor = "";
+		String linea, clave, valor = CONST_EMPTY;
 		int index = 0;
 		
 		if(mainApp.withProc) {
@@ -258,7 +260,7 @@ public class MetodosAux {
 		int ini = 0, fin = 0;
 		
 		if(mainApp.withProc) {
-			String primero = "", segundo = "", tercero = "";
+			String primero = CONST_EMPTY, segundo = CONST_EMPTY, tercero = CONST_EMPTY;
 			infoFicheroProc = buscaInfoProc(pasoE, letraPaso, "SORTIN");
 			for(int i = 0; i < infoFicheroProc.size(); i++) {
 				fin = infoFicheroProc.get(i).indexOf("DSN=");
@@ -290,7 +292,7 @@ public class MetodosAux {
 		// TODO Auto-generated method stub
 		boolean seguir = true, buscar = false;	
 		@SuppressWarnings("unused")
-		String linea, clave, valor = "";
+		String linea, clave, valor = CONST_EMPTY;
 		int index = 0;
 		if(mainApp.withProc) {
 			//----------------Fichero de plantilla JPROC--------------------------
@@ -327,21 +329,21 @@ public class MetodosAux {
 		Map<String, String> infoFich   = new HashMap<String, String>();
 		String[] ficheros;
 		int contadorFicheros = 0;
-		String clave = "", valor = "";
+		String clave = CONST_EMPTY, valor = CONST_EMPTY;
 		
 		pasoE -= 2;
 		for(int i = 1; datos.containsKey("FICHA" + String.valueOf(i)); i++) {
 			ficheros = datos.get("FICHA" + String.valueOf(i)).split(",");
-			ficheros[0] = ficheros[0].replace("ENTRADA=", "");
+			ficheros[0] = ficheros[0].replace("ENTRADA=", CONST_EMPTY);
 			
 			if(ficheros[0].contains("SORTIDA=")) {
-				infoFich = infoFichero(pasoE, letraPaso, ficheros[0].replace("SORTIDA=", ""));
+				infoFich = infoFichero(pasoE, letraPaso, ficheros[0].replace("SORTIDA=", CONST_EMPTY));
 				if (infoFich.containsKey("MGMTCLAS")){
 					datos.put("MGMTCLAS", infoFich.get("MGMTCLAS"));
 				}
 				datos.put(CONST_DEFINICION, infoFich.get(CONST_DEFINICION));
 				datos.put("DSN", infoFich.get("DSN"));
-				datos.put("SALIDA", ficheros[0].replace("SORTIDA=", ""));
+				datos.put("SALIDA", ficheros[0].replace("SORTIDA=", CONST_EMPTY));
 				
 			}else {
 				for (int j = 0; j < ficheros.length; j++) {
@@ -371,13 +373,13 @@ public class MetodosAux {
 //				salida.add(0 ,linea.trim() + fi.trim() + datos.get(cabecera));
 				salida.add(0 ,linea.trim() + fi + datos.get(cabecera));
 			}
-			salida.add(1, "");			 
+			salida.add(1, CONST_EMPTY);			 
 		}
 		else{
 			if (fi.isEmpty()) {
 				fi = linea.trim()+ fi.trim() + datos.get(cabecera);
 			}else {
-				String masdatos = datos.get(cabecera) != null ? datos.get(cabecera) : "";
+				String masdatos = datos.get(cabecera) != null ? datos.get(cabecera) : CONST_EMPTY;
 				fi = linea.trim()+ fi.trim() + " " + masdatos;
 			}
 			for(int i = 72; i > 0; i--) {
@@ -397,8 +399,7 @@ public class MetodosAux {
 	public Map<String, String> infomultiDSN(int pasoE, String letraPaso, String name) throws IOException {
 		// TODO Auto-generated method stub
 		boolean seguir = true, buscar = false;	
-		@SuppressWarnings("unused")
-		String linea, clave, valor = "";
+		String linea, clave, valor = CONST_EMPTY;
 		int index = 0, contador=0;
 		Map<String, String> datos = new HashMap<String, String>();
 		
@@ -448,7 +449,7 @@ public class MetodosAux {
 	public Map<String, String> cabecera(int pasoE, String letraPaso) throws IOException {
 		// TODO Auto-generated method stub
 		boolean seguir = true, buscar = false;	
-		String linea, clave, valor = "";
+		String linea, clave, valor = CONST_EMPTY;
 		int index = 0, contador=0, numVariable=0, numOPC=0, finIndex = 0;
 		Map<String, String> datos = new HashMap<String, String>();
 		//----------------Fichero de plantilla CNTL--------------------------
