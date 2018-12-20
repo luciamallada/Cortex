@@ -264,13 +264,15 @@ public class MetodosAux {
 			infoFicheroProc = buscaInfoProc(pasoE, letraPaso, "SORTIN");
 			for(int i = 0; i < infoFicheroProc.size(); i++) {
 				fin = infoFicheroProc.get(i).indexOf("DSN=");
-				primero = infoFicheroProc.get(i).substring(0, fin);
-				ini = fin;
-				fin = infoFicheroProc.get(i).indexOf(",DISP=");
-				tercero = infoFicheroProc.get(i).substring(ini, ini + 4) + "Z." + infoFicheroProc.get(i).substring(ini + 4, fin);
-				ini = fin + 1;
-				segundo = infoFicheroProc.get(i).substring(ini) + ",";
-				infoFichero.add(primero + segundo + tercero);	
+				if (fin != -1) {
+					primero = infoFicheroProc.get(i).substring(0, fin);
+					ini = fin;
+					fin = infoFicheroProc.get(i).indexOf(",DISP=");
+					tercero = infoFicheroProc.get(i).substring(ini, ini + 4) + "Z." + infoFicheroProc.get(i).substring(ini + 4, fin);
+					ini = fin + 1;
+					segundo = infoFicheroProc.get(i).substring(ini) + ",";
+					infoFichero.add(primero + segundo + tercero);	
+				}
 			}
 		}else {
 			infoFichero.add("**** No encontrado fichero SORTIN");
