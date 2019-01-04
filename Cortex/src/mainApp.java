@@ -236,6 +236,10 @@ public class mainApp {
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeJPGM(datos, letraPaso, pasoE, writerCortex);
 				break;
+			case "JIEBGENE":
+				datos = lectorPasos.leerPaso(pasos);
+				writerPasos.writeJIEBGENE(datos, letraPaso, pasoE, writerCortex);
+				break;
 			case "ignore":
 				datos = lectorPasos.leerPaso(pasos);
 				writerPasos.writeComments(datos, writerCortex);
@@ -336,7 +340,7 @@ public class mainApp {
 				tipoPaso = "JSOFCHEC";
 			}
 			if (fichero.get(inicio).contains("NAME=IEBGCOPY")) {
-				tipoPaso = "JIEBGENE - Caso particular";
+				tipoPaso = "JIEBGENE";
 			}
 		}else {
 			if (fichero.get(inicio).contains(" SORT")) {

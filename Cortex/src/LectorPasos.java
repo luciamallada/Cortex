@@ -107,8 +107,8 @@ public class LectorPasos {
 							}
 							archivosEntrada++;
 						}else {
-							for (int k = 1; k <= totalComents; k++) {
-								clave = "ComFichS" + String.valueOf(archivosSalida + 1) + String.valueOf(k);
+							for (int k = 0; k < totalComents; k++) {
+								clave = "ComFichS" + String.valueOf(archivosSalida + 1) + String.valueOf(k + 1);
 								valor = pasos.get(i + k);
 								datos.put(clave, valor);
 							}

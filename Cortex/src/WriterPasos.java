@@ -2448,6 +2448,9 @@ public class WriterPasos {
 	    	    	writerCortex.newLine();
 	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM1.&FAAMMDDV,", metodosAux.infoDSN(pasoE, letraPaso, "SYSUT1"));
+	    		if(infoFichOut.containsKey("MGMTCLAS")) {
+	    			linea = linea.trim() + ",";
+	    		}
 	    		break;
 	    	case 8:
 	    		if(infoFichOut.containsKey("MGMTCLAS")) {
