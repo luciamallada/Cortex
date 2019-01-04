@@ -473,6 +473,11 @@ public class mainApp {
 		    		linea = "";
 		    		break;
 		    	case 8:
+		    		if(prueba.containsKey("aviso")) {
+		    			Avisos.LOGGER.log(Level.INFO, prueba.get("aviso"));
+		    			writerCortex.write("***** " + prueba.get("aviso") + " *****");
+		    	    	writerCortex.newLine();
+		    		}
 		    		for(int i = 0; prueba.containsKey("Variable" + i); i++) {
 		    			String lineaEditada = "//   SET " + prueba.get("Variable" + i);
 		    			System.out.println("Escribimos: " + lineaEditada);

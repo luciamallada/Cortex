@@ -477,6 +477,9 @@ public class MetodosAux {
     				index = linea.lastIndexOf(" ");
     				clave = "Variable" + numVariable;
     				valor = linea.substring(index+1);
+    				if(isNombreEqualsValor(valor)) {
+    					datos.put("aviso", "REVISAR: Nombre de la variable igual a su valor");
+    				}
     				if(valor.charAt(valor.length()-1)==',') {
     					finIndex = valor.length() + index;
     					valor = linea.substring(index+1,finIndex);	
@@ -501,4 +504,19 @@ public class MetodosAux {
 	    System.out.println("----------------------------------------");
 		return datos;
 	}
+
+	private boolean isNombreEqualsValor(String valor) {
+		
+		int index = 0;
+		String variable = "" , literal ="";
+		index = valor.indexOf(CONST_EQUALS);
+		variable = valor.substring(0, index);
+		literal = valor.substring(index + 1);
+		if (literal.contains(variable)) {
+			return true;
+		}else {
+			return false;
+		}
+	}
+
 }
