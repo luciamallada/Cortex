@@ -94,7 +94,7 @@ public class MetodosAux {
 			infoFichero = buscaInfoProc(pasoE, letraPaso, nombre);
 		    
 		    String clave, valor;
-	    	int primario = 0, secundario = 0, tamaño;
+	    	int primario = 0, secundario = 0, tamaño, numDSN = 0;
 		    for(int j = 0; j < infoFichero.size(); j++) {
 		    	int index = 1;
 			    while (index != -1) {
@@ -104,6 +104,10 @@ public class MetodosAux {
 						valor = lectorPasos.leerValor(infoFichero.get(j), index);
 						valor = valor.replace("(",CONST_EMPTY);
 						if (!clave.equals(CONST_EMPTY) && !valor.equals(CONST_EMPTY)) {
+							if (clave.equals("DSN") && (infoFich.containsKey("DSN") || infoFich.containsKey("DSN" + numDSN))) {
+								numDSN++;
+								clave += numDSN;
+							}
 							infoFich.put(clave, valor);
 						}
 					}
