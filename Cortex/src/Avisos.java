@@ -8,26 +8,20 @@ import java.util.logging.SimpleFormatter;
 
 public class Avisos {
 	public final static Logger LOGGER = Logger.getLogger("Avisos");
-	public static String programa = mainApp.programa;
+	public static Handler fileHandler = null;
 
 	public Avisos() {
 		System.setProperty("java.util.logging.SimpleFormatter.format","%4$s: %5$s [%1$tc]%n");
-		//Handler consoleHandler = new ConsoleHandler();
-		Handler fileHandler = null;
 		try {
-			fileHandler = new FileHandler("C:\\Cortex\\Incidencias\\" + programa + ".log", false);
+			fileHandler = new FileHandler("C:\\Cortex\\Incidencias\\" + mainApp.programa + ".log", false);
 		} catch (SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		SimpleFormatter simpleFormatter = new SimpleFormatter();
 		fileHandler.setFormatter(simpleFormatter);
-		//LOGGER.addHandler(consoleHandler);
 	    LOGGER.addHandler(fileHandler);
-	    //consoleHandler.setLevel(Level.ALL);
 	    fileHandler.setLevel(Level.ALL);
 	}
 //    private static class formatoIncidencias extends Formatter {

@@ -22,6 +22,7 @@ public class mainApp {
 	public static String programa = "";
 	public static boolean withProc = true;
 	public static boolean withCntl = false;
+	public static boolean withListado = false;
 	//----------------------------------------------------------------------
 	
 	//--------------------- Variables Programa -----------------------------
@@ -44,7 +45,7 @@ public class mainApp {
 //		String linea, tipoPaso;
 		String linea;
 		boolean seguir = true, escribir = false;
-		
+				
 		//-------------------------------------FICHERO DE ENTRADA---------------------------------------		
 	    FileReader ficheroPCL = new FileReader("C:\\Cortex\\PCL.txt");
 	    BufferedReader lectorPCL = new BufferedReader(ficheroPCL);
@@ -61,28 +62,33 @@ public class mainApp {
 	    UIManager.put("OptionPane.messageFont", new Font("System", Font.PLAIN, 20));
 	    UIManager.put("OptionPane.buttonFont", new Font("System", Font.PLAIN, 20)); 
 	    UIManager.put("TextField.font", new Font("System", Font.PLAIN, 20)); 
-
-	    JOptionPane.showMessageDialog(null, "Última versión PCL: " + fecha); 
-	    programa = JOptionPane.showInputDialog("Introduzca el nombre del programa:");
-		programa = programa.toUpperCase(); 
+	    
+	    if (!withListado) {
+	    	JOptionPane.showMessageDialog(null, "Última versión PCL: " + fecha); 
+	    	
+		    programa = JOptionPane.showInputDialog("Introduzca el nombre del programa:");
+			programa = programa.toUpperCase(); 
+			
+			new Avisos();
 		
-		new Avisos();
-		
-	    File ficheroPROC = new File("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
-		int proc = JOptionPane.showConfirmDialog(null, "¿Con archivo PROC?", "Alerta!", JOptionPane.YES_NO_OPTION);
-		withProc = proc == 0 ? true : false;
-		if(withProc && !ficheroPROC.exists()) {
-			JOptionPane.showMessageDialog(null, "AVISO: No existe el PROC");
-			Avisos.LOGGER.log(Level.INFO, "AVISO: No existe el PROC");
-		}
-		
-	    File ficheroCNTL = new File("C:\\Cortex\\CNTL\\" + mainApp.programa.substring(0,6) + ".txt");
-		int cntl = JOptionPane.showConfirmDialog(null, "¿Con archivo CNTL?", "Alerta!", JOptionPane.YES_NO_OPTION);
-		withCntl = cntl == 0 ? true : false;
-		if(withCntl && !ficheroCNTL.exists()) {
-			JOptionPane.showMessageDialog(null, "AVISO: No existe el CNTL");
-			Avisos.LOGGER.log(Level.INFO, "AVISO: No existe el CNTL");
-		}
+		    File ficheroPROC = new File("C:\\Cortex\\PROC\\" + mainApp.programa.substring(0,6) + ".txt");
+			int proc = JOptionPane.showConfirmDialog(null, "¿Con archivo PROC?", "Alerta!", JOptionPane.YES_NO_OPTION);
+			withProc = proc == 0 ? true : false;
+			if(withProc && !ficheroPROC.exists()) {
+				JOptionPane.showMessageDialog(null, "AVISO: No existe el PROC");
+				Avisos.LOGGER.log(Level.INFO, "AVISO: No existe el PROC");
+			}
+			
+		    File ficheroCNTL = new File("C:\\Cortex\\CNTL\\" + mainApp.programa.substring(0,6) + ".txt");
+			int cntl = JOptionPane.showConfirmDialog(null, "¿Con archivo CNTL?", "Alerta!", JOptionPane.YES_NO_OPTION);
+			withCntl = cntl == 0 ? true : false;
+			if(withCntl && !ficheroCNTL.exists()) {
+				JOptionPane.showMessageDialog(null, "AVISO: No existe el CNTL");
+				Avisos.LOGGER.log(Level.INFO, "AVISO: No existe el CNTL");
+			}
+	    }else {
+	    	new Avisos();
+	    }
 		
 		letraPaso = programa.substring(5,6);
 
@@ -284,7 +290,10 @@ public class mainApp {
 		Avisos.LOGGER.log(Level.INFO, "***** PROCESO Migración a TEST finalizado CORRECTAMENTE *****");
 		
 		Explomig.migracionPREP();
+
 		abrirIncidencias();
+		Avisos.LOGGER.removeHandler(Avisos.fileHandler);
+		Avisos.fileHandler.close();
 
 	}
 
