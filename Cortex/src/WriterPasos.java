@@ -348,13 +348,28 @@ public class WriterPasos {
 		    	    	writerCortex.newLine();
 		    		}
 		    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", "Z." + infoFich.get("DSN"));
+			    	writerCortex.write(linea.replaceAll("\\s*$",""));
+			    	writerCortex.newLine();
+			    	linea = "";
+			    	if(infoFich.containsKey("DSN1")) {
+		    			Avisos.LOGGER.log(Level.INFO,"**** Fichero de entrada con varias DSN, Revisar ****");
+		    			writerCortex.write("**** Fichero de entrada con varias DSN, Revisar ****");
+		    	    	writerCortex.newLine();
+			    	}
+		    		for(int k = 1; infoFich.containsKey("DSN"+k); k++) {
+		    			writerCortex.write("//         DD DISP=SHR,DSN=Z." + infoFich.get("DSN"+k));
+		    			writerCortex.newLine();
+		    			linea = "";
+		    		}
 		    		break;
 		    	default:
 					break;
 		    	}
-		    	System.out.println("Escribimos: " + linea);
-		    	writerCortex.write(linea.replaceAll("\\s*$",""));
-		    	writerCortex.newLine();
+		    	if (!linea.equals("")) {
+			    	System.out.println("Escribimos: " + linea);
+			    	writerCortex.write(linea.replaceAll("\\s*$",""));
+			    	writerCortex.newLine();
+		    	} 
 		    }
 	    }else {
 	    	writerCortex.write("//*--DUMMY-----------------------------------------------------------");
@@ -1409,6 +1424,9 @@ public class WriterPasos {
 	    	    	writerCortex.newLine();
 	    		}
 	    		linea = linea.replace("APL.XXXXXXXX.NOMMEM.&FAAMMDDV", metodosAux.infoDSN(pasoE, letraPaso, "ENTRADA"));
+	    		if(datos.containsKey("NUMLIN") && !datos.get("NUMLIN").trim().equals("")) {
+	    			linea = linea.trim() + ",LINIA=" + datos.get("NUMLIN");
+	    		}
 				break;			    	
 			}
 	    	System.out.println("Escribimos: " + linea);

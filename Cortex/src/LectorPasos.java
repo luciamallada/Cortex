@@ -135,10 +135,14 @@ public class LectorPasos {
 					}	
 				}
 		//--------------- Buscar IF - ENDIF
-				if(pasos.get(i).matches("(.*)IF [" + mainApp.letraPaso + "][0-9]{2}(.*)")) {
+//				if(pasos.get(i).matches("(.*)IF [" + mainApp.letraPaso + "][0-9]{2}(.*)")) {
+				if(pasos.get(i).matches("(.*)IF\\s+[" + mainApp.letraPaso + "][0-9]{2}(.*)")) {
+					String aux = pasos.get(i).replaceFirst("IF\\s+","IF ");
 					clave = "IF";
-					index = pasos.get(i).indexOf("IF " + mainApp.letraPaso);
-					valor = "//         " + pasos.get(i).substring(index);
+					//index = pasos.get(i).indexOf("IF " + mainApp.letraPaso);
+					index = aux.indexOf("IF " + mainApp.letraPaso);
+					//valor = "//         " + pasos.get(i).substring(index);
+					valor = "//         " + aux.substring(index);
 					datos.put(clave, valor);
 				}
 				if(pasos.get(i).contains("ENDIF")){
