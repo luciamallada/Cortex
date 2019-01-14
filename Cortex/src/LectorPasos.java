@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -188,7 +189,7 @@ public class LectorPasos {
 		return valor;
 	}
 
-	private String leerArchivoSalida(String linea, Map<String, String> datos, int archivosSalida) {
+	private String leerArchivoSalida(String linea, Map<String, String> datos, int archivosSalida){
 		// TODO Auto-generated method stub
 		String valor = "";
 		String claveB = "";
@@ -204,7 +205,19 @@ public class LectorPasos {
 		if (linea.contains("(YES,DELETE")) {
 			valorB = valor;
 		}else {
-			valorB = "No";
+			Map<String, String> infoFich = new HashMap<String, String>();
+			MetodosAux metodosAux = new MetodosAux();
+		    try {
+				infoFich = metodosAux.infoFichero(mainApp.pasoE, mainApp.letraPaso, valor);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		    if (infoFich.get("DISP").equals("NEW")) {
+		    	valorB = valor;
+		    }else {
+		    	valorB = "No";
+		    }
 		}
 		datos.put(claveB, valorB);	
 		
