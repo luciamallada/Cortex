@@ -61,10 +61,10 @@ public class WriterPasos {
 	    	    	writerCortex.newLine();
 	    	    	Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Literales en el programa: "
 	    	    			+ datos.get("PARDB2"));
-	    		}
-	    		
+	    		}	    		
 	    		linea = linea.replace("&VAR1-&VAR2-..." , metodosAux.tratarLiteralesPARDB2(datos.get("PARDB2").replace("*&", "-&")));
-			default:
+	    		
+	    	default:
 				break;
 	    	}
 	    	System.out.println("Escribimos: " + linea);
