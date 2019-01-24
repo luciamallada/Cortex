@@ -94,7 +94,8 @@ public class MetodosAux {
 			infoFichero = buscaInfoProc(pasoE, letraPaso, nombre);
 		    
 		    String clave, valor;
-	    	int primario = 0, secundario = 0, tamaño, numDSN = 0;
+	    	long primario = 0, secundario = 0, tamaño; 
+	    	int numDSN = 0;
 		    for(int j = 0; j < infoFichero.size(); j++) {
 		    	int index = 1;
 			    while (index != -1) {
@@ -125,8 +126,8 @@ public class MetodosAux {
 				    			i = 1000;
 				    		}
 				    	}
-				    	tamaño = Integer.valueOf(infoFichero.get(j).substring(ini + 1, fin));
-				    	primario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;
+				    	tamaño = Long.valueOf(infoFichero.get(j).substring(ini + 1, fin));
+				    	primario = Long.parseLong(infoFich.get("SPACE")) * tamaño / Long.parseLong(infoFich.get("LRECL")) / 1000;
 				    	primario = primario < 5 ? 10 : primario;
 				    	
 				    	ini = fin;
@@ -136,8 +137,8 @@ public class MetodosAux {
 				    			i = 1000;
 				    		}
 				    	}
-				    	tamaño = Integer.valueOf(infoFichero.get(j).substring(ini + 1, fin));
-				    	secundario = Integer.parseInt(infoFich.get("SPACE")) * tamaño / Integer.parseInt(infoFich.get("LRECL")) / 1000;; 
+				    	tamaño = Long.valueOf(infoFichero.get(j).substring(ini + 1, fin));
+				    	secundario = Long.parseLong(infoFich.get("SPACE")) * tamaño / Long.parseLong(infoFich.get("LRECL")) / 1000;; 
 				    	secundario = secundario < 3 ? 3 : secundario;
 			    	}else {
 						infoFich.put("LRECL","LRECL");
