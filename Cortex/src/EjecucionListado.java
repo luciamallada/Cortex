@@ -67,6 +67,7 @@ public class EjecucionListado {
 		    mainApp.auxDecimal = 0;
 		    mainApp.auxUnidad = 0;
 		    mainApp.tipoPaso = "";
+		    WriterPasos.pasoS = -1;
 	    }
 	    lectorListado.close();
 	}
