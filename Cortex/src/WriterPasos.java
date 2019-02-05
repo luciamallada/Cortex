@@ -738,9 +738,9 @@ public class WriterPasos {
 	    			datos.replace("FDEST", aux);
 	    		}
 	    		if(datos.get("FDEST").contains("_&")) {
-	    			String aux = datos.get("FDEST");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("FDEST", aux);
+//	    			String aux = datos.get("FDEST");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("FDEST", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
@@ -866,9 +866,9 @@ public class WriterPasos {
 	    			datos.replace("FORIG", aux);
 	    		}
 	    		if(datos.get("FORIG").contains("_&")) {
-	    			String aux = datos.get("FORIG");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("FORIG", aux);
+//	    			String aux = datos.get("FORIG");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("FORIG", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
@@ -968,9 +968,9 @@ public class WriterPasos {
 	    			datos.replace("FITXER", aux);
 	    		}
 	    		if(datos.get("FITXER").contains("_&")) {
-	    			String aux = datos.get("FITXER");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("FITXER", aux);
+//	    			String aux = datos.get("FITXER");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("FITXER", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
@@ -1058,9 +1058,9 @@ public class WriterPasos {
 	    			datos.replace("SORTIDA", aux);
 	    		}
 	    		if(datos.get("SORTIDA").contains("_&")) {
-	    			String aux = datos.get("SORTIDA");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("SORTIDA", aux);
+//	    			String aux = datos.get("SORTIDA");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("SORTIDA", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
@@ -1131,9 +1131,9 @@ public class WriterPasos {
 	    			datos.replace("FDEST", aux);
 	    		}
 	    		if(datos.get("FDEST").contains("_&")) {
-	    			String aux = datos.get("FDEST");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("FDEST", aux);
+//	    			String aux = datos.get("FDEST");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("FDEST", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
@@ -1245,9 +1245,9 @@ public class WriterPasos {
 	    			datos.replace("SORTIDA", aux);
 	    		}
 	    		if(datos.get("SORTIDA").contains("_&")) {
-	    			String aux = datos.get("SORTIDA");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("SORTIDA", aux);
+//	    			String aux = datos.get("SORTIDA");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("SORTIDA", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
@@ -2058,9 +2058,9 @@ public class WriterPasos {
 	    			datos.replace("FDEST", aux);
 	    		}
 	    		if(datos.get("FDEST").contains("_&")) {
-	    			String aux = datos.get("FDEST");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("FDEST", aux);
+//	    			String aux = datos.get("FDEST");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("FDEST", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
@@ -2166,9 +2166,9 @@ public class WriterPasos {
 	    			datos.replace("FITXER", aux);
 	    		}
 	    		if(datos.get("FITXER").contains("_&")) {
-	    			String aux = datos.get("FITXER");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("FITXER", aux);
+//	    			String aux = datos.get("FITXER");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("FITXER", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
@@ -2252,9 +2252,9 @@ public class WriterPasos {
 	    			datos.replace("SORTIDA", aux);
 	    		}
 	    		if(datos.get("SORTIDA").contains("_&")) {
-	    			String aux = datos.get("SORTIDA");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("SORTIDA", aux);
+//	    			String aux = datos.get("SORTIDA");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("SORTIDA", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
