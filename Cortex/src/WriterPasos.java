@@ -2643,9 +2643,9 @@ public class WriterPasos {
 	    			datos.replace("FDEST", aux);
 	    		}
 	    		if(datos.get("FDEST").contains("_&")) {
-	    			String aux = datos.get("FDEST");
-	    			aux = aux.replaceAll("_&", "-&");
-	    			datos.replace("FDEST", aux);
+//	    			String aux = datos.get("FDEST");
+//	    			aux = aux.replaceAll("_&", "-&");
+//	    			datos.replace("FDEST", aux);
 					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Revisar fichero -  contiene _& ");
 	    			System.out.println("*****REVISAR FICHERO CON _&*****");
 	    	    	writerCortex.write("*****REVISAR FICHERO CON _&*****");
