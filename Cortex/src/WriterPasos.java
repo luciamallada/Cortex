@@ -47,9 +47,12 @@ public class WriterPasos {
 	    	switch (contadorLinea) {
 	    	case 2:
 	    		linea = linea.replace("//---", "//" + letraPaso + numeroPaso);
-	    		linea = linea.replace("NOMPROGR", datos.get("PGM"));
-	    		if(!datos.containsKey("PARDB2")) {
-	    			linea = linea.replace(datos.get("PGM") + ",", datos.get("PGM"));
+	    		linea = linea.replace("NOMPROGR,", datos.get("PGM"));
+	    		if (datos.containsKey("TIME")) {
+	    			linea = linea.trim() + ",TEXEC=" + datos.get("TIME");
+	    		}
+	    		if(datos.containsKey("PARDB2")) {
+	    			linea = linea.trim() + ",";
 	    		}
 				break;
 	    	case 3:
