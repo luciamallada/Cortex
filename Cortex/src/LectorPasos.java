@@ -31,7 +31,7 @@ public class LectorPasos {
 						}
 					}
 				}
-				if(pasos.get(i).contains("FILE")){
+				if(pasos.get(i).contains("FILE ")){
 // -------------- Buscamos los posibles archivos
 					index = 0;
 					index = pasos.get(i).indexOf("MODE=") + 5;
@@ -336,6 +336,11 @@ public class LectorPasos {
 					}	
 				}
 				j = pasos.size() + 1;
+			}
+		}
+		for(int j = 0; j < pasos.size(); j++) {
+			if(pasos.get(j).contains("SORTOUT")) {
+				datos.put("withSortout", "true");
 			}
 		}
 		datos = busquedaAdicional(datos, pasos);

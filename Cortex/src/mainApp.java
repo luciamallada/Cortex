@@ -151,6 +151,26 @@ public class mainApp {
 				break;
 			case "SORT":
 				datos = lectorPasos.leerPasoSort(pasos);
+				if(datos.containsKey("withSortout"))
+				{
+					writerPasos.writeSORT(datos, letraPaso, pasoE, writerCortex);
+				}else {
+					WriterPasos.pasoS += 2;
+				    String numeroPaso = (WriterPasos.pasoS < 10) ? "0" + String.valueOf(WriterPasos.pasoS) : String.valueOf(WriterPasos.pasoS) ;
+				    String numeroPasoE = (pasoE < 10) ? "0" + String.valueOf(pasoE) : String.valueOf(pasoE) ;
+					String[] valor = {"IF referido a paso no migrado", numeroPaso};
+				    WriterPasos.histPasos.put(numeroPasoE, valor);
+				    
+					writerCortex.write("**************************************************");
+					writerCortex.newLine();
+					writerCortex.write("*******AÑADIR PLANTILLA: //"+ letraPaso + numeroPaso + "-" + tipoPaso + " - Caso especial*********");
+					writerCortex.newLine();
+					writerCortex.write("**************************************************");
+					writerCortex.newLine();
+					Avisos.LOGGER.log(Level.INFO, letraPaso + String.valueOf(pasoE) + " // Añadir Plantilla: " + tipoPaso + " - Caso especial");
+					datos = lectorPasos.leerPaso(pasos);
+					writerPasos.writeIF(datos, writerCortex);
+				}
 				writerPasos.writeSORT(datos, letraPaso, pasoE, writerCortex);
 				break;
 			case "NAME=FTPSEND":
